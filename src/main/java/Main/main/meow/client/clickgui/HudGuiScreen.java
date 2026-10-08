@@ -649,7 +649,7 @@ public final class HudGuiScreen extends Screen {
                                     int width, int height, int color,
                                     boolean topLeft, boolean topRight,
                                     boolean bottomLeft, boolean bottomRight) {
-        // scanlines are less fancy than a shader, but they behave nicely at tiny gui sizes.
+        // scanlines are less fancy than a shader, but they behave nicely at tiny gui sizes. bro what
         int radius = Math.min(CORNER_RADIUS, width / 2);
         for (int row = 0; row < height; row++) {
             int leftInset = 0;
