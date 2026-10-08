@@ -25,6 +25,19 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The main ClickGUI screen for browsing and configuring modules.
+ *
+ * <p>This screen is doing a bit more than its name suggests: it handles the
+ * category columns, dragging, settings rows, color pickers, font controls,
+ * keybind capture, and saving the layout. It is not the cleanest little
+ * screen in the world, but keeping the GUI flow here makes it much easier to
+ * follow when something goes wrong. meow.</p>
+ *
+ * <p>Right-click a module to expand it, left-click its row to toggle it, and
+ * press Escape to close the screen. Category positions and expanded settings
+ * are remembered between launches.</p>
+ */
 public final class HudGuiScreen extends Screen {
     private static final FontDescription ODIN_FONT =
             new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "odin"));
@@ -75,6 +88,7 @@ public final class HudGuiScreen extends Screen {
 
     @Override
     protected void init() {
+        // Rebuild the columns every time because the window can resize. Pretty basic, bro what.
         calculateLayout();
         expanded.clear();
         for (Module module : modules.all()) {
@@ -97,6 +111,7 @@ public final class HudGuiScreen extends Screen {
     }
 
     private void calculateLayout() {
+        // Empty categories are skipped so we don't render alot of sad blank boxes.
         visibleCategories.clear();
         for (Category category : Category.values()) {
             if (!modules.inCategory(category).isEmpty()) {
@@ -117,6 +132,7 @@ public final class HudGuiScreen extends Screen {
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        // The backdrop is intentionally extracted first so the panels stay readable.
         extractBlurredBackground(graphics);
     }
 
@@ -201,6 +217,7 @@ public final class HudGuiScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        // Color picking gets first dibs on the mouse, otherwise clicks leak into the GUI.
         if (transitionProgress() < 1f) {
             return true;
         }
@@ -473,6 +490,7 @@ public final class HudGuiScreen extends Screen {
     }
 
     private List<String> settingsFor(Module module) {
+        // Keep the labels in the same order as the click handling below. Future me, please.
         String key = awaitingKeybind == module ? "Press a key..." : "Keybind: " + keyName(module.keybind());
         if (module instanceof ZoomModule zoom) {
             String zoomKey = awaitingZoomKeybind == zoom ? "Press a key..." :
@@ -522,6 +540,7 @@ public final class HudGuiScreen extends Screen {
     }
 
     private void renderTooltip(GuiGraphicsExtractor graphics, String description, int mouseX, int mouseY) {
+        // Tooltips are wrapped manually since vanilla's tooltip path is a little awkward here.
         List<String> lines = wrapTooltip(description, 220);
         int tooltipWidth = 0;
         for (String line : lines) {
@@ -640,6 +659,7 @@ public final class HudGuiScreen extends Screen {
                                     int width, int height, int color,
                                     boolean topLeft, boolean topRight,
                                     boolean bottomLeft, boolean bottomRight) {
+        // Scanlines are less fancy than a shader, but they behave nicely at tiny GUI sizes.
         int radius = Math.min(CORNER_RADIUS, width / 2);
         for (int row = 0; row < height; row++) {
             int leftInset = 0;
