@@ -15,12 +15,6 @@ and forward-only automatic sprinting.
 - Optional notification timer border
 - Vanilla forward-only automatic sprint
 
-## Project Statistics
-
-**Total Java line count: 2,263**
-
-The count includes every `.java` file under `src/main/java`.
-
 ## Build
 
 Use the Gradle wrapper with Java 25:
