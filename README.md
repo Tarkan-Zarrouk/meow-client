@@ -16,7 +16,7 @@ I was curious about the new deobfuscated code for Minecraft and decided to spend
 - Vanilla forward-only automatic sprint
 
 ## ClickGUI
-<img src="/assets/Screenshot 2023-04-01 123456.png" alt="clickgui screen">
+<img src="/assets/Screenshot 2026-10-08 at 3.15.11 PM.png" alt="clickgui screen">
 
 ## Build
 
