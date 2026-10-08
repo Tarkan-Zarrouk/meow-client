@@ -15,6 +15,9 @@ I was curious about the new deobfuscated code for Minecraft and decided to spend
 - Optional notification timer border
 - Vanilla forward-only automatic sprint
 
+## ClickGUI
+<img src="/assets/Screenshot 2023-04-01 123456.png" alt="clickgui screen">
+
 ## Build
 
 Use the Gradle wrapper with Java 25:
