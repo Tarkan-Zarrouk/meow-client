@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "meow",
+  "version": "${version}",
+  "name": "meow",
+  "description": "Debugging for shits and giggles",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/meow/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "Main.main.meow.client.MeowClient"
+    ],
+    "main": [
+      "Main.main.meow.Meow"
+    ]
+  },
+  "mixins": [
+    "meow.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
