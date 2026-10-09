@@ -13,8 +13,7 @@ public final class NotificationsModule extends ClientModule {
     private boolean showTimer = true;
 
     public NotificationsModule() {
-        super("Notifications", Category.HUD, false,
-                "Shows module toggle notifications in chat or as animated top-right alerts.");
+        super("Notifications", Category.HUD, false, "Shows module toggle notifications in chat or as animated top-right alerts.");
     }
 
     public Mode mode() {

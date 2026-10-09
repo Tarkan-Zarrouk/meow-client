@@ -6,9 +6,6 @@ public final class ClickGuiSettings {
     private static boolean odinFont;
     private static int fontSize = 11;
 
-    private ClickGuiSettings() {
-    }
-
     public static int categoryColor() {
         return categoryColor;
     }

@@ -23,7 +23,8 @@ public final class HudComponentManager {
 
     public HudComponent at(double x, double y) {
         for (int i = components.size() - 1; i >= 0; i--) {
-            if (components.get(i).contains(x, y)) return components.get(i);
+            if (components.get(i).contains(x, y))
+                return components.get(i);
         }
         return null;
     }
@@ -33,8 +34,7 @@ public final class HudComponentManager {
     }
 
     public void render(GuiGraphicsExtractor graphics, Minecraft client, boolean editor) {
-        for (HudComponent component : components) {
+        for (HudComponent component : components)
             component.render(graphics, client, editor);
-        }
     }
 }

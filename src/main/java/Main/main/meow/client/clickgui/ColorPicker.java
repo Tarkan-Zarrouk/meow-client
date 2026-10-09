@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import java.awt.Color;
 
 /**
- * Reusable HSV color picker with a saturation/value square and hue slider.
+ * ai generated, ts was not possible for me to think of :wilted_rose:
  */
 public final class ColorPicker {
     @FunctionalInterface

@@ -27,12 +27,10 @@ import java.util.Map;
 import java.util.Set;
 
 public final class MeowConfig {
+    // lowkenuienly ai is used here, i have no idea how to do this without it, i tried for a few hours across multiple different test projects and gave up, this is the only way i could figure out how to do it
     private static final Logger LOGGER = LoggerFactory.getLogger("meow-config");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILE_NAME = "meow-config.json";
-
-    private MeowConfig() {
-    }
 
     public static void load(Minecraft client, ModuleManager modules, HudComponentManager components) {
         Path path = path(client);

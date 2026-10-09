@@ -27,8 +27,7 @@ public final class HudEditorScreen extends Screen {
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         components.render(graphics, net.minecraft.client.Minecraft.getInstance(), true);
-        graphics.text(font, Component.literal("HUD EDITOR  •  Drag components  •  ESC to close"),
-                10, height - 18, 0xffffffff, true);
+        graphics.text(font, Component.literal("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
     }
 
     @Override

@@ -12,11 +12,11 @@ public final class ZoomController {
     }
 
     public static void tick(long window) {
-        // Keep the key state warm between camera renders; interpolation happens per frame.
         update(window);
     }
 
     private static void update(long window) {
+        // had to use ai for this method, i literally have no idea how to do this without it, i tried for 2 hours and gave up
         ZoomModule zoom = (ZoomModule) MeowClient.MODULE_MANAGER.byName("Zoom");
         boolean active = zoom != null && zoom.isZooming(window);
         long now = System.nanoTime();

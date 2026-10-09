@@ -5,8 +5,7 @@ import org.lwjgl.glfw.GLFW;
 
 public final class ClickGuiModule extends ClientModule {
     public ClickGuiModule() {
-        super("ClickGUI", Category.CLIENT, true,
-                "Opens this ClickGUI and lets you customize its colors and keybind.");
+        super("ClickGUI", Category.CLIENT, true, "Opens this ClickGUI and lets you customize its colors and keybind.");
         setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
 }

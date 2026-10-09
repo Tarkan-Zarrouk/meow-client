@@ -1,6 +1,6 @@
 package Main.main.meow.client;
 
-import Main.main.meow.client.clickgui.HudGuiScreen;
+import Main.main.meow.client.hud.hudgui.HudGuiRenderer;
 import Main.main.meow.client.hud.HudComponent;
 import Main.main.meow.client.hud.HudComponentManager;
 import Main.main.meow.client.hud.HudEditorScreen;
@@ -8,11 +8,8 @@ import Main.main.meow.client.hud.QolHudRenderer;
 import Main.main.meow.client.hud.NotificationManager;
 import Main.main.meow.client.modules.Module;
 import Main.main.meow.client.modules.ModuleManager;
-import Main.main.meow.client.modules.category.Category;
-import Main.main.meow.client.modules.client.ClientModule;
 import Main.main.meow.client.modules.client.ClickGuiModule;
 import Main.main.meow.client.modules.client.ZoomModule;
-import Main.main.meow.client.modules.client.ZoomController;
 import Main.main.meow.client.modules.hud.*;
 import Main.main.meow.client.modules.misc.WaypointsModule;
 import Main.main.meow.client.modules.player.*;
@@ -53,6 +50,7 @@ public class MeowClient implements ClientModInitializer {
     }
 
     private static void registerHudComponents() {
+        // it got pretty repetitive so i use copilot autocomplete lol
         HUD_COMPONENTS.add(new HudComponent("hud-info", 8, 8, 190, 54) {
             public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if (editor || MODULE_MANAGER.byName("HUD").isEnabled()) QolHudRenderer.drawInfo(g, c, c.player, x(), y());
@@ -85,6 +83,7 @@ public class MeowClient implements ClientModInitializer {
     }
 
     private static void registerModules() {
+        // see comment in HudComponentManager for why i use copilot autocomplete here
         MODULE_MANAGER.register(new ClickGuiModule());
         MODULE_MANAGER.register(new HudModule());
         MODULE_MANAGER.register(new ArmorStatusModule());
@@ -126,7 +125,7 @@ public class MeowClient implements ClientModInitializer {
             if (lastSpeedTime != 0) {
                 double seconds = (now - lastSpeedTime) / 1000.0;
                 if (seconds > 0) {
-                    bps = Math.hypot(client.player.getX() - lastX, client.player.getZ() - lastZ) / seconds;
+                    bps = Math.hypot(client.player.getX() - lastX, client.player.getZ() - lastZ) / seconds; // this is a rough estimate of blocks per second, it doesn't account for vertical movement or diagonal movement, had to see another client code lopl
                 }
             }
             lastX = client.player.getX();
@@ -145,7 +144,7 @@ public class MeowClient implements ClientModInitializer {
         boolean rightShift = key != GLFW.GLFW_KEY_UNKNOWN
                 && GLFW.glfwGetKey(client.getWindow().handle(), key) == GLFW.GLFW_PRESS;
         if (rightShift && !rightShiftDown && client.screen == null) {
-            client.setScreen(new HudGuiScreen(MODULE_MANAGER));
+            client.setScreen(new HudGuiRenderer(MODULE_MANAGER));
         }
         if (GLFW.glfwGetKey(client.getWindow().handle(), GLFW.GLFW_KEY_F8) == GLFW.GLFW_PRESS
                 && client.screen == null) {

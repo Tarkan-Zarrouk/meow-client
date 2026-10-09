@@ -7,8 +7,7 @@ public final class ZoomModule extends ClientModule {
     private int zoomKeybind = GLFW.GLFW_KEY_C;
 
     public ZoomModule() {
-        super("Zoom", Category.CLIENT, false,
-                "Hold the zoom key to smoothly zoom the camera like OptiFine.");
+        super("Zoom", Category.CLIENT, false, "Hold the zoom key to smoothly zoom the camera like OptiFine.");
     }
 
     public int zoomKeybind() {

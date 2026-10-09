@@ -9,9 +9,6 @@ public final class ClickGuiLayoutSettings {
     private static final Map<String, Position> positions = new HashMap<>();
     private static final Set<String> expandedModules = new HashSet<>();
 
-    private ClickGuiLayoutSettings() {
-    }
-
     public static Position position(String category, int defaultX, int defaultY) {
         return positions.getOrDefault(category, new Position(defaultX, defaultY));
     }
