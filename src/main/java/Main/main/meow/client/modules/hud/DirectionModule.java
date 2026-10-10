@@ -5,6 +5,8 @@ import Main.main.meow.client.modules.category.Category;
 
 public final class DirectionModule extends ClientModule {
     public DirectionModule() {
-        super("Direction", Category.HUD, true, "Displays the compass direction your player is facing.");
+        super("Direction", Category.HUD, false, "Displays the compass direction your player is facing.");
     }
+
+
 }

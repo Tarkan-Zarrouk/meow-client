@@ -5,6 +5,8 @@ import Main.main.meow.client.modules.category.Category;
 
 public final class CpsModule extends ClientModule {
     public CpsModule() {
-        super("CPS", Category.HUD, true, "Displays your clicks per second based on recent attack or interaction clicks.");
+        super("CPS", Category.HUD, false, "Displays your clicks per second based on recent attack or interaction clicks.");
     }
+
+
 }

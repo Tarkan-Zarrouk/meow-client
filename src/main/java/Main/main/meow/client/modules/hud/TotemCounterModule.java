@@ -5,6 +5,8 @@ import Main.main.meow.client.modules.category.Category;
 
 public final class TotemCounterModule extends ClientModule {
     public TotemCounterModule() {
-        super("Totem Counter", Category.HUD, true, "Displays the number of Totems of Undying in your inventory.");
+        super("Totem Counter", Category.HUD, false, "Displays the number of Totems of Undying in your inventory.");
     }
+
+
 }

@@ -5,7 +5,8 @@ import Main.main.meow.client.modules.category.Category;
 
 public final class ClockModule extends ClientModule {
     public ClockModule() {
-        super("Clock", Category.HUD, true, "Displays the current local and world time on the HUD.");
+        super("Clock", Category.HUD, false, "Displays the current local and world time on the HUD.");
     }
+
 
 }

@@ -1,7 +1,13 @@
 package Main.main.meow.client.modules;
 
 import Main.main.meow.client.modules.category.Category;
+import Main.main.meow.client.modules.setting.Setting;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
 
 /**
  * Base type for client features. Modules can be registered in ModuleManager when they are ready.
@@ -11,7 +17,8 @@ public abstract class Module {
     private final String description;
     private final Category category;
     private boolean enabled;
-    private int keybind = org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
+    private int keybind = GLFW_KEY_UNKNOWN;
+    private final List<Setting<?>> settings = new ArrayList<>();
     private Runnable changeListener = () -> {};
     private Consumer<Module> enabledChangeListener = module -> {};
 
@@ -39,6 +46,19 @@ public abstract class Module {
 
     public final boolean isEnabled() {
         return enabled;
+    }
+
+    public final List<Setting<?>> settings() {
+        return Collections.unmodifiableList(settings);
+    }
+
+    public final <S extends Setting<?>> S addSetting(S setting) {
+        settings.add(setting);
+        return setting;
+    }
+
+    public final void removeSetting(Setting<?> setting) {
+        settings.remove(setting);
     }
 
     public final int keybind() {

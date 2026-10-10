@@ -7,4 +7,6 @@ public final class ArmorDurabilityModule extends ClientModule {
     public ArmorDurabilityModule() {
         super("Armor Durability", Category.PLAYER, true, "Displays detailed durability values for equipped armor pieces.");
     }
+
+
 }

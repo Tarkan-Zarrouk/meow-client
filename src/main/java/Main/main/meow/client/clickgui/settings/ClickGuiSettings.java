@@ -1,48 +1,33 @@
 package Main.main.meow.client.clickgui.settings;
 
+import Main.main.meow.client.modules.setting.BooleanSetting;
+import Main.main.meow.client.modules.setting.ColorSetting;
+import Main.main.meow.client.modules.setting.NumberSetting;
+
+/**
+ * The ClickGUI's own settings. ClickGuiModule registers these, so the GUI and config treat them like any other setting.
+ */
 public final class ClickGuiSettings {
-    private static int categoryColor = 0xffc52dbd;
-    private static int moduleColor = 0xffc52dbd;
-    private static boolean odinFont;
-    private static int fontSize = 11;
+    public static final ColorSetting CATEGORY_COLOR = new ColorSetting("Category colour", "Opens a picker that changes the color of every category header in real time.", 0xffc52dbd);
+    public static final ColorSetting MODULE_COLOR = new ColorSetting("Module colour", "Opens a picker that changes the color of every module row in real time.", 0xffc52dbd);
+    public static final BooleanSetting FONT = new BooleanSetting("Font", "Switches the ClickGUI between the custom Inter font and Minecraft's default font.", false, "Font: Inter", "Font: Minecraft");
+    public static final NumberSetting FONT_SIZE = new NumberSetting("Font size", "Drag across this slider to change the active font size in real time.", 11, 5, 20);
+    private ClickGuiSettings() {
+    }
 
     public static int categoryColor() {
-        return categoryColor;
+        return CATEGORY_COLOR.color();
     }
 
     public static int moduleColor() {
-        return moduleColor;
+        return MODULE_COLOR.color();
     }
 
     public static boolean odinFont() {
-        return odinFont;
-    }
-
-    public static void setOdinFont(boolean enabled) {
-        odinFont = enabled;
+        return FONT.enabled();
     }
 
     public static int fontSize() {
-        return fontSize;
-    }
-
-    public static void setFontSize(int size) {
-        fontSize = Math.max(5, Math.min(20, size));
-    }
-
-    public static void setCategoryColor(int color) {
-        categoryColor = color | 0xff000000;
-    }
-
-    public static void setModuleColor(int color) {
-        moduleColor = color | 0xff000000;
-    }
-
-    public static int categoryColorValue() {
-        return categoryColor;
-    }
-
-    public static int moduleColorValue() {
-        return moduleColor;
+        return FONT_SIZE.number();
     }
 }

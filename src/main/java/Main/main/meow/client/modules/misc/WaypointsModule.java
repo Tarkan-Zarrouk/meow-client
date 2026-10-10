@@ -7,4 +7,6 @@ public final class WaypointsModule extends ClientModule {
     public WaypointsModule() {
         super("Waypoints", Category.MISC, false, "Reserved for marking and displaying useful locations in the world.");
     }
+
+
 }

@@ -12,6 +12,7 @@ import Main.main.meow.client.modules.client.ClickGuiModule;
 import Main.main.meow.client.modules.client.ZoomModule;
 import Main.main.meow.client.modules.hud.*;
 import Main.main.meow.client.modules.misc.WaypointsModule;
+import Main.main.meow.client.modules.movement.SprintModule;
 import Main.main.meow.client.modules.player.*;
 import Main.main.meow.client.modules.visuals.*;
 import Main.main.meow.client.settings.MeowConfig;
@@ -40,8 +41,7 @@ public class MeowClient implements ClientModInitializer {
         registerModules();
         registerHudComponents();
         MeowConfig.load(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS);
-        MODULE_MANAGER.setChangeListener(() -> MeowConfig.save(
-                Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS));
+        MODULE_MANAGER.setChangeListener(() -> MeowConfig.save(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS));
         MODULE_MANAGER.setEnabledChangeListener(module -> NotificationManager.moduleChanged(module));
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::handleHudEditorKey);
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::sampleStats);
@@ -50,40 +50,60 @@ public class MeowClient implements ClientModInitializer {
     }
 
     private static void registerHudComponents() {
-        // it got pretty repetitive so i use copilot autocomplete lol
-        HUD_COMPONENTS.add(new HudComponent("hud-info", 8, 8, 190, 54) {
-            public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if (editor || MODULE_MANAGER.byName("HUD").isEnabled()) QolHudRenderer.drawInfo(g, c, c.player, x(), y());
+        CoordinatesModule coordinates = (CoordinatesModule) MODULE_MANAGER.byName("Coordinates");
+        ArmorStatusModule armor = (ArmorStatusModule) MODULE_MANAGER.byName("Armor Status");
+        ItemDurabilityModule itemDurability = (ItemDurabilityModule) MODULE_MANAGER.byName("Item Durability");
+        PotionEffectsModule effects = (PotionEffectsModule) MODULE_MANAGER.byName("Potion Effects");
+        KeystrokesModule keystrokes = (KeystrokesModule) MODULE_MANAGER.byName("Keystrokes");
+        InventoryViewer inventory = (InventoryViewer) MODULE_MANAGER.byName("Inventory Viewer");
+        BiomeModule biome = (BiomeModule) MODULE_MANAGER.byName("Biome");
+
+        HUD_COMPONENTS.add(new HudComponent("biome", 200, 100, biome) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if((editor || biome.isEnabled()) && c.player != null) {
+                    BiomeModule.drawInfo(g,c, c.player, x(), y());
+                }
             }
         });
-        HUD_COMPONENTS.add(new HudComponent("armor", 8, 68, 190, 54) {
-            public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if (editor || MODULE_MANAGER.byName("Armor Status").isEnabled()) QolHudRenderer.drawArmor(g, c, c.player, x(), y());
+
+        HUD_COMPONENTS.add(new HudComponent("coordinates", 200, 8, coordinates) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if ((editor || coordinates.isEnabled()) && c.player != null) {
+                    CoordinatesModule.drawInfo(g, c, c.player, x(), y());
+                }
             }
         });
-        HUD_COMPONENTS.add(new HudComponent("item-durability", 8, 188, 210, 30) {
-            public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if (c.player != null && (editor || MODULE_MANAGER.byName("Item Durability").isEnabled())) {
+        HUD_COMPONENTS.add(new HudComponent("armor", 8, 68, armor) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if ((editor || armor.isEnabled()) && c.player != null) {
+                    QolHudRenderer.drawArmor(g, c, c.player, x(), y());
+                }
+            }
+        });
+        HUD_COMPONENTS.add(new HudComponent("item-durability", 8, 188, itemDurability) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if (c.player != null && (editor || itemDurability.isEnabled())) {
                     QolHudRenderer.drawItemDurability(g, c, c.player, x(), y());
                 }
             }
         });
-        HUD_COMPONENTS.add(new HudComponent("effects", 8, 128, 190, 54) {
-            public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if (editor || MODULE_MANAGER.byName("Potion Effects").isEnabled()) QolHudRenderer.drawEffects(g, c, c.player, x(), y());
+        HUD_COMPONENTS.add(new HudComponent("effects", 8, 128, effects) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if ((editor || effects.isEnabled()) && c.player != null) {
+                    QolHudRenderer.drawEffects(g, c, c.player, x(), y());
+                }
             }
         });
-        HUD_COMPONENTS.add(new HudComponent("keystrokes", 8, 200, 110, 70) {
-            public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if (c.player != null && (editor || MODULE_MANAGER.byName("Keystrokes").isEnabled())) {
+        HUD_COMPONENTS.add(new HudComponent("keystrokes", 8, 200, keystrokes) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if (c.player != null && (editor || keystrokes.isEnabled())) {
                     QolHudRenderer.drawKeys(g, c, c.player, x(), y());
                 }
             }
         });
-        // drawInventory method
-        HUD_COMPONENTS.add(new HudComponent("inventory", 8, 280, 210, 100) {
-            public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if (c.player != null && (editor || MODULE_MANAGER.byName("Inventory Viewer").isEnabled())) {
+        HUD_COMPONENTS.add(new HudComponent("inventory", 8, 280, inventory) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if (c.player != null && (editor || inventory.isEnabled())) {
                     QolHudRenderer.drawInventory(g, c, c.player, x(), y());
                 }
             }

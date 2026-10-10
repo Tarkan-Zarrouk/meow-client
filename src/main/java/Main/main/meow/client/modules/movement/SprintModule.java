@@ -1,4 +1,4 @@
-package Main.main.meow.client.modules.player;
+package Main.main.meow.client.modules.movement;
 
 import Main.main.meow.client.modules.client.ClientModule;
 import Main.main.meow.client.modules.category.Category;

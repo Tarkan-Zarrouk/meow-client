@@ -1,8 +1,9 @@
 package Main.main.meow.client.hud.hudgui;
 
 import Main.main.meow.client.clickgui.ColorPicker;
-import Main.main.meow.client.clickgui.settings.ClickGuiSettings;
 import Main.main.meow.client.modules.Module;
+import Main.main.meow.client.modules.client.ClickGuiModule;
+import Main.main.meow.client.modules.setting.NumberSetting;
 import Main.main.meow.client.modules.category.Category;
 import Main.main.meow.client.modules.ModuleManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -116,7 +117,7 @@ public final class HudGuiRenderer extends Screen {
     }
 
     private void renderHeader(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
-        HudGuiStyler.roundedFill(graphics, x, y, columnWidth, HEADER_HEIGHT, withAlpha(ClickGuiSettings.categoryColor(), alpha), true, true, false, false);
+        HudGuiStyler.roundedFill(graphics, x, y, columnWidth, HEADER_HEIGHT, withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false);
         graphics.fill(x + HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT - 1, x + columnWidth - HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT, withAlpha(HudGuiStyler.BORDER, alpha));
         String label = styler.truncate(category.title(), columnWidth - 10);
         styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, HEADER_HEIGHT), withAlpha(HudGuiStyler.CATEGORY_TEXT, alpha), false);
@@ -126,7 +127,7 @@ public final class HudGuiRenderer extends Screen {
         boolean roundedBottom = lastModule && !settings.isExpanded(module);
         int background;
         if(module.isEnabled()) {
-            background = ClickGuiSettings.moduleColor();
+            background = ClickGuiModule.moduleColor();
         } else if(hovered) {
             background = HudGuiStyler.ROW_HOVER;
         } else {
@@ -151,20 +152,20 @@ public final class HudGuiRenderer extends Screen {
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
             HudGuiStyler.roundedFill(graphics, x, settingY, columnWidth, SUBCATEGORY_HEIGHT, withAlpha(HudGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting);
             styler.drawText(graphics, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, SUBCATEGORY_HEIGHT), withAlpha(HudGuiStyler.MUTED, alpha), false);
-            if (settings.isFontSizeSetting(module, setting))
-                renderFontSlider(graphics, x, settingY, columnWidth);
+            NumberSetting slider = settings.sliderAt(module, setting);
+            if (slider != null)
+                renderSlider(graphics, slider, x, settingY, columnWidth);
         }
         return tooltip;
     }
 
-    private void renderFontSlider(GuiGraphicsExtractor graphics, int x, int settingY, int columnWidth) {
+    private void renderSlider(GuiGraphicsExtractor graphics, NumberSetting slider, int x, int settingY, int columnWidth) {
         int sliderX = x + 8; // +8 for padding
         int sliderY = settingY + SUBCATEGORY_HEIGHT - 4; // -4 for padding
         int sliderWidth = columnWidth - 16;
         graphics.fill(sliderX, sliderY, sliderX + sliderWidth, sliderY + 2, 0xff555861);
-        // knob position based on font size
-        int knobX = sliderX + Math.round((ClickGuiSettings.fontSize() - HudGuiSettingsHandler.FONT_SIZE_MIN) / (float) HudGuiSettingsHandler.FONT_SIZE_RANGE * sliderWidth);
-        graphics.fill(knobX - 2, sliderY - 2, knobX + 3, sliderY + 4, ClickGuiSettings.moduleColor()); // +3 for width of knob
+        int knobX = sliderX + Math.round(slider.progress() * sliderWidth);
+        graphics.fill(knobX - 2, sliderY - 2, knobX + 3, sliderY + 4, ClickGuiModule.moduleColor()); // +3 for width of knob
     }
 
     private void renderTooltip(GuiGraphicsExtractor graphics, String description, int mouseX, int mouseY, int screenWidth, int screenHeight) {

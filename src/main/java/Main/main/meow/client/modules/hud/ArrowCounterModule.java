@@ -5,6 +5,8 @@ import Main.main.meow.client.modules.category.Category;
 
 public final class ArrowCounterModule extends ClientModule {
     public ArrowCounterModule() {
-        super("Arrow Counter", Category.HUD, true, "Displays the number of arrows in your inventory.");
+        super("Arrow Counter", Category.HUD, false, "Displays the number of arrows in your inventory.");
     }
+
+
 }

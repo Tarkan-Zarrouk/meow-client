@@ -3,28 +3,27 @@ package Main.main.meow.client.hud.hudgui;
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.clickgui.ColorPicker;
 import Main.main.meow.client.clickgui.settings.ClickGuiLayoutSettings;
-import Main.main.meow.client.clickgui.settings.ClickGuiSettings;
 import Main.main.meow.client.modules.Module;
 import Main.main.meow.client.modules.ModuleManager;
-import Main.main.meow.client.modules.client.ZoomModule;
-import Main.main.meow.client.modules.hud.NotificationsModule;
+import Main.main.meow.client.modules.setting.ColorSetting;
+import Main.main.meow.client.modules.setting.KeybindSetting;
+import Main.main.meow.client.modules.setting.NumberSetting;
+import Main.main.meow.client.modules.setting.Setting;
 import Main.main.meow.client.settings.MeowConfig;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public final class HudGuiSettingsHandler {
-    public static final int FONT_SIZE_MIN = 5, FONT_SIZE_RANGE = 15;
-
     private final ModuleManager modules;
     private final Set<Module> expanded = new HashSet<>();
     private Module awaitingKeybind;
-    private ZoomModule awaitingZoomKeybind;
+    private KeybindSetting awaitingSetting;
     private ColorPicker colorPicker;
-    private boolean pickingCategoryColor;
 
     public HudGuiSettingsHandler(ModuleManager modules) {
         this.modules = modules;
@@ -47,7 +46,7 @@ public final class HudGuiSettingsHandler {
         if (!expanded.add(module))
             expanded.remove(module);
         awaitingKeybind = null;
-        awaitingZoomKeybind = null;
+        awaitingSetting = null;
         save();
     }
 
@@ -68,64 +67,44 @@ public final class HudGuiSettingsHandler {
         colorPicker = null;
     }
 
-    private void openColorPicker(boolean category) {
-        pickingCategoryColor = category;
-        if (category) {
-            colorPicker = new ColorPicker(260, 190, ClickGuiSettings.categoryColor(), color -> {
-                ClickGuiSettings.setCategoryColor(color);
-                save();
-            });
-        } else {
-            colorPicker = new ColorPicker(260, 190, ClickGuiSettings.moduleColor(), color -> {
-                ClickGuiSettings.setModuleColor(color);
-                save();
-            });
+    private void openColorPicker(ColorSetting setting) {
+        colorPicker = setting.createPicker(this::save);
+    }
+
+    // the slider setting at this row, or null when the row is not a slider
+    public NumberSetting sliderAt(Module module, int row) {
+        if (row >= 1 && row <= module.settings().size() && module.settings().get(row - 1) instanceof NumberSetting slider) {
+            return slider;
         }
+        return null;
     }
 
-    public boolean isFontSizeSetting(Module module, int setting) {
-        return isClickGui(module) && setting == 4;
-    }
-
-    public void setFontSizeFromMouse(double mouseX, int columnStart, int columnWidth) {
+    public void setSliderFromMouse(NumberSetting slider, double mouseX, int columnStart, int columnWidth) {
         double sliderStart = columnStart + 8;
         double sliderWidth = Math.max(1, columnWidth - 16);
-        double progress = (mouseX - sliderStart) / sliderWidth;
-        int size = FONT_SIZE_MIN + (int) Math.round(Math.max(0d, Math.min(1d, progress)) * FONT_SIZE_RANGE); // ide says math.clamp but no ty :3
-        ClickGuiSettings.setFontSize(size);
+        slider.setProgress((mouseX - sliderStart) / sliderWidth);
     }
 
-    // handles every setting click except the font size slider, which needs drag state
+    // handles every setting click except sliders, which need drag state
     public void clickSetting(Module module, int setting) {
-        /*
-         * 0: keybind
-         * 1: zoom keybind / category color / notifications type
-         * 2: module color / notifications timer
-         * 3: font toggle
-         * 4: font size slider
-         */
+        // row 0 is the keybind, rows 1..n are the module's registered settings in order
         if (setting == 0) {
-            awaitingZoomKeybind = null;
+            awaitingSetting = null;
             awaitingKeybind = module;
-        } else if (module instanceof ZoomModule zoom && setting == 1) { // zom keybind bc that module is special :3 (i couldn't figure out a better way)
+            return;
+        }
+        List<Setting<?>> registered = module.settings();
+        if (setting > registered.size()) {
+            return;
+        }
+        Setting<?> clicked = registered.get(setting - 1);
+        if (clicked instanceof KeybindSetting keybind) {
             awaitingKeybind = null;
-            awaitingZoomKeybind = zoom;
-        } else if (isClickGui(module) && setting == 1) {
-            openColorPicker(true);
-        } else if (isClickGui(module) && setting == 2) {
-            openColorPicker(false);
-        } else if (isClickGui(module) && setting == 3) {
-            ClickGuiSettings.setOdinFont(!ClickGuiSettings.odinFont()); // odin is a skyblock mod btw, but i like the name so i'm keeping it :3
-            save();
-        } else if (module instanceof NotificationsModule notifications && setting == 1) {
-            if (notifications.mode() == NotificationsModule.Mode.CHAT) {
-                notifications.setMode(NotificationsModule.Mode.ALERT);
-            } else {
-                notifications.setMode(NotificationsModule.Mode.CHAT);
-            }
-            save();
-        } else if (module instanceof NotificationsModule notifications && setting == 2) {
-            notifications.setShowTimer(!notifications.showTimer());
+            awaitingSetting = keybind;
+        } else if (clicked instanceof ColorSetting color) {
+            openColorPicker(color);
+        } else {
+            clicked.click();
             save();
         }
     }
@@ -134,10 +113,10 @@ public final class HudGuiSettingsHandler {
     public boolean captureKey(int key) {
         int bound = key == GLFW.GLFW_KEY_DELETE ? GLFW.GLFW_KEY_UNKNOWN : key;
         boolean cancelled = key == GLFW.GLFW_KEY_ESCAPE;
-        if (awaitingZoomKeybind != null) {
+        if (awaitingSetting != null) {
             if (!cancelled)
-                awaitingZoomKeybind.setZoomKeybind(bound);
-            awaitingZoomKeybind = null;
+                awaitingSetting.setValue(bound);
+            awaitingSetting = null;
             save();
             return true;
         }
@@ -151,82 +130,35 @@ public final class HudGuiSettingsHandler {
     }
 
     public List<String> settingsFor(Module module) {
-        String key;
+        List<String> rows = new ArrayList<>();
         if (awaitingKeybind == module) {
-            key = "Press a key...";
+            rows.add("Press a key...");
         } else {
-            key = "Keybind: " + keyName(module.keybind());
+            rows.add("Keybind: " + keyName(module.keybind()));
         }
-        if (module instanceof ZoomModule zoom) {
-            String zoomKey;
-            if (awaitingZoomKeybind == zoom) {
-                zoomKey = "Press a key...";
+        for (Setting<?> setting : module.settings()) {
+            if (setting instanceof KeybindSetting keybind) {
+                if (awaitingSetting == keybind) {
+                    rows.add("Press a key...");
+                } else {
+                    rows.add(keybind.name() + ": " + keyName(keybind.key()));
+                }
             } else {
-                zoomKey = "Zoom key: " + keyName(zoom.zoomKeybind());
+                rows.add(setting.label());
             }
-            return List.of(key, zoomKey);
         }
-        if (module instanceof NotificationsModule notifications) {
-            String type;
-            if (notifications.mode() == NotificationsModule.Mode.CHAT) {
-                type = "Chat";
-            } else {
-                type = "Alert";
-            }
-            String timer;
-            if (notifications.showTimer()) {
-                timer = "Show Timer";
-            } else {
-                timer = "Hide Timer";
-            }
-            return List.of(key, "Type: " + type, timer);
-        }
-        if (isClickGui(module)) {
-            String font;
-            if (ClickGuiSettings.odinFont()) {
-                font = "Inter";
-            } else {
-                font = "Minecraft";
-            }
-            return List.of(key,
-                    "Category colour: " + HudGuiStyler.hex(ClickGuiSettings.categoryColor()),
-                    "Module colour: " + HudGuiStyler.hex(ClickGuiSettings.moduleColor()),
-                    "Font: " + font,
-                    "Font size: " + Math.round(ClickGuiSettings.fontSize()));
-        }
-        return List.of(key);
+        return rows;
     }
 
     public String settingDescription(Module module, int setting) {
         if (setting == 0) {
             return "Right-click this setting, then press a key to toggle the module. Press Delete to clear the keybind.";
         }
-        if (module instanceof ZoomModule && setting == 1) {
-            return "Hold this key to smoothly zoom to a 30 degree field of view. Press Delete to clear it.";
-        }
-        if (module instanceof NotificationsModule && setting == 1) {
-            return "Switches between pink [MeowMod] chat messages and animated top-right alerts.";
-        }
-        if (module instanceof NotificationsModule && setting == 2) {
-            return "Shows or hides the magenta timer bar that drains until the alert is cleared.";
-        }
-        if (isClickGui(module) && setting == 1) {
-            return "Opens a picker that changes the color of every category header in real time.";
-        }
-        if (isClickGui(module) && setting == 2) {
-            return "Opens a picker that changes the color of every module row in real time.";
-        }
-        if (isClickGui(module) && setting == 3) {
-            return "Switches the ClickGUI between the custom Inter font and Minecraft's default font.";
-        }
-        if (isClickGui(module) && setting == 4) {
-            return "Drag across this slider to change the active font size in real time.";
+        List<Setting<?>> registered = module.settings();
+        if (setting <= registered.size()) {
+            return registered.get(setting - 1).description();
         }
         return "";
-    }
-
-    private static boolean isClickGui(Module module) {
-        return module.name().equalsIgnoreCase("ClickGUI");
     }
 
     private static String keyName(int key) {

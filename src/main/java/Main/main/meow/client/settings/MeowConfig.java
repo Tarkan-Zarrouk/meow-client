@@ -1,14 +1,12 @@
 package Main.main.meow.client.settings;
 
 import Main.main.meow.client.clickgui.settings.ClickGuiLayoutSettings;
-import Main.main.meow.client.clickgui.settings.ClickGuiSettings;
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.hud.HudComponent;
 import Main.main.meow.client.hud.HudComponentManager;
 import Main.main.meow.client.modules.Module;
 import Main.main.meow.client.modules.ModuleManager;
-import Main.main.meow.client.modules.client.ZoomModule;
-import Main.main.meow.client.modules.hud.NotificationsModule;
+import Main.main.meow.client.modules.setting.Setting;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -44,32 +42,8 @@ public final class MeowConfig {
             }
             JsonObject enabled = object(root, "enabledModules");
             JsonObject keybinds = object(root, "keybinds");
-            JsonObject colors = object(root, "clickGuiColors");
             JsonObject guiPositions = object(root, "clickGuiPositions");
             JsonObject guiExpanded = object(root, "clickGuiExpanded");
-            if (colors.has("categories") && colors.has("modules")) {
-                int category = colors.get("categories").getAsInt();
-                int module = colors.get("modules").getAsInt();
-                // Older configs stored small positive palette indexes instead of ARGB colors.
-                // Do not inspect only the RGB portion: valid dark ARGB colors can have a
-                // low RGB value, including black.
-                if (category >= 0 && category < 0x100) {
-                    category = 0xffc52dbd;
-                }
-                if (module >= 0 && module < 0x100) {
-                    module = 0xffc52dbd;
-                }
-                ClickGuiSettings.setCategoryColor(category);
-                ClickGuiSettings.setModuleColor(module);
-            }
-            if (colors.has("odinFont") && colors.get("odinFont").isJsonPrimitive()
-                    && colors.getAsJsonPrimitive("odinFont").isBoolean()) {
-                ClickGuiSettings.setOdinFont(colors.get("odinFont").getAsBoolean());
-            }
-            if (colors.has("fontSize") && colors.get("fontSize").isJsonPrimitive()
-                    && colors.getAsJsonPrimitive("fontSize").isNumber()) {
-                ClickGuiSettings.setFontSize(colors.get("fontSize").getAsInt());
-            }
             for (Map.Entry<String, JsonElement> entry : guiPositions.entrySet()) {
                 if (!entry.getValue().isJsonObject()) continue;
                 JsonObject position = entry.getValue().getAsJsonObject();
@@ -98,27 +72,10 @@ public final class MeowConfig {
                 if (keybind != null && keybind.isJsonPrimitive() && keybind.getAsJsonPrimitive().isNumber()) {
                     module.setKeybind(keybind.getAsInt());
                 }
-                if (module instanceof ZoomModule zoom) {
-                    JsonElement zoomKeybind = keybinds.get("Zoom (hold)");
-                    if (zoomKeybind != null && zoomKeybind.isJsonPrimitive()
-                            && zoomKeybind.getAsJsonPrimitive().isNumber()) {
-                        zoom.setZoomKeybind(zoomKeybind.getAsInt());
-                    }
-                }
-                if (module instanceof NotificationsModule notifications) {
-                    JsonElement mode = root.get("notificationMode");
-                    if (mode != null && mode.isJsonPrimitive()) {
-                        try {
-                            notifications.setMode(NotificationsModule.Mode.valueOf(mode.getAsString()));
-                        } catch (IllegalArgumentException ignored) {
-                            notifications.setMode(NotificationsModule.Mode.CHAT);
-                        }
-                    }
-                    JsonElement showTimer = root.get("notificationShowTimer");
-                    if (showTimer != null && showTimer.isJsonPrimitive()
-                            && showTimer.getAsJsonPrimitive().isBoolean()) {
-                        notifications.setShowTimer(showTimer.getAsBoolean());
-                    }
+                JsonObject saved = object(object(root, "moduleSettings"), module.name());
+                for (Setting<?> setting : module.settings()) {
+                    JsonElement stored = saved.get(setting.name());
+                    setting.fromJson(stored);
                 }
             }
 
@@ -145,22 +102,18 @@ public final class MeowConfig {
         JsonObject keybinds = new JsonObject();
         for (Module module : modules.all()) {
             keybinds.addProperty(module.name(), module.keybind());
-            if (module instanceof ZoomModule zoom) {
-                keybinds.addProperty("Zoom (hold)", zoom.zoomKeybind());
-            }
         }
         root.add("keybinds", keybinds);
-        NotificationsModule notifications = (NotificationsModule) modules.byName("Notifications");
-        if (notifications != null) {
-            root.addProperty("notificationMode", notifications.mode().name());
-            root.addProperty("notificationShowTimer", notifications.showTimer());
+        JsonObject moduleSettings = new JsonObject();
+        for (Module module : modules.all()) {
+            if (module.settings().isEmpty()) continue;
+            JsonObject saved = new JsonObject();
+            for (Setting<?> setting : module.settings()) {
+                saved.add(setting.name(), setting.toJson());
+            }
+            moduleSettings.add(module.name(), saved);
         }
-        JsonObject colors = new JsonObject();
-        colors.addProperty("categories", ClickGuiSettings.categoryColorValue());
-        colors.addProperty("modules", ClickGuiSettings.moduleColorValue());
-        colors.addProperty("odinFont", ClickGuiSettings.odinFont());
-        colors.addProperty("fontSize", ClickGuiSettings.fontSize());
-        root.add("clickGuiColors", colors);
+        root.add("moduleSettings", moduleSettings);
         JsonObject guiPositions = new JsonObject();
         for (Map.Entry<String, ClickGuiLayoutSettings.Position> entry
                 : ClickGuiLayoutSettings.allPositions().entrySet()) {

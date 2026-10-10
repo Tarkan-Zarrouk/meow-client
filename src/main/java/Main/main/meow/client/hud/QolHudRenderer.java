@@ -36,20 +36,18 @@ public final class QolHudRenderer {
     }
 
     public static int drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
-        BlockPos pos = player.blockPosition();
+//        BlockPos pos = player.blockPosition();
         assert client.level != null; // ide stuff
         // there's a weird formatting thing with biomes, so i just replace underscores with spaces
-        String biome = client.level.getBiome(pos).unwrapKey().map(key -> key.identifier().getPath().replace('_', ' ')).orElse("unknown");
+//        String biome = client.level.getBiome(pos).unwrapKey().map(key -> key.identifier().getPath().replace('_', ' ')).orElse("unknown");
         PlayerInfo info = client.getConnection() == null ? null : client.getConnection().getPlayerInfo(player.getUUID());
         int ping = info == null ? 0 : info.getLatency();
         String direction = player.getDirection().getName().toUpperCase(Locale.ROOT);
         List<String> lines = new ArrayList<>();
-        if (enabled("Coordinates"))
-            lines.add("XYZ " + pos.getX() + " " + pos.getY() + " " + pos.getZ());
         if (enabled("Direction"))
             lines.add(direction);
-        if (enabled("Biome"))
-            lines.add(biome);
+//        if (enabled("Biome"))
+//            lines.add(biome);
         if (enabled("CPS"))
             lines.add("CPS " + MeowClient.cps);
         if (enabled("BPS"))
@@ -72,31 +70,47 @@ public final class QolHudRenderer {
         return y + lines.size() * 14 + 12; // 14: line height, 12: padding (random)
     }
 
-    public static int drawArmor(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
-        List<String> lines = new ArrayList<>();
-        for (EquipmentSlot slot : List.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET)) {
-            ItemStack stack = player.getItemBySlot(slot);
-            if (!stack.isEmpty() && stack.isDamageableItem()) {
-                float damage = (float) stack.getDamageValue();
-                float maxDamage = (float) stack.getMaxDamage();
-                float percent = (1f - (damage / maxDamage)) * 100f;
-                lines.add(slot.getName() + " " + Math.round(percent) + "%");
+    public static int getTEXT() {
+        return TEXT;
+    }
+
+    public static int getTextWidth(Minecraft client, String text) {
+        return client.font.width(text);
+    }
+    public static int getTextHeight(Minecraft client, String text) {
+        return client.font.lineHeight;
+    }
+
+    public static void drawArmor(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+        Map<ItemStack, Float> equipmentObjects = new LinkedHashMap<>(); // <Armour, Percentage>
+        ItemStack armourHelmet = player.getInventory().getItem(39);
+        ItemStack armourChestplate = player.getInventory().getItem(38);
+        ItemStack armourLeggings = player.getInventory().getItem(37);
+        ItemStack armourBoots = player.getInventory().getItem(36);
+        float percentageHelmet = armourPercentageHelper(armourHelmet);
+        float percentageChestplate = armourPercentageHelper(armourChestplate);
+        float percentageLeggings = armourPercentageHelper(armourLeggings);
+        float percentageBoots = armourPercentageHelper(armourBoots);
+        equipmentObjects.put(armourHelmet, percentageHelmet);
+        equipmentObjects.put(armourChestplate, percentageChestplate);
+        equipmentObjects.put(armourLeggings, percentageLeggings);
+        equipmentObjects.put(armourBoots, percentageBoots);
+        panel(g, x, y, 48, 112);
+        int count = 1;
+        for (ItemStack item : equipmentObjects.keySet()) {
+            float percentage = equipmentObjects.get(item);
+            g.item(item, x, y + (count * 18));
+            if (!item.isEmpty()) {
+                text(g, client, Float.toString(percentage), x + 30, y + (count * 18), TEXT);
             }
+            count++;
         }
-        if (lines.isEmpty()) {
-            return y;
-        }
-        panel(g, x, y, 210, lines.size() * 14 + 12);
-        for (int i = 0; i < lines.size(); i++) {
-            String line = lines.get(i);
-            // had to use ai here, ts makes no sense gng :wilted_rose:
-            if (line.endsWith("%") && Integer.parseInt(line.replaceAll("\\D", "")) < 20) {
-                text(g, client, line, x + 8, y + 7 + i * 14, WARNING);
-            } else {
-                text(g, client, line, x + 8, y + 7 + i * 14, TEXT);
-            }
-        }
-        return y + lines.size() * 14 + 12; // again, 14: line height, 12: padding (random)
+    }
+
+    private static float armourPercentageHelper(ItemStack item) {
+        float damage = (float) item.getDamageValue();
+        float maxDamage = (float) item.getMaxDamage();
+        return (1f - (damage / maxDamage)) * 100f;
     }
 
     public static int drawEffects(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
@@ -143,23 +157,18 @@ public final class QolHudRenderer {
         key(g, client, "SPACE", x + 7, y + 72, 108, 22, KEY_LEVELS[4]);
     }
 
-    public static int drawItemDurability(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+    public static void drawItemDurability(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         ItemStack stack = player.getMainHandItem();
-        if (stack.isEmpty() || !stack.isDamageableItem())
-            return y;
-        // separate the math into variables
         int damage = stack.getDamageValue();
         int maxDamage = stack.getMaxDamage();
         int percent = Math.round((1f - (float) damage / maxDamage) * 100f);
         panel(g, x, y, 210, 30);
         g.item(stack, x + 6, y + 6);
-        // use condition rather than ternary
         if (percent < 20) {
             text(g, client, stack.getHoverName().getString() + " " + percent + "%", x + 28, y + 10, WARNING);
         } else {
             text(g, client, stack.getHoverName().getString() + " " + percent + "%", x + 28, y + 10, TEXT);
         }
-        return y + 30; // 30: height of the panel
     }
 
     private static void drawItemCount(GuiGraphicsExtractor g, Minecraft client, int x, int y, Item item, LocalPlayer player) {
@@ -195,14 +204,14 @@ public final class QolHudRenderer {
     }
 
 
-    private static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level) {
+    public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level) {
         int color = blend(0xff202735, 0xff8d3e9a, level);
         g.fill(x, y, x + width, y + height, color);
         int textWidth = client.font.width(label);
         text(g, client, label, x + (width - textWidth) / 2, y + (height - 8) / 2, blend(TEXT, 0xffffffff, level));
     }
 
-    private static int blend(int from, int to, float amount) {
+    public static int blend(int from, int to, float amount) {
         // i had to look up whatever the hell this does, but it basically blends two colors together based on the amount (0-1)
         int r = (int) (((from >> 16 & 255) * (1 - amount)) + ((to >> 16 & 255) * amount));
         int g = (int) (((from >> 8 & 255) * (1 - amount)) + ((to >> 8 & 255) * amount));
@@ -210,22 +219,22 @@ public final class QolHudRenderer {
         return 0xff000000 | r << 16 | g << 8 | b;
     }
 
-    private static void text(GuiGraphicsExtractor graphics, Minecraft client, String value, int x, int y, int color) {
+    public static void text(GuiGraphicsExtractor graphics, Minecraft client, String value, int x, int y, int color) {
         graphics.text(client.font, Component.literal(value), x, y, color, true);
     }
 
-    private static String formatDuration(int ticks) {
+    public static String formatDuration(int ticks) {
         if (ticks == MobEffectInstance.INFINITE_DURATION) {
             return "∞";
         }
         return (ticks / 20) / 60 + ":" + String.format(Locale.ROOT, "%02d", (ticks / 20) % 60); // format as mm:ss
     }
 
-    private static void panel(GuiGraphicsExtractor g, int x, int y, int width, int height) {
+    public static void panel(GuiGraphicsExtractor g, int x, int y, int width, int height) {
         g.fill(x, y, x + width, y + height, PANEL);
     }
 
-    private static boolean enabled(String name) {
+    public static boolean enabled(String name) {
         Module module = MeowClient.MODULE_MANAGER.byName(name);
         return module != null && module.isEnabled();
     }

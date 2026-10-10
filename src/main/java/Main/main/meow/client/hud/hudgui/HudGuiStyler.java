@@ -1,6 +1,6 @@
 package Main.main.meow.client.hud.hudgui;
 
-import Main.main.meow.client.clickgui.settings.ClickGuiSettings;
+import Main.main.meow.client.modules.client.ClickGuiModule;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
@@ -25,7 +25,7 @@ public final class HudGuiStyler {
 
     public Component styled(String value) {
         MutableComponent component = Component.literal(value);
-        if (ClickGuiSettings.odinFont()) {
+        if (ClickGuiModule.odinFont()) {
             return component.withStyle(style -> style.withFont(ODIN_FONT));
         } else {
             return component;
@@ -33,7 +33,7 @@ public final class HudGuiStyler {
     }
 
     public float textScale() {
-        return ClickGuiSettings.fontSize() / 11f;
+        return ClickGuiModule.fontSize() / 11f;
     }
 
     public int textWidth(Component value) {
@@ -49,7 +49,7 @@ public final class HudGuiStyler {
         graphics.pose().pushMatrix();
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
-        graphics.text(font, value, 0, 0, color, shadow && !ClickGuiSettings.odinFont());
+        graphics.text(font, value, 0, 0, color, shadow && !ClickGuiModule.odinFont());
         graphics.pose().popMatrix();
     }
 
@@ -69,7 +69,6 @@ public final class HudGuiStyler {
         List<String> lines = new ArrayList<>();
         StringBuilder current = new StringBuilder();
         for (String word : description.split(" ")) {
-            // use conditional if rather than ternary operator for candidate
             String candidate;
             if (current.isEmpty()) {
                 candidate = word;
