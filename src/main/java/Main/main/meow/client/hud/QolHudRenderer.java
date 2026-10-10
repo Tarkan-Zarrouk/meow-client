@@ -13,13 +13,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public final class QolHudRenderer {
     private static final int PANEL = 0xb9161d2a, TEXT = 0xfff2f0f4, PURPLE = 0xffc45ad0, WARNING = 0xffff9c52;
@@ -172,6 +171,29 @@ public final class QolHudRenderer {
         g.item(new ItemStack(item), x, y - 4); // offset bc mc is weird
         text(g, client, Integer.toString(count), x + 18, y + 1, TEXT);
     }
+
+    public static void drawInventory(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+        Map<ItemStack, Integer> playerInventoryStorage = new HashMap<>(); // <ItemStack, SlotPos>
+        Inventory playerInventory = player.getInventory();
+        for(int i = 9; i < 36; i++) {
+            ItemStack itemStack = playerInventory.getItem(i);
+            if(itemStack.isEmpty()) {
+                playerInventoryStorage.put(null, i);
+            } else {
+                playerInventoryStorage.put(itemStack, i);
+            }
+        }
+        panel(g, x, y, 162, 54);
+        for(ItemStack item : playerInventoryStorage.keySet()) {
+            int column = playerInventoryStorage.get(item) % 9;
+            int row = playerInventoryStorage.get(item) / 9 - 1;
+            if(item != null) {
+                g.item(item, x + (column * 18), y + (row * 18));
+                text(g, client, Integer.toString(playerInventory.getItem(playerInventoryStorage.get(item)).getCount()), x + (column * 18) + 7, y + (row * 18) + 7, TEXT);
+            }
+        }
+    }
+
 
     private static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level) {
         int color = blend(0xff202735, 0xff8d3e9a, level);

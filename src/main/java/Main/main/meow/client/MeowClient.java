@@ -80,6 +80,14 @@ public class MeowClient implements ClientModInitializer {
                 }
             }
         });
+        // drawInventory method
+        HUD_COMPONENTS.add(new HudComponent("inventory", 8, 280, 210, 100) {
+            public void render(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if (c.player != null && (editor || MODULE_MANAGER.byName("Inventory Viewer").isEnabled())) {
+                    QolHudRenderer.drawInventory(g, c, c.player, x(), y());
+                }
+            }
+        });
     }
 
     private static void registerModules() {
@@ -104,6 +112,7 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new ItemDurabilityModule());
         MODULE_MANAGER.register(new TotemCounterModule());
         MODULE_MANAGER.register(new ArrowCounterModule());
+        MODULE_MANAGER.register(new InventoryViewer());
     }
 
     public static void recordClick() {
