@@ -42,15 +42,14 @@ public class MeowClient implements ClientModInitializer {
         registerHudComponents();
         MeowConfig.load(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS);
         MODULE_MANAGER.setChangeListener(() -> MeowConfig.save(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS));
-        MODULE_MANAGER.setEnabledChangeListener(module -> NotificationManager.moduleChanged(module));
+        MODULE_MANAGER.setEnabledChangeListener(NotificationManager::moduleChanged);
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::handleHudEditorKey);
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::sampleStats);
-        ClientLifecycleEvents.CLIENT_STOPPING.register(client ->
-                MeowConfig.save(client, MODULE_MANAGER, HUD_COMPONENTS));
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> MeowConfig.save(client, MODULE_MANAGER, HUD_COMPONENTS));
     }
 
     private static void registerHudComponents() {
-        CoordinatesModule coordinates = (CoordinatesModule) MODULE_MANAGER.byName("Coordinates");
+        PositionModule coordinates = (PositionModule) MODULE_MANAGER.byName("Coordinates");
         ArmorStatusModule armor = (ArmorStatusModule) MODULE_MANAGER.byName("Armor Status");
         ItemDurabilityModule itemDurability = (ItemDurabilityModule) MODULE_MANAGER.byName("Item Durability");
         PotionEffectsModule effects = (PotionEffectsModule) MODULE_MANAGER.byName("Potion Effects");
@@ -69,7 +68,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("coordinates", 200, 8, coordinates) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || coordinates.isEnabled()) && c.player != null) {
-                    CoordinatesModule.drawInfo(g, c, c.player, x(), y());
+                    PositionModule.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
@@ -111,7 +110,6 @@ public class MeowClient implements ClientModInitializer {
     }
 
     private static void registerModules() {
-        // see comment in HudComponentManager for why i use copilot autocomplete here
         MODULE_MANAGER.register(new ClickGuiModule());
         MODULE_MANAGER.register(new HudModule());
         MODULE_MANAGER.register(new ArmorStatusModule());
@@ -124,8 +122,7 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new SprintModule());
         MODULE_MANAGER.register(new CpsModule());
         MODULE_MANAGER.register(new BpsModule());
-        MODULE_MANAGER.register(new CoordinatesModule());
-        MODULE_MANAGER.register(new DirectionModule());
+        MODULE_MANAGER.register(new PositionModule());
         MODULE_MANAGER.register(new BiomeModule());
         MODULE_MANAGER.register(new ClockModule());
         MODULE_MANAGER.register(new ArmorDurabilityModule());
@@ -170,13 +167,11 @@ public class MeowClient implements ClientModInitializer {
     private static void handleHudEditorKey(Minecraft client) {
         Module clickGui = MODULE_MANAGER.byName("ClickGUI");
         int key = clickGui == null ? GLFW.GLFW_KEY_RIGHT_SHIFT : clickGui.keybind();
-        boolean rightShift = key != GLFW.GLFW_KEY_UNKNOWN
-                && GLFW.glfwGetKey(client.getWindow().handle(), key) == GLFW.GLFW_PRESS;
+        boolean rightShift = key != GLFW.GLFW_KEY_UNKNOWN && GLFW.glfwGetKey(client.getWindow().handle(), key) == GLFW.GLFW_PRESS;
         if (rightShift && !rightShiftDown && client.screen == null) {
             client.setScreen(new HudGuiRenderer(MODULE_MANAGER));
         }
-        if (GLFW.glfwGetKey(client.getWindow().handle(), GLFW.GLFW_KEY_F8) == GLFW.GLFW_PRESS
-                && client.screen == null) {
+        if (GLFW.glfwGetKey(client.getWindow().handle(), GLFW.GLFW_KEY_F8) == GLFW.GLFW_PRESS && client.screen == null) {
             client.setScreen(new HudEditorScreen(HUD_COMPONENTS));
         }
         rightShiftDown = rightShift;
