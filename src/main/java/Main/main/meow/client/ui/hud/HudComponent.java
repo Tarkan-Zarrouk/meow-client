@@ -39,6 +39,7 @@ public abstract class HudComponent {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
     public final void render(GuiGraphicsExtractor graphics, Minecraft client, boolean editor) {
+
         refreshSize(client);
         renderComponent(graphics, client, editor);
     }

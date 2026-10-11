@@ -9,6 +9,8 @@ import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 public final class HudEditorScreen extends Screen {
+    private static final int HOVER_DARKEN = 0x50000000;
+
     private final HudComponentManager components;
     private HudComponent dragging;
     private double offsetX;
@@ -23,10 +25,17 @@ public final class HudEditorScreen extends Screen {
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         graphics.fill(0, 0, width, height, 0x40000000);
     }
-
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         components.render(graphics, net.minecraft.client.Minecraft.getInstance(), true);
+        // keep the dragged component darkened even if the cursor briefly leaves its box
+        HudComponent hovered = dragging;
+        if (hovered == null) {
+            hovered = components.at(mouseX, mouseY);
+        }
+        if (hovered != null) {
+            graphics.fill(hovered.x(), hovered.y(), hovered.x() + hovered.width(), hovered.y() + hovered.height(), HOVER_DARKEN);
+        }
         graphics.text(font, Component.literal("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
     }
 
