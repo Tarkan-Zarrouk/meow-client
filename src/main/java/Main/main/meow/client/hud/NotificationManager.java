@@ -20,7 +20,12 @@ public final class NotificationManager {
     public static void moduleChanged(Module module) {
         NotificationsModule notifications = (NotificationsModule) MeowClient.MODULE_MANAGER.byName("Notifications");
         if (notifications == null || !notifications.isEnabled()) return;
-        String status = module.isEnabled() ? "enabled" : "disabled";
+        String status;
+        if(module.isEnabled()) {
+            status = "enabled";
+        } else {
+            status = "disabled";
+        }
         if (notifications.mode() == NotificationsModule.Mode.CHAT) {
             Minecraft client = Minecraft.getInstance();
             if (client.player != null) {

@@ -120,7 +120,6 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new NotificationsModule());
         MODULE_MANAGER.register(new InventoryMoverModule());
         MODULE_MANAGER.register(new SprintModule());
-        MODULE_MANAGER.register(new CpsModule());
         MODULE_MANAGER.register(new BpsModule());
         MODULE_MANAGER.register(new PositionModule());
         MODULE_MANAGER.register(new BiomeModule());
@@ -166,8 +165,18 @@ public class MeowClient implements ClientModInitializer {
 
     private static void handleHudEditorKey(Minecraft client) {
         Module clickGui = MODULE_MANAGER.byName("ClickGUI");
-        int key = clickGui == null ? GLFW.GLFW_KEY_RIGHT_SHIFT : clickGui.keybind();
-        boolean rightShift = key != GLFW.GLFW_KEY_UNKNOWN && GLFW.glfwGetKey(client.getWindow().handle(), key) == GLFW.GLFW_PRESS;
+        int key;
+        if(clickGui == null) {
+            key = GLFW.GLFW_KEY_RIGHT_SHIFT;
+        } else {
+            key = clickGui.keybind();
+        }
+        boolean rightShift;
+        if(key == GLFW.GLFW_KEY_UNKNOWN) {
+            rightShift = GLFW.glfwGetKey(client.getWindow().handle(), GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS;
+        } else {
+            rightShift = GLFW.glfwGetKey(client.getWindow().handle(), key) == GLFW.GLFW_PRESS;
+        }
         if (rightShift && !rightShiftDown && client.screen == null) {
             client.setScreen(new HudGuiRenderer(MODULE_MANAGER));
         }
