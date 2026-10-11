@@ -99,7 +99,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("effects", 8, 128, effects) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || effects.isEnabled()) && c.player != null) {
-                    QolHudRenderer.drawEffects(g, c, c.player, x(), y());
+                    PotionEffectsModule.drawEffects(g, c, c.player, x(), y());
                 }
             }
         });
