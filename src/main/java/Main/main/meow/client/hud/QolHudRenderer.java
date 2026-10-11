@@ -40,25 +40,11 @@ public final class QolHudRenderer {
     }
 
     public static int drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
-//        BlockPos pos = player.blockPosition();
-        assert client.level != null; // ide stuff
-        // there's a weird formatting thing with biomes, so i just replace underscores with spaces
-//        String biome = client.level.getBiome(pos).unwrapKey().map(key -> key.identifier().getPath().replace('_', ' ')).orElse("unknown");
-        PlayerInfo info = client.getConnection() == null ? null : client.getConnection().getPlayerInfo(player.getUUID());
-        int ping = info == null ? 0 : info.getLatency();
-//        String direction = player.getDirection().getName().toUpperCase(Locale.ROOT);
         List<String> lines = new ArrayList<>();
-//        if (enabled("Direction"))
-//            lines.add(direction);
-//        if (enabled("Biome"))
-//            lines.add(biome);
-        if (enabled("CPS"))
-            lines.add("CPS " + MeowClient.cps);
         if (enabled("BPS"))
             lines.add("BPS " + String.format(Locale.ROOT, "%.2f", MeowClient.bps));
         if (enabled("Clock"))
             lines.add(java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
-        lines.add("FPS " + client.getFps() + "  |  Ping " + ping + " ms");
         panel(g, x, y, 210, lines.size() * 14 + 12);
         for (int i = 0; i < lines.size(); i++) {
             if (i == lines.size() - 1) {
@@ -85,31 +71,31 @@ public final class QolHudRenderer {
         return client.font.lineHeight;
     }
 
-    public static void drawArmor(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
-        Map<ItemStack, Float> equipmentObjects = new LinkedHashMap<>(); // <Armour, Percentage>
-        ItemStack armourHelmet = player.getInventory().getItem(39);
-        ItemStack armourChestplate = player.getInventory().getItem(38);
-        ItemStack armourLeggings = player.getInventory().getItem(37);
-        ItemStack armourBoots = player.getInventory().getItem(36);
-        float percentageHelmet = armourPercentageHelper(armourHelmet);
-        float percentageChestplate = armourPercentageHelper(armourChestplate);
-        float percentageLeggings = armourPercentageHelper(armourLeggings);
-        float percentageBoots = armourPercentageHelper(armourBoots);
-        equipmentObjects.put(armourHelmet, percentageHelmet);
-        equipmentObjects.put(armourChestplate, percentageChestplate);
-        equipmentObjects.put(armourLeggings, percentageLeggings);
-        equipmentObjects.put(armourBoots, percentageBoots);
-        panel(g, x, y, 48, 112);
-        int count = 1;
-        for (ItemStack item : equipmentObjects.keySet()) {
-            float percentage = equipmentObjects.get(item);
-            g.item(item, x, y + (count * 18));
-            if (!item.isEmpty()) {
-                text(g, client, Float.toString(percentage), x + 30, y + (count * 18), TEXT);
-            }
-            count++;
-        }
-    }
+//    public static void drawArmor(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+//        Map<ItemStack, Float> equipmentObjects = new LinkedHashMap<>(); // <Armour, Percentage>
+//        ItemStack armourHelmet = player.getInventory().getItem(39);
+//        ItemStack armourChestplate = player.getInventory().getItem(38);
+//        ItemStack armourLeggings = player.getInventory().getItem(37);
+//        ItemStack armourBoots = player.getInventory().getItem(36);
+//        float percentageHelmet = armourPercentageHelper(armourHelmet);
+//        float percentageChestplate = armourPercentageHelper(armourChestplate);
+//        float percentageLeggings = armourPercentageHelper(armourLeggings);
+//        float percentageBoots = armourPercentageHelper(armourBoots);
+//        equipmentObjects.put(armourHelmet, percentageHelmet);
+//        equipmentObjects.put(armourChestplate, percentageChestplate);
+//        equipmentObjects.put(armourLeggings, percentageLeggings);
+//        equipmentObjects.put(armourBoots, percentageBoots);
+//        panel(g, x, y, 48, 112);
+//        int count = 1;
+//        for (ItemStack item : equipmentObjects.keySet()) {
+//            float percentage = equipmentObjects.get(item);
+//            g.item(item, x, y + (count * 18));
+//            if (!item.isEmpty()) {
+//                text(g, client, Float.toString(percentage), x + 30, y + (count * 18), TEXT);
+//            }
+//            count++;
+//        }
+//    }
 
     private static float armourPercentageHelper(ItemStack item) {
         float damage = (float) item.getDamageValue();
@@ -236,6 +222,9 @@ public final class QolHudRenderer {
 
     public static void panel(GuiGraphicsExtractor g, int x, int y, int width, int height) {
         g.fill(x, y, x + width, y + height, PANEL);
+    }
+    public static void panel(GuiGraphicsExtractor g, int x, int y, int width, int height, int color) {
+        g.fill(x, y, x + width, y + height, color);
     }
 
     public static boolean enabled(String name) {

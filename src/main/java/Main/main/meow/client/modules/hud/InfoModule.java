@@ -2,9 +2,9 @@ package Main.main.meow.client.modules.hud;
 
 import Main.main.meow.client.hud.QolHudRenderer;
 import Main.main.meow.client.modules.category.Category;
-import Main.main.meow.client.modules.setting.BooleanSetting;
-import Main.main.meow.client.modules.setting.ColorSetting;
-import Main.main.meow.client.modules.setting.EnumSetting;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.setting.modulesettings.ColorSetting;
+import Main.main.meow.client.setting.modulesettings.EnumSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -12,7 +12,6 @@ import net.minecraft.client.player.LocalPlayer;
 import java.util.Objects;
 
 public class InfoModule extends HudDisplayModule {
-    private static long lastTimeUpdate = -1;
     private static double tps = 20.0;
     // all possibilities of modes, we love customization :3
     private enum Modes {
@@ -30,10 +29,7 @@ public class InfoModule extends HudDisplayModule {
     private static final ColorSetting BACKGROUND_COLOUR = new ColorSetting("Background Colour", "Change the colour of the background", QolHudRenderer.getTEXT());
     public InfoModule() {
         super("Info", Category.HUD, false, "Displays information about the client on the HUD.");
-        addSetting(HAVE_BACKGROUND);
-        addSetting(TEXT_COLOUR);
-        addSetting(INFO_CYCLE);
-        addSetting(BACKGROUND_COLOUR);
+        addSetting(HAVE_BACKGROUND, TEXT_COLOUR, INFO_CYCLE, BACKGROUND_COLOUR);
     }
 
     public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
@@ -43,6 +39,7 @@ public class InfoModule extends HudDisplayModule {
             ping = Objects.requireNonNull(client.getConnection().getPlayerInfo(player.getUUID())).getLatency(); // i found no way around using the Objects collection
         }
         long now = System.nanoTime();
+        long lastTimeUpdate = -1;
         if(lastTimeUpdate != -1) {
             double elapsedTime = (now - lastTimeUpdate) / 1000000000.0;
             tps = 20.0 / elapsedTime;
@@ -58,7 +55,7 @@ public class InfoModule extends HudDisplayModule {
             case SHOW_FPS_PING_TPS -> "FPS: " + fps + " PING: " + ping + " TPS: " + tps;
         };
         if(HAVE_BACKGROUND.enabled()) {
-            g.fill(x,y, x + QolHudRenderer.getTextWidth(client, text), y + QolHudRenderer.getTextHeight(client, text), BACKGROUND_COLOUR.color());
+            QolHudRenderer.panel(g, x,y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client, text), BACKGROUND_COLOUR.color());
 //            QolHudRenderer.panel(g, x, y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client, text));
         }
         QolHudRenderer.text(g, client, text, x, y, TEXT_COLOUR.color());

@@ -1,6 +1,6 @@
 package Main.main.meow.client.hud;
 
-import Main.main.meow.client.settings.MeowConfig;
+import Main.main.meow.client.setting.MeowConfig;
 import Main.main.meow.client.modules.ModuleManager;
 
 import net.minecraft.client.Minecraft;

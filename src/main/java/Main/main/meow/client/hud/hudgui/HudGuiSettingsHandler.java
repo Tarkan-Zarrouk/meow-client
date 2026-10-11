@@ -5,11 +5,11 @@ import Main.main.meow.client.clickgui.ColorPicker;
 import Main.main.meow.client.clickgui.settings.ClickGuiLayoutSettings;
 import Main.main.meow.client.modules.Module;
 import Main.main.meow.client.modules.ModuleManager;
-import Main.main.meow.client.modules.setting.ColorSetting;
-import Main.main.meow.client.modules.setting.KeybindSetting;
-import Main.main.meow.client.modules.setting.NumberSetting;
-import Main.main.meow.client.modules.setting.Setting;
-import Main.main.meow.client.settings.MeowConfig;
+import Main.main.meow.client.setting.modulesettings.ColorSetting;
+import Main.main.meow.client.setting.modulesettings.KeybindSetting;
+import Main.main.meow.client.setting.NumberSetting;
+import Main.main.meow.client.setting.Setting;
+import Main.main.meow.client.setting.MeowConfig;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 

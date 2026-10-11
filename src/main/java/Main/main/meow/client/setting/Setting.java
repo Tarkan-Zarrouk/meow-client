@@ -1,4 +1,4 @@
-package Main.main.meow.client.modules.setting;
+package Main.main.meow.client.setting;
 
 import com.google.gson.JsonElement;
 

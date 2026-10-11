@@ -15,7 +15,7 @@ import Main.main.meow.client.modules.misc.WaypointsModule;
 import Main.main.meow.client.modules.movement.SprintModule;
 import Main.main.meow.client.modules.player.*;
 import Main.main.meow.client.modules.visuals.*;
-import Main.main.meow.client.settings.MeowConfig;
+import Main.main.meow.client.setting.MeowConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -76,7 +76,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("armor", 8, 68, armor) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || armor.isEnabled()) && c.player != null) {
-                    QolHudRenderer.drawArmor(g, c, c.player, x(), y());
+                    ArmorStatusModule.drawInfo(g, c, c.player, x(), y(), armor.getColor());
                 }
             }
         });

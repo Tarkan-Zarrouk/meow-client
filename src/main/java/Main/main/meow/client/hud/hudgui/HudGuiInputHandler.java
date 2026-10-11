@@ -2,7 +2,7 @@ package Main.main.meow.client.hud.hudgui;
 
 import Main.main.meow.client.clickgui.ColorPicker;
 import Main.main.meow.client.modules.Module;
-import Main.main.meow.client.modules.setting.NumberSetting;
+import Main.main.meow.client.setting.NumberSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;

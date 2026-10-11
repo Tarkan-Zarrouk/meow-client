@@ -3,7 +3,7 @@ package Main.main.meow.client.modules.visuals;
 import Main.main.meow.client.hud.QolHudRenderer;
 import Main.main.meow.client.modules.hud.HudDisplayModule;
 import Main.main.meow.client.modules.category.Category;
-import Main.main.meow.client.modules.setting.ColorSetting;
+import Main.main.meow.client.setting.modulesettings.ColorSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;

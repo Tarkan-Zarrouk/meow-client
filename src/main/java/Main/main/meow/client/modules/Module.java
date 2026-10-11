@@ -1,8 +1,9 @@
 package Main.main.meow.client.modules;
 
 import Main.main.meow.client.modules.category.Category;
-import Main.main.meow.client.modules.setting.Setting;
+import Main.main.meow.client.setting.Setting;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -51,10 +52,10 @@ public abstract class Module {
     public final List<Setting<?>> settings() {
         return Collections.unmodifiableList(settings);
     }
-
-    public final <S extends Setting<?>> S addSetting(S setting) {
-        settings.add(setting);
-        return setting;
+    @SafeVarargs // supresses the warning about generic array creation (i.e., generic array creation happens when you use varargs with generics, which is not type-safe (StackOverflow lol))
+    public final <S extends Setting<?>> S addSetting(S... setting) {
+        settings.addAll(Arrays.asList(setting));
+        return setting[0];
     }
 
     public final void removeSetting(Setting<?> setting) {

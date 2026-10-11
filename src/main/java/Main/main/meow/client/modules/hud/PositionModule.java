@@ -2,8 +2,8 @@ package Main.main.meow.client.modules.hud;
 
 import Main.main.meow.client.hud.QolHudRenderer;
 import Main.main.meow.client.modules.category.Category;
-import Main.main.meow.client.modules.setting.BooleanSetting;
-import Main.main.meow.client.modules.setting.EnumSetting;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.setting.modulesettings.EnumSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -20,8 +20,7 @@ public final class PositionModule extends HudDisplayModule {
     private static final EnumSetting<Modes> DIRECTION_TYPE = new EnumSetting<>("Modes", "Cycles between direction and coordinates, coordinates, or just direction", Modes.DIRECTIONCOORDINATES);
     public PositionModule() {
         super("PositionModule", Category.HUD, false, "Displays your current X, Y, and Z world coordinates.");
-        addSetting(HAVE_BACKGROUND);
-        addSetting(DIRECTION_TYPE);
+        addSetting(HAVE_BACKGROUND, DIRECTION_TYPE);
     }
 
     @Override

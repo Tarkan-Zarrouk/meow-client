@@ -1,8 +1,8 @@
 package Main.main.meow.client.clickgui.settings;
 
-import Main.main.meow.client.modules.setting.BooleanSetting;
-import Main.main.meow.client.modules.setting.ColorSetting;
-import Main.main.meow.client.modules.setting.NumberSetting;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.setting.modulesettings.ColorSetting;
+import Main.main.meow.client.setting.NumberSetting;
 
 /**
  * The ClickGUI's own settings. ClickGuiModule registers these, so the GUI and config treat them like any other setting.

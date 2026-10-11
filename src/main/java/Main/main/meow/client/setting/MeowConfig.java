@@ -1,12 +1,10 @@
-package Main.main.meow.client.settings;
+package Main.main.meow.client.setting;
 
 import Main.main.meow.client.clickgui.settings.ClickGuiLayoutSettings;
-import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.hud.HudComponent;
 import Main.main.meow.client.hud.HudComponentManager;
 import Main.main.meow.client.modules.Module;
 import Main.main.meow.client.modules.ModuleManager;
-import Main.main.meow.client.modules.setting.Setting;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;

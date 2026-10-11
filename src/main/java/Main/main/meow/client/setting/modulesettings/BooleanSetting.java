@@ -1,5 +1,6 @@
-package Main.main.meow.client.modules.setting;
+package Main.main.meow.client.setting.modulesettings;
 
+import Main.main.meow.client.setting.Setting;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 

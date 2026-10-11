@@ -2,7 +2,7 @@ package Main.main.meow.client.modules.client;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.modules.category.Category;
-import Main.main.meow.client.modules.setting.KeybindSetting;
+import Main.main.meow.client.setting.modulesettings.KeybindSetting;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
