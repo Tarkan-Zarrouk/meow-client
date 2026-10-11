@@ -35,6 +35,10 @@ public final class QolHudRenderer {
         NotificationManager.render(graphics, client);
     }
 
+    public static int getPanel() {
+        return PANEL;
+    }
+
     public static int drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
 //        BlockPos pos = player.blockPosition();
         assert client.level != null; // ide stuff
@@ -42,10 +46,10 @@ public final class QolHudRenderer {
 //        String biome = client.level.getBiome(pos).unwrapKey().map(key -> key.identifier().getPath().replace('_', ' ')).orElse("unknown");
         PlayerInfo info = client.getConnection() == null ? null : client.getConnection().getPlayerInfo(player.getUUID());
         int ping = info == null ? 0 : info.getLatency();
-        String direction = player.getDirection().getName().toUpperCase(Locale.ROOT);
+//        String direction = player.getDirection().getName().toUpperCase(Locale.ROOT);
         List<String> lines = new ArrayList<>();
-        if (enabled("Direction"))
-            lines.add(direction);
+//        if (enabled("Direction"))
+//            lines.add(direction);
 //        if (enabled("Biome"))
 //            lines.add(biome);
         if (enabled("CPS"))
@@ -133,29 +137,29 @@ public final class QolHudRenderer {
         return y + effects.size() * 20 + 12;
     }
 
-    public static void drawKeys(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
-        // this entire method is ai, i lowkey have no idea how i could do this without it being buggy lol
-        long now = System.nanoTime();
-        float delta = Math.min(0.05f, (now - lastKeyTime) / 1000000000f);
-        lastKeyTime = now;
-        // whether the keys are perssed or not
-        boolean[] pressed = {player.input.keyPresses.forward(), player.input.keyPresses.left(), player.input.keyPresses.backward(), player.input.keyPresses.right(), player.input.keyPresses.jump()};
-        for (int i = 0; i < KEY_LEVELS.length; i++) {
-            float target;
-            if (pressed[i]) {
-                target = 1f;
-            } else {
-                target = 0f;
-            }
-            KEY_LEVELS[i] += (target - KEY_LEVELS[i]) * (1f - (float) Math.exp(-delta * 18f));
-        }
-        g.fill(x, y, x + 122, y + 102, PANEL);
-        key(g, client, "W", x + 41, y + 8, 40, 28, KEY_LEVELS[0]);
-        key(g, client, "A", x + 7, y + 40, 40, 28, KEY_LEVELS[1]);
-        key(g, client, "S", x + 41, y + 40, 40, 28, KEY_LEVELS[2]);
-        key(g, client, "D", x + 75, y + 40, 40, 28, KEY_LEVELS[3]);
-        key(g, client, "SPACE", x + 7, y + 72, 108, 22, KEY_LEVELS[4]);
-    }
+//    public static void drawKeys(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+//        // this entire method is ai, i lowkey have no idea how i could do this without it being buggy lol
+//        long now = System.nanoTime();
+//        float delta = Math.min(0.05f, (now - lastKeyTime) / 1000000000f);
+//        lastKeyTime = now;
+//        // whether the keys are perssed or not
+//        boolean[] pressed = {player.input.keyPresses.forward(), player.input.keyPresses.left(), player.input.keyPresses.backward(), player.input.keyPresses.right(), player.input.keyPresses.jump()};
+//        for (int i = 0; i < KEY_LEVELS.length; i++) {
+//            float target;
+//            if (pressed[i]) {
+//                target = 1f;
+//            } else {
+//                target = 0f;
+//            }
+//            KEY_LEVELS[i] += (target - KEY_LEVELS[i]) * (1f - (float) Math.exp(-delta * 18f));
+//        }
+//        g.fill(x, y, x + 122, y + 102, PANEL);
+//        key(g, client, "W", x + 41, y + 8, 40, 28, KEY_LEVELS[0]);
+//        key(g, client, "A", x + 7, y + 40, 40, 28, KEY_LEVELS[1]);
+//        key(g, client, "S", x + 41, y + 40, 40, 28, KEY_LEVELS[2]);
+//        key(g, client, "D", x + 75, y + 40, 40, 28, KEY_LEVELS[3]);
+//        key(g, client, "SPACE", x + 7, y + 72, 108, 22, KEY_LEVELS[4]);
+//    }
 
     public static void drawItemDurability(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         ItemStack stack = player.getMainHandItem();
@@ -204,20 +208,20 @@ public final class QolHudRenderer {
     }
 
 
-    public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level) {
-        int color = blend(0xff202735, 0xff8d3e9a, level);
-        g.fill(x, y, x + width, y + height, color);
-        int textWidth = client.font.width(label);
-        text(g, client, label, x + (width - textWidth) / 2, y + (height - 8) / 2, blend(TEXT, 0xffffffff, level));
-    }
-
-    public static int blend(int from, int to, float amount) {
-        // i had to look up whatever the hell this does, but it basically blends two colors together based on the amount (0-1)
-        int r = (int) (((from >> 16 & 255) * (1 - amount)) + ((to >> 16 & 255) * amount));
-        int g = (int) (((from >> 8 & 255) * (1 - amount)) + ((to >> 8 & 255) * amount));
-        int b = (int) (((from & 255) * (1 - amount)) + ((to & 255) * amount));
-        return 0xff000000 | r << 16 | g << 8 | b;
-    }
+//    public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level) {
+//        int color = blend(0xff202735, 0xff8d3e9a, level);
+//        g.fill(x, y, x + width, y + height, color);
+//        int textWidth = client.font.width(label);
+//        text(g, client, label, x + (width - textWidth) / 2, y + (height - 8) / 2, blend(TEXT, 0xffffffff, level));
+//    }
+//
+//    public static int blend(int from, int to, float amount) {
+//        // i had to look up whatever the hell this does, but it basically blends two colors together based on the amount (0-1)
+//        int r = (int) (((from >> 16 & 255) * (1 - amount)) + ((to >> 16 & 255) * amount));
+//        int g = (int) (((from >> 8 & 255) * (1 - amount)) + ((to >> 8 & 255) * amount));
+//        int b = (int) (((from & 255) * (1 - amount)) + ((to & 255) * amount));
+//        return 0xff000000 | r << 16 | g << 8 | b;
+//    }
 
     public static void text(GuiGraphicsExtractor graphics, Minecraft client, String value, int x, int y, int color) {
         graphics.text(client.font, Component.literal(value), x, y, color, true);

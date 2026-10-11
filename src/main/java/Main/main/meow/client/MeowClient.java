@@ -49,7 +49,7 @@ public class MeowClient implements ClientModInitializer {
     }
 
     private static void registerHudComponents() {
-        PositionModule coordinates = (PositionModule) MODULE_MANAGER.byName("Coordinates");
+        PositionModule coordinates = (PositionModule) MODULE_MANAGER.byName("PositionModule");
         ArmorStatusModule armor = (ArmorStatusModule) MODULE_MANAGER.byName("Armor Status");
         ItemDurabilityModule itemDurability = (ItemDurabilityModule) MODULE_MANAGER.byName("Item Durability");
         PotionEffectsModule effects = (PotionEffectsModule) MODULE_MANAGER.byName("Potion Effects");
@@ -96,7 +96,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("keystrokes", 8, 200, keystrokes) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if (c.player != null && (editor || keystrokes.isEnabled())) {
-                    QolHudRenderer.drawKeys(g, c, c.player, x(), y());
+                    KeystrokesModule.drawInfo(g, c, c.player, x(), y(), keystrokes.getBackgroundColour());
                 }
             }
         });
