@@ -56,6 +56,7 @@ public class MeowClient implements ClientModInitializer {
         KeystrokesModule keystrokes = (KeystrokesModule) MODULE_MANAGER.byName("Keystrokes");
         InventoryViewer inventory = (InventoryViewer) MODULE_MANAGER.byName("Inventory Viewer");
         BiomeModule biome = (BiomeModule) MODULE_MANAGER.byName("Biome");
+        InfoModule info = (InfoModule) MODULE_MANAGER.byName("Info");
 
         HUD_COMPONENTS.add(new HudComponent("biome", 200, 100, biome) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
@@ -107,6 +108,13 @@ public class MeowClient implements ClientModInitializer {
                 }
             }
         });
+        HUD_COMPONENTS.add(new HudComponent("info", 8, 8, info) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if (c.player != null && (editor || info.isEnabled())) {
+                    InfoModule.drawInfo(g, c, c.player, x(), y());
+                }
+            }
+        });
     }
 
     private static void registerModules() {
@@ -129,6 +137,7 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new TotemCounterModule());
         MODULE_MANAGER.register(new ArrowCounterModule());
         MODULE_MANAGER.register(new InventoryViewer());
+        MODULE_MANAGER.register(new InfoModule());
     }
 
     public static void recordClick() {
