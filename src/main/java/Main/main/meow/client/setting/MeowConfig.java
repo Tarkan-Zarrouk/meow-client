@@ -4,7 +4,7 @@ import Main.main.meow.client.ui.clickgui.settings.ClickGuiLayoutSettings;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.ui.hud.HudComponentManager;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.manager.ModuleManager;
+import Main.main.meow.client.manager.ModuleManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;

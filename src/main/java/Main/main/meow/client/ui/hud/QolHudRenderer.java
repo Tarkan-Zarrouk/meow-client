@@ -3,7 +3,7 @@ package Main.main.meow.client.ui.hud;
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
 
-import Main.main.meow.manager.NotificationManager;
+import Main.main.meow.client.manager.NotificationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Gui;

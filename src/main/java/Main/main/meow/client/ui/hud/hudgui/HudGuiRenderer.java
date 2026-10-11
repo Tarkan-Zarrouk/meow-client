@@ -5,7 +5,7 @@ import Main.main.meow.client.module.Module;
 import Main.main.meow.client.module.modules.client.ClickGuiModule;
 import Main.main.meow.client.setting.NumberSetting;
 import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.manager.ModuleManager;
+import Main.main.meow.client.manager.ModuleManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;

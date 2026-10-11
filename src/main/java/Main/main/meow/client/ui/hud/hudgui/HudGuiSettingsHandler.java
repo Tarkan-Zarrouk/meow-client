@@ -4,7 +4,7 @@ import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.ui.clickgui.settings.ClickGuiLayoutSettings;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.manager.ModuleManager;
+import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.setting.modulesettings.KeybindSetting;
 import Main.main.meow.client.setting.NumberSetting;

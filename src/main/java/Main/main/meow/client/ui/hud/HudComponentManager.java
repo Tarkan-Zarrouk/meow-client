@@ -1,7 +1,7 @@
 package Main.main.meow.client.ui.hud;
 
 import Main.main.meow.client.setting.MeowConfig;
-import Main.main.meow.manager.ModuleManager;
+import Main.main.meow.client.manager.ModuleManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

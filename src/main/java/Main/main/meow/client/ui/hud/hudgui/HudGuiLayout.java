@@ -2,7 +2,7 @@ package Main.main.meow.client.ui.hud.hudgui;
 
 import Main.main.meow.client.ui.clickgui.settings.ClickGuiLayoutSettings;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.manager.ModuleManager;
+import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.ui.clickgui.Category;
 
 import java.util.ArrayList;
