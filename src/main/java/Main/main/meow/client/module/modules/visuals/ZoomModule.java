@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.visuals;
 
 import Main.main.meow.client.MeowClient;
-import Main.main.meow.client.module.modules.client.ClientModule;
+import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.KeybindSetting;
 import net.minecraft.client.Minecraft;

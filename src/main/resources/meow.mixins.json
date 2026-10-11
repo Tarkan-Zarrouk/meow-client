@@ -7,8 +7,7 @@
   ],
   "client": [
     "GuiMixin",
-    "CameraMixin",
-    "InventoryMoverMixin"
+    "CameraMixin"
   ],
   "injectors": {
     "defaultRequire": 1

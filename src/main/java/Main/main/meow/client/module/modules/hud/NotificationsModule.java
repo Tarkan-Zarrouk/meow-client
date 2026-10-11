@@ -1,6 +1,6 @@
 package Main.main.meow.client.module.modules.hud;
 
-import Main.main.meow.client.module.modules.client.ClientModule;
+import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;

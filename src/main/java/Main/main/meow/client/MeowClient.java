@@ -134,7 +134,6 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new WaypointsModule());
         MODULE_MANAGER.register(new ZoomModule());
         MODULE_MANAGER.register(new NotificationsModule());
-        MODULE_MANAGER.register(new InventoryMoverModule());
         MODULE_MANAGER.register(new SprintModule());
         MODULE_MANAGER.register(new BpsModule());
         MODULE_MANAGER.register(new PositionModule());

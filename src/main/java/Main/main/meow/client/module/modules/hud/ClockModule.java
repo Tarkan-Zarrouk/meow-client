@@ -1,7 +1,6 @@
 package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.module.HudDisplayModule;
-import Main.main.meow.client.module.modules.client.ClientModule;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
