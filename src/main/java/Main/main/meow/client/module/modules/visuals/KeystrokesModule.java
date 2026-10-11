@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.visuals;
 
 import Main.main.meow.client.ui.hud.QolHudRenderer;
-import Main.main.meow.client.module.modules.hud.HudDisplayModule;
+import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import net.minecraft.client.Minecraft;

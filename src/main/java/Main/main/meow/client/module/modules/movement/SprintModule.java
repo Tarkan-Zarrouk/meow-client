@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
  */
 public final class SprintModule extends ClientModule {
     public SprintModule() {
-        super("Sprint", Category.PLAYER, false, "Automatically sprints when moving forward without requiring the sprint key.");
+        super("Sprint", Category.MOVEMENT, false, "Automatically sprints when moving forward without requiring the sprint key.");
     }
 
     public void tick(Minecraft client) {

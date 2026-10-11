@@ -1,6 +1,6 @@
 package Main.main.meow.mixin;
 
-import Main.main.meow.client.module.modules.client.ZoomModule;
+import Main.main.meow.client.module.modules.visuals.ZoomModule;
 import net.minecraft.client.Camera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

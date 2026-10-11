@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.hud;
+package Main.main.meow.client.module;
 
 import Main.main.meow.client.module.modules.client.ClientModule;
 import Main.main.meow.client.ui.clickgui.Category;

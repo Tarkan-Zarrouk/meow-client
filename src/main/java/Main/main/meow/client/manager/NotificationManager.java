@@ -12,6 +12,7 @@ import net.minecraft.ChatFormatting;
 public final class NotificationManager {
     private static String message;
     private static long shownAt;
+    private static final long ENTER_MS = 240L;
     private static final long DISPLAY_MS = 2600L;
     private static final long EXIT_MS = 260L;
 
@@ -20,7 +21,8 @@ public final class NotificationManager {
 
     public static void moduleChanged(Module module) {
         NotificationsModule notifications = (NotificationsModule) MeowClient.MODULE_MANAGER.byName("Notifications");
-        if (notifications == null || !notifications.isEnabled()) return;
+        // the module itself can still announce being turned off
+        if (notifications == null || (!notifications.isEnabled() && module != notifications)) return;
         String status;
         if(module.isEnabled()) {
             status = "enabled";
@@ -35,28 +37,42 @@ public final class NotificationManager {
             }
             return;
         }
+        long now = System.currentTimeMillis();
+        // keep the slide continuous when a toast is replaced while it is still on screen
+        long elapsed = now - shownAt;
+        float visible = 0f;
+        if (message != null) {
+            visible = visibility(elapsed);
+        }
         message = module.name() + " " + status;
-        shownAt = System.currentTimeMillis();
+        if (visible >= 1f) {
+            shownAt = now - ENTER_MS;
+        } else {
+            shownAt = now - Math.round(visible * ENTER_MS);
+        }
+    }
+
+    // 0..1 slide/fade amount for a toast that has been alive for elapsed ms
+    private static float visibility(long elapsed) {
+        if (elapsed < ENTER_MS) {
+            return Math.max(0f, elapsed / (float) ENTER_MS);
+        }
+        if (elapsed > DISPLAY_MS) {
+            return Math.max(0f, 1f - (elapsed - DISPLAY_MS) / (float) EXIT_MS);
+        }
+        return 1f;
     }
 
     public static void render(net.minecraft.client.gui.GuiGraphicsExtractor graphics, Minecraft client) {
         if (message == null) return;
-        // Check if notifications are still enabled and in ALERT mode (this was mostly inspired by NextUI's toast component lol)
         NotificationsModule notifications = (NotificationsModule) MeowClient.MODULE_MANAGER.byName("Notifications");
-        if (notifications == null || !notifications.isEnabled() || notifications.mode() != NotificationsModule.Mode.ALERT) {
+        if (notifications == null || notifications.mode() != NotificationsModule.Mode.ALERT) {
             message = null;
             return;
         }
         long elapsed = System.currentTimeMillis() - shownAt;
-        float progress;
-        if(elapsed < 240L) {
-            progress = elapsed / 240f;
-        } else if(elapsed > DISPLAY_MS) {
-            progress = Math.max(0f, 1f - (elapsed - DISPLAY_MS) / (float) EXIT_MS);
-        } else {
-            progress = 1f;
-        }
-        if (progress <= 0f) {
+        float progress = visibility(elapsed);
+        if (elapsed > DISPLAY_MS + EXIT_MS || progress <= 0f) {
             message = null;
             return;
         }
@@ -66,14 +82,16 @@ public final class NotificationManager {
         int y = 12 - Math.round((1f - eased) * 18f); // 18px slide-in from top
         int alpha = Math.round(eased * 255f); // 0-255 alpha value or smth
         roundedFill(graphics, x, y, width, 32, alpha << 24 | 0xff202632, 4); // 32px height, 4px corner radius, bitwise OR to combine alpha and color
-        long lifetime = DISPLAY_MS + EXIT_MS; // total lifetime of the notification in milliseconds
-        float remaining;
-        if (elapsed < DISPLAY_MS) {
-            remaining = 1f;
-        } else if (elapsed > lifetime) {
-            remaining = 0f;
-        } else {
-            remaining = 1f - (elapsed - DISPLAY_MS) / (float) EXIT_MS;
+        // the timer drains from full to empty while the toast is held, so it is already gone when the toast slides away
+        float remaining = 1f;
+        if (notifications.showTimer()) {
+            if (elapsed <= ENTER_MS) {
+                remaining = 1f;
+            } else if (elapsed >= DISPLAY_MS) {
+                remaining = 0f;
+            } else {
+                remaining = 1f - (elapsed - ENTER_MS) / (float) (DISPLAY_MS - ENTER_MS);
+            }
         }
         int timerWidth = Math.round(width * remaining);
         if (timerWidth > 0) {

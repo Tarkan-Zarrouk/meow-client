@@ -1,5 +1,6 @@
 package Main.main.meow.client.module.modules.hud;
 
+import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.hud.QolHudRenderer;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;

@@ -9,7 +9,7 @@ import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.module.modules.client.ClickGuiModule;
-import Main.main.meow.client.module.modules.client.ZoomModule;
+import Main.main.meow.client.module.modules.visuals.ZoomModule;
 import Main.main.meow.client.module.modules.hud.*;
 import Main.main.meow.client.module.modules.misc.WaypointsModule;
 import Main.main.meow.client.module.modules.movement.SprintModule;
@@ -119,7 +119,6 @@ public class MeowClient implements ClientModInitializer {
 
     private static void registerModules() {
         MODULE_MANAGER.register(new ClickGuiModule());
-        MODULE_MANAGER.register(new HudModule());
         MODULE_MANAGER.register(new ArmorStatusModule());
         MODULE_MANAGER.register(new PotionEffectsModule());
         MODULE_MANAGER.register(new KeystrokesModule());
@@ -132,20 +131,18 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new PositionModule());
         MODULE_MANAGER.register(new BiomeModule());
         MODULE_MANAGER.register(new ClockModule());
-        MODULE_MANAGER.register(new ArmorDurabilityModule());
         MODULE_MANAGER.register(new ItemDurabilityModule());
         MODULE_MANAGER.register(new TotemCounterModule());
         MODULE_MANAGER.register(new ArrowCounterModule());
         MODULE_MANAGER.register(new InventoryViewer());
         MODULE_MANAGER.register(new InfoModule());
     }
-
-    public static void recordClick() {
-        long now = System.currentTimeMillis();
-        CLICKS.addLast(now);
-        trimClicks(now);
-    }
-
+    //
+//    public static void recordClick() {
+//        long now = System.currentTimeMillis();
+//        CLICKS.addLast(now);
+//        trimClicks(now);
+//    }
     private static void sampleStats(Minecraft client) {
         MODULE_MANAGER.handleKeybinds(client.getWindow().handle());
         Module sprint = MODULE_MANAGER.byName("Sprint");

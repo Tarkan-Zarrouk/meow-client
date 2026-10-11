@@ -1,6 +1,6 @@
 package Main.main.meow.client.module.modules.visuals;
 
-import Main.main.meow.client.module.modules.hud.HudDisplayModule;
+import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import net.minecraft.client.Minecraft;
 

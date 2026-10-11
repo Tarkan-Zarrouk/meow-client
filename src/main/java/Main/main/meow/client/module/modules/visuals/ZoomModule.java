@@ -1,6 +1,7 @@
-package Main.main.meow.client.module.modules.client;
+package Main.main.meow.client.module.modules.visuals;
 
 import Main.main.meow.client.MeowClient;
+import Main.main.meow.client.module.modules.client.ClientModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.KeybindSetting;
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,7 @@ public final class ZoomModule extends ClientModule {
     private final KeybindSetting zoomKey = new KeybindSetting("Zoom key", "Hold this key to smoothly zoom to a 30 degree field of view. Press Delete to clear it.", GLFW.GLFW_KEY_C);
 
     public ZoomModule() {
-        super("Zoom", Category.CLIENT, false, "Hold the zoom key to smoothly zoom the camera like OptiFine.");
+        super("Zoom", Category.VISUALS, false, "Hold the zoom key to smoothly zoom the camera like OptiFine.");
         addSetting(zoomKey);
     }
 
