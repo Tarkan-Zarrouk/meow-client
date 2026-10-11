@@ -1,0 +1,73 @@
+package Main.main.meow.client.module.modules.hud;
+
+import Main.main.meow.client.ui.hud.QolHudRenderer;
+import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.setting.modulesettings.EnumSetting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.player.LocalPlayer;
+
+import java.util.Objects;
+
+public class InfoModule extends HudDisplayModule {
+    private static double tps = 20.0;
+    // all possibilities of modes, we love customization :3
+    private enum Modes {
+        SHOW_FPS,
+        SHOW_TPS,
+        SHOW_PING,
+        SHOW_FPS_PING,
+        SHOW_FPS_TPS,
+        SHOW_PING_TPS,
+        SHOW_FPS_PING_TPS,
+    }
+    private static final BooleanSetting HAVE_BACKGROUND = new BooleanSetting("Show Background", "Show the background of HUD Module", false);
+    private static final ColorSetting TEXT_COLOUR = new ColorSetting("Text Colour", "Change the colour of your text", QolHudRenderer.getTEXT());
+    private static final EnumSetting<Modes> INFO_CYCLE = new EnumSetting<>("Info Cycle", "Toggle between Showing fps and tps and ping, showing fps and ping, showing fps and showing", Modes.SHOW_FPS_PING_TPS);
+    private static final ColorSetting BACKGROUND_COLOUR = new ColorSetting("Background Colour", "Change the colour of the background", QolHudRenderer.getTEXT());
+    public InfoModule() {
+        super("Info", Category.HUD, false, "Displays information about the client on the HUD.");
+        addSetting(HAVE_BACKGROUND, TEXT_COLOUR, INFO_CYCLE, BACKGROUND_COLOUR);
+    }
+
+    public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+        int fps = client.getFps();
+        int ping = 0;
+        if(client.getConnection() != null) {
+            ping = Objects.requireNonNull(client.getConnection().getPlayerInfo(player.getUUID())).getLatency(); // i found no way around using the Objects collection
+        }
+        long now = System.nanoTime();
+        long lastTimeUpdate = -1;
+        if(lastTimeUpdate != -1) {
+            double elapsedTime = (now - lastTimeUpdate) / 1000000000.0;
+            tps = 20.0 / elapsedTime;
+        }
+        now = lastTimeUpdate;
+        String text = switch(INFO_CYCLE.value()) {
+            case SHOW_FPS -> "FPS: " + fps;
+            case SHOW_TPS -> "TPS: " + tps;
+            case SHOW_PING -> "Ping: " + ping;
+            case SHOW_FPS_PING -> "FPS: " + fps + " Ping: " + ping;
+            case SHOW_FPS_TPS -> "FPS: " + fps + " TPS: " + tps;
+            case SHOW_PING_TPS -> "Ping: " + ping + " TPS: " + tps;
+            case SHOW_FPS_PING_TPS -> "FPS: " + fps + " PING: " + ping + " TPS: " + tps;
+        };
+        if(HAVE_BACKGROUND.enabled()) {
+            QolHudRenderer.panel(g, x,y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client, text), BACKGROUND_COLOUR.color());
+//            QolHudRenderer.panel(g, x, y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client, text));
+        }
+        QolHudRenderer.text(g, client, text, x, y, TEXT_COLOUR.color());
+    }
+
+    @Override
+    public int panelWidth(net.minecraft.client.Minecraft client) {
+        return 100; // varying text widths, just assume 100 because im not doing allat lol
+    }
+
+    @Override
+    public int panelHeight(net.minecraft.client.Minecraft client) {
+        return 8;
+    }
+}

@@ -1,6 +1,6 @@
 package Main.main.meow.mixin;
 
-import Main.main.meow.client.hud.QolHudRenderer;
+import Main.main.meow.client.ui.hud.QolHudRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
