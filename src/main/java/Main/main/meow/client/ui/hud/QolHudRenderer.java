@@ -41,8 +41,8 @@ public final class QolHudRenderer {
         List<String> lines = new ArrayList<>();
         if (enabled("BPS"))
             lines.add("BPS " + String.format(Locale.ROOT, "%.2f", MeowClient.bps));
-        if (enabled("Clock"))
-            lines.add(java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
+//        if (enabled("Clock"))
+//            lines.add(java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")));
         panel(g, x, y, 210, lines.size() * 14 + 12);
         for (int i = 0; i < lines.size(); i++) {
             if (i == lines.size() - 1) {

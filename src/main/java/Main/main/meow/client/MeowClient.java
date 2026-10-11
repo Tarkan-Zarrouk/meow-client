@@ -57,6 +57,15 @@ public class MeowClient implements ClientModInitializer {
         InventoryViewer inventory = (InventoryViewer) MODULE_MANAGER.byName("Inventory Viewer");
         BiomeModule biome = (BiomeModule) MODULE_MANAGER.byName("Biome");
         InfoModule info = (InfoModule) MODULE_MANAGER.byName("Info");
+        ClockModule clock = (ClockModule) MODULE_MANAGER.byName("Clock");
+
+        HUD_COMPONENTS.add(new HudComponent("clock", 200, 150, clock) {
+            protected void renderComponent(GuiGraphicsExtractor graphics, Minecraft client, boolean editor) {
+                if((editor || clock.isEnabled()) && client.player != null) {
+                    ClockModule.drawInfo(graphics, client, client.player, x(), y(), clock.getBackgroundColour());
+                }
+            }
+        });
 
         HUD_COMPONENTS.add(new HudComponent("biome", 200, 100, biome) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
