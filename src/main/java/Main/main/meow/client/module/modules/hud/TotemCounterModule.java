@@ -34,7 +34,7 @@ public final class TotemCounterModule extends HudDisplayModule {
 
     public static void drawTotemCounter(GuiGraphicsExtractor g, Minecraft client, int x, int y, Item item, LocalPlayer player) {
         int count = totemCount(player, item);
-        int textWidth = client.font.width(String.valueOf(count));
+        int textWidth = QolHudRenderer.getTextWidth(client, String.valueOf(count));
         int width = 22 + textWidth;
         int height = 18;
         if (SHOW_BACKGROUND.enabled()) {
@@ -46,8 +46,11 @@ public final class TotemCounterModule extends HudDisplayModule {
 
     @Override
     public int panelWidth(Minecraft client) {
+        if (client == null || client.player == null) {
+            return 28;
+        }
         int count = totemCount(client.player, Items.TOTEM_OF_UNDYING);
-        int textWidth = client.font != null ? client.font.width(String.valueOf(count)) : 10;
+        int textWidth = QolHudRenderer.getTextWidth(client, String.valueOf(count));
         return 22 + textWidth;
     }
 

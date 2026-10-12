@@ -59,6 +59,15 @@ public class MeowClient implements ClientModInitializer {
         InfoModule info = (InfoModule) MODULE_MANAGER.byName("Info");
         ClockModule clock = (ClockModule) MODULE_MANAGER.byName("Clock");
         TotemCounterModule totem = (TotemCounterModule) MODULE_MANAGER.byName("Totem Counter");
+        ArrowCounterModule arrow = (ArrowCounterModule) MODULE_MANAGER.byName("Arrow Counter");
+
+        HUD_COMPONENTS.add(new HudComponent("Arrow Counter", 8, 28, arrow) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if ((editor || arrow.isEnabled()) && c.player != null) {
+                    ArrowCounterModule.drawArrowCounter(g, c, x(), y(), Items.ARROW, c.player);
+                }
+            }
+        });
 
         HUD_COMPONENTS.add(new HudComponent("Totem Counter", 8, 48, totem) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {

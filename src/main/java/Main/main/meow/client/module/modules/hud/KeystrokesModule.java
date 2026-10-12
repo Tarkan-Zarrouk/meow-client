@@ -56,7 +56,7 @@ public final class KeystrokesModule extends HudDisplayModule {
     public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level, int colorFromUser) {
         int color = blend(colorFromUser, 0xff8d3e9a, level);
         g.fill(x, y, x + width, y + height, color);
-        int textWidth = client.font.width(label);
+        int textWidth = QolHudRenderer.getTextWidth(client, label);
         g.text(client.font, label, x + (width - textWidth) / 2, y + (height - 8) / 2, blend(QolHudRenderer.getTEXT(), 0xffffffff, level));
     }
     public static int blend(int from, int to, float amount) {

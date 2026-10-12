@@ -3,6 +3,7 @@ package Main.main.meow.client.manager;
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.module.modules.hud.NotificationsModule;
+import Main.main.meow.client.ui.hud.QolHudRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -77,7 +78,7 @@ public final class NotificationManager {
             return;
         }
         float eased = progress * progress * (3f - 2f * progress); // math: smoothstep easing function
-        int width = client.font.width(message) + 28; // 28 = 14px padding on each side
+        int width = QolHudRenderer.getTextWidth(client, message) + 28;
         int x = client.getWindow().getGuiScaledWidth() - width - 12; // 12px from right edge
         int y = 12 - Math.round((1f - eased) * 18f); // 18px slide-in from top
         int alpha = Math.round(eased * 255f); // 0-255 alpha value or smth

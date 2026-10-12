@@ -51,8 +51,8 @@ public final class QolHudRenderer {
                 text(g, client, lines.get(i), x + 8, y + 7 + i * 14, TEXT);
             }
         }
-        if (enabled("Totem Counter"))
-            drawItemCount(g, client, x + 125, y + 7, Items.TOTEM_OF_UNDYING, player);
+//        if (enabled("Totem Counter"))
+//            drawItemCount(g, client, x + 125, y + 7, Items.TOTEM_OF_UNDYING, player);
         if (enabled("Arrow Counter"))
             drawItemCount(g, client, x + 125, y + 25, Items.ARROW, player);
         return y + lines.size() * 14 + 12; // 14: line height, 12: padding (random)
@@ -63,9 +63,15 @@ public final class QolHudRenderer {
     }
 
     public static int getTextWidth(Minecraft client, String text) {
+        if (client == null || client.font == null || text == null) {
+            return text == null ? 0 : text.length() * 6;
+        }
         return client.font.width(text);
     }
     public static int getTextHeight(Minecraft client, String text) {
+        if (client == null || client.font == null) {
+            return 9;
+        }
         return client.font.lineHeight;
     }
 
