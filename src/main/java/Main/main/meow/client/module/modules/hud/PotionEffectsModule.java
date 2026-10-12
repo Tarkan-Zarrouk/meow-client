@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.visuals;
+package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
@@ -16,14 +16,14 @@ import java.util.Locale;
 
 public final class PotionEffectsModule extends HudDisplayModule {
     public PotionEffectsModule() {
-        super("Potion Effects", Category.VISUALS, true, "Displays active potion effects with their icons, levels, and remaining time.");
+        super("Potion Effects", Category.HUD, true, "Displays active potion effects with their icons, levels, and remaining time.");
     }
 
     public static void drawEffects(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects()); // it took a while to figure out how to get the effects, but this works ig
         QolHudRenderer.panel(g, x, y, 210, effects.size() * 20 + 12);
         if (effects.isEmpty()) {
-            QolHudRenderer.text(g, client, "No active effects", x + 27, y + 7, QolHudRenderer.getTEXT());
+            QolHudRenderer.text(g, client, "No active effects", x + 27, y+2, QolHudRenderer.getTEXT());
         }
         for (int i = 0; i < effects.size(); i++) {
             MobEffectInstance effect = effects.get(i);

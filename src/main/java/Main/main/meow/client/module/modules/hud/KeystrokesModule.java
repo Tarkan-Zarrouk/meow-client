@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.visuals;
+package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.hud.QolHudRenderer;
@@ -17,7 +17,7 @@ public final class KeystrokesModule extends HudDisplayModule {
     private static final ColorSetting COLOR_OF_BACKGROUND = new ColorSetting("Color of Background", "The background of the keystrokes background", QolHudRenderer.getPanel());
     private static final float[] KEY_LEVELS = new float[7];
     public KeystrokesModule() {
-        super("Keystrokes", Category.VISUALS, true, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
+        super("Keystrokes", Category.HUD, true, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
         addSetting(COLOR_OF_KEYS, SHOW_BACKGROUND, COLOR_OF_BACKGROUND);
     }
 

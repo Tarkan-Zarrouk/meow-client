@@ -14,13 +14,13 @@ import Main.main.meow.client.module.modules.hud.*;
 import Main.main.meow.client.module.modules.misc.WaypointsModule;
 import Main.main.meow.client.module.modules.movement.SprintModule;
 import Main.main.meow.client.module.modules.player.*;
-import Main.main.meow.client.module.modules.visuals.*;
 import Main.main.meow.client.setting.MeowConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -58,6 +58,15 @@ public class MeowClient implements ClientModInitializer {
         BiomeModule biome = (BiomeModule) MODULE_MANAGER.byName("Biome");
         InfoModule info = (InfoModule) MODULE_MANAGER.byName("Info");
         ClockModule clock = (ClockModule) MODULE_MANAGER.byName("Clock");
+        TotemCounterModule totem = (TotemCounterModule) MODULE_MANAGER.byName("Totem Counter");
+
+        HUD_COMPONENTS.add(new HudComponent("Totem Counter", 8, 48, totem) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if ((editor || totem.isEnabled()) && c.player != null) {
+                    TotemCounterModule.drawTotemCounter(g, c, x(), y(), Items.TOTEM_OF_UNDYING, c.player);
+                }
+            }
+        });
 
         HUD_COMPONENTS.add(new HudComponent("clock", 200, 150, clock) {
             protected void renderComponent(GuiGraphicsExtractor graphics, Minecraft client, boolean editor) {

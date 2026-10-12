@@ -69,31 +69,31 @@ public final class QolHudRenderer {
         return client.font.lineHeight;
     }
 
-    private static float armourPercentageHelper(ItemStack item) {
-        float damage = (float) item.getDamageValue();
-        float maxDamage = (float) item.getMaxDamage();
-        return (1f - (damage / maxDamage)) * 100f;
-    }
+//    private static float armourPercentageHelper(ItemStack item) {
+//        float damage = (float) item.getDamageValue();
+//        float maxDamage = (float) item.getMaxDamage();
+//        return (1f - (damage / maxDamage)) * 100f;
+//    }
 
-    public static int drawEffects(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
-        List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects()); // it took a while to figure out how to get the effects, but this works ig
-        if (effects.isEmpty()) {
-            return y;
-        }
-        panel(g, x, y, 210, effects.size() * 20 + 12);
-        for (int i = 0; i < effects.size(); i++) {
-            MobEffectInstance effect = effects.get(i);
-            int effectX = x + 6;
-            int effectY = y + 4 + i * 20;
-            int effectWidth = 16;
-            int effectHeight = 16;
-            g.blitSprite(RenderPipelines.GUI_TEXTURED, Gui.getMobEffectSprite(effect.getEffect()), effectX, effectY, effectWidth, effectHeight);
-            int textX = x + 27;
-            int textY = y + 7 + i * 20;
-            text(g, client, effect.getEffect().value().getDisplayName().getString() + " " + formatDuration(effect.getDuration()), textX, textY, TEXT);
-        }
-        return y + effects.size() * 20 + 12;
-    }
+//    public static int drawEffects(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+//        List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects()); // it took a while to figure out how to get the effects, but this works ig
+//        if (effects.isEmpty()) {
+//            return y;
+//        }
+//        panel(g, x, y, 210, effects.size() * 20 + 12);
+//        for (int i = 0; i < effects.size(); i++) {
+//            MobEffectInstance effect = effects.get(i);
+//            int effectX = x + 6;
+//            int effectY = y + 4 + i * 20;
+//            int effectWidth = 16;
+//            int effectHeight = 16;
+//            g.blitSprite(RenderPipelines.GUI_TEXTURED, Gui.getMobEffectSprite(effect.getEffect()), effectX, effectY, effectWidth, effectHeight);
+//            int textX = x + 27;
+//            int textY = y + 7 + i * 20;
+//            text(g, client, effect.getEffect().value().getDisplayName().getString() + " " + formatDuration(effect.getDuration()), textX, textY, TEXT);
+//        }
+//        return y + effects.size() * 20 + 12;
+//    }
 
     public static void drawItemDurability(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         ItemStack stack = player.getMainHandItem();
@@ -146,12 +146,12 @@ public final class QolHudRenderer {
         graphics.text(client.font, Component.literal(value), x, y, color, true);
     }
 
-    public static String formatDuration(int ticks) {
-        if (ticks == MobEffectInstance.INFINITE_DURATION) {
-            return "∞";
-        }
-        return (ticks / 20) / 60 + ":" + String.format(Locale.ROOT, "%02d", (ticks / 20) % 60); // format as mm:ss
-    }
+//    public static String formatDuration(int ticks) {
+//        if (ticks == MobEffectInstance.INFINITE_DURATION) {
+//            return "∞";
+//        }
+//        return (ticks / 20) / 60 + ":" + String.format(Locale.ROOT, "%02d", (ticks / 20) % 60); // format as mm:ss
+//    }
 
     public static void panel(GuiGraphicsExtractor g, int x, int y, int width, int height) {
         g.fill(x, y, x + width, y + height, PANEL);
