@@ -33,7 +33,7 @@ public final class ClockModule extends HudDisplayModule {
             case CIVIL -> time.format(DateTimeFormatter.ofPattern("h:mm:ss"));
         };
         panelWidth = QolHudRenderer.getTextWidth(client, clock);
-        panelHeight = QolHudRenderer.getTextHeight(client, clock);
+        panelHeight = QolHudRenderer.getTextHeight(client);
         if(HAVE_BACKGROUND.enabled()) {
             QolHudRenderer.panel(g, x, y, panelWidth + 4, panelHeight + 4, colour);
         }

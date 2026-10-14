@@ -25,7 +25,7 @@ public final class BiomeModule extends HudDisplayModule {
             biome = "Unknown?"; // it really shouldn't return this but better than "null" lol
         }
         if(HAVE_BACKGROUND.enabled()) {
-            QolHudRenderer.panel(g,x,y, QolHudRenderer.getTextWidth(client, biome) + 4, QolHudRenderer.getTextHeight(client, biome) + 4);
+            QolHudRenderer.panel(g,x,y, QolHudRenderer.getTextWidth(client, biome) + 4, QolHudRenderer.getTextHeight(client) + 4);
             QolHudRenderer.text(g, client, "Biome: " + biome, x + 2, y + 2, QolHudRenderer.getTEXT());
         } else {
             QolHudRenderer.text(g, client, "Biome: " + biome, x + 2, y + 2, QolHudRenderer.getTEXT());
@@ -48,6 +48,6 @@ public final class BiomeModule extends HudDisplayModule {
     public int panelHeight(Minecraft client) {
         if(client.player == null)
             return 0;
-        return QolHudRenderer.getTextHeight(client, getBiome(client, client.player) + (HAVE_BACKGROUND.enabled()));
+        return QolHudRenderer.getTextHeight(client);
     }
 }

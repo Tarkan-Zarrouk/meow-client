@@ -56,7 +56,7 @@ public class InfoModule extends HudDisplayModule {
             case SHOW_FPS_PING_TPS -> "FPS: " + fps + " PING: " + ping + " TPS: " + tps;
         };
         if(HAVE_BACKGROUND.enabled()) {
-            QolHudRenderer.panel(g, x,y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client, text), BACKGROUND_COLOUR.color());
+            QolHudRenderer.panel(g, x,y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client), BACKGROUND_COLOUR.color());
 //            QolHudRenderer.panel(g, x, y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client, text));
         }
         QolHudRenderer.text(g, client, text, x, y, TEXT_COLOUR.color());

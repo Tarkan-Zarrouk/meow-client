@@ -37,7 +37,7 @@ public final class PositionModule extends HudDisplayModule {
         if (client.player == null) {
             return 0;
         }
-        return QolHudRenderer.getTextHeight(client, position(client.player)) + (HAVE_BACKGROUND.enabled() ? 4 : 0);
+        return QolHudRenderer.getTextHeight(client) + (HAVE_BACKGROUND.enabled() ? 4 : 0);
     }
 
     private static String position(LocalPlayer player) {
@@ -59,7 +59,7 @@ public final class PositionModule extends HudDisplayModule {
             case Modes.COORDINATES -> position(player);
         };
         if (HAVE_BACKGROUND.enabled()) {
-            QolHudRenderer.panel(g, x, y, QolHudRenderer.getTextWidth(client, text) + 4, QolHudRenderer.getTextHeight(client, text) + 4);
+            QolHudRenderer.panel(g, x, y, QolHudRenderer.getTextWidth(client, text) + 4, QolHudRenderer.getTextHeight(client) + 4);
         }
         QolHudRenderer.text(g, client, text, x + (HAVE_BACKGROUND.enabled() ? 2 : 0), y + (HAVE_BACKGROUND.enabled() ? 2 : 0), QolHudRenderer.getTEXT());
     }

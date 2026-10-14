@@ -29,11 +29,6 @@ public class MeowClient implements ClientModInitializer {
     public static final ModuleManager MODULE_MANAGER = new ModuleManager();
     public static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
     private static final Deque<Long> CLICKS = new ArrayDeque<>();
-    private static double lastX;
-    private static double lastZ;
-    private static long lastSpeedTime;
-    public static int cps;
-    public static double bps;
     private static boolean rightShiftDown;
 
     @Override
@@ -44,7 +39,7 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.setChangeListener(() -> MeowConfig.save(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS));
         MODULE_MANAGER.setEnabledChangeListener(NotificationManager::moduleChanged);
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::handleHudEditorKey);
-        ClientTickEvents.END_CLIENT_TICK.register(MeowClient::sampleStats);
+        ClientTickEvents.END_CLIENT_TICK.register(BpsModule::getBps);
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> MeowConfig.save(client, MODULE_MANAGER, HUD_COMPONENTS));
     }
 
@@ -60,6 +55,15 @@ public class MeowClient implements ClientModInitializer {
         ClockModule clock = (ClockModule) MODULE_MANAGER.byName("Clock");
         TotemCounterModule totem = (TotemCounterModule) MODULE_MANAGER.byName("Totem Counter");
         ArrowCounterModule arrow = (ArrowCounterModule) MODULE_MANAGER.byName("Arrow Counter");
+        BpsModule bps = (BpsModule) MODULE_MANAGER.byName("BPS");
+
+        HUD_COMPONENTS.add(new HudComponent("BPS", 8, 8, bps) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if ((editor || bps.isEnabled()) && c.player != null) {
+                    BpsModule.drawInfo(g, c, c.player, x(), y());
+                }
+            }
+        });
 
         HUD_COMPONENTS.add(new HudComponent("Arrow Counter", 8, 28, arrow) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
@@ -131,7 +135,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("inventory", 8, 280, inventory) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if (c.player != null && (editor || inventory.isEnabled())) {
-                    QolHudRenderer.drawInventory(g, c, c.player, x(), y());
+                    InventoryViewer.drawInventory(g, c, c.player, x(), y());
                 }
             }
         });
@@ -162,37 +166,6 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new ArrowCounterModule());
         MODULE_MANAGER.register(new InventoryViewer());
         MODULE_MANAGER.register(new InfoModule());
-    }
-    //
-//    public static void recordClick() {
-//        long now = System.currentTimeMillis();
-//        CLICKS.addLast(now);
-//        trimClicks(now);
-//    }
-    private static void sampleStats(Minecraft client) {
-        MODULE_MANAGER.handleKeybinds(client.getWindow().handle());
-        Module sprint = MODULE_MANAGER.byName("Sprint");
-        if (sprint instanceof SprintModule sprintModule && sprintModule.isEnabled()) {
-            sprintModule.tick(client);
-        }
-        long now = System.currentTimeMillis();
-        trimClicks(now);
-        cps = CLICKS.size();
-        if (client.player != null) {
-            if (lastSpeedTime != 0) {
-                double seconds = (now - lastSpeedTime) / 1000.0;
-                if (seconds > 0) {
-                    bps = Math.hypot(client.player.getX() - lastX, client.player.getZ() - lastZ) / seconds; // this is a rough estimate of blocks per second, it doesn't account for vertical movement or diagonal movement, had to see another client code lopl
-                }
-            }
-            lastX = client.player.getX();
-            lastZ = client.player.getZ();
-            lastSpeedTime = now;
-        }
-    }
-
-    private static void trimClicks(long now) {
-        while (!CLICKS.isEmpty() && now - CLICKS.peekFirst() > 1000) CLICKS.removeFirst();
     }
 
     private static void handleHudEditorKey(Minecraft client) {

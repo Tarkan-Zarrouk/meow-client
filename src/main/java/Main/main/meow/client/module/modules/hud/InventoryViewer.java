@@ -2,11 +2,41 @@ package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.ui.hud.QolHudRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class InventoryViewer extends HudDisplayModule {
     public InventoryViewer() {
         super("Inventory Viewer", Category.HUD, false, "Shows the content of your inventory updating in real time");
+    }
+
+    public static void drawInventory(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+        Map<ItemStack, Integer> playerInventoryStorage = new HashMap<>(); // <ItemStack, SlotPos>
+        Inventory playerInventory = player.getInventory();
+        for(int i = 9; i < 36; i++) {
+            ItemStack itemStack = playerInventory.getItem(i);
+            if(itemStack.isEmpty()) {
+                playerInventoryStorage.put(null, i);
+            } else {
+                playerInventoryStorage.put(itemStack, i);
+            }
+        }
+        QolHudRenderer.panel(g, x, y, 162, 54);
+        for(ItemStack item : playerInventoryStorage.keySet()) {
+            int column = playerInventoryStorage.get(item) % 9;
+            int row = playerInventoryStorage.get(item) / 9 - 1;
+            if(item != null) {
+                g.item(item, x + (column * 18), y + (row * 18));
+                QolHudRenderer.text(g, client, Integer.toString(playerInventory.getItem(playerInventoryStorage.get(item)).getCount()), x + (column * 18) + 7, y + (row * 18) + 7, QolHudRenderer.getTEXT());
+            }
+        }
     }
 
     @Override
