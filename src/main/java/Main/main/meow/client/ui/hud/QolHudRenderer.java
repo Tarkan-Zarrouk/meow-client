@@ -4,6 +4,7 @@ import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
 
 import Main.main.meow.client.manager.NotificationManager;
+import Main.main.meow.client.ui.hud.hudgui.HudGuiStyler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Gui;
@@ -43,7 +44,7 @@ public final class QolHudRenderer {
         if (client == null || text == null) {
             return text == null ? 0 : text.length() * 6;
         }
-        return client.font.width(text);
+        return client.font.width(styled(text));
     }
     public static int getTextHeight(Minecraft client) {
         if (client == null) {
@@ -66,8 +67,12 @@ public final class QolHudRenderer {
     }
 
 
+    public static Component styled(String value) {
+        return Component.literal(value).withStyle(style -> style.withFont(HudGuiStyler.getFont()));
+    }
+
     public static void text(GuiGraphicsExtractor graphics, Minecraft client, String value, int x, int y, int color) {
-        graphics.text(client.font, Component.literal(value), x, y, color, true);
+        graphics.text(client.font, styled(value), x, y, color, true);
     }
     public static void panel(GuiGraphicsExtractor g, int x, int y, int width, int height) {
         g.fill(x, y, x + width, y + height, PANEL);

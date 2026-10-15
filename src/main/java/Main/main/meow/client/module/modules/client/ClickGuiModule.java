@@ -27,7 +27,7 @@ public final class ClickGuiModule extends ClientModule {
         return MODULE_COLOR.color();
     }
 
-    public static boolean odinFont() {
+    public static boolean interFont() {
         return FONT.enabled();
     }
 

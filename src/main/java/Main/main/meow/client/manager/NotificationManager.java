@@ -98,7 +98,7 @@ public final class NotificationManager {
         if (timerWidth > 0) {
             drawTimerBorder(graphics, x, y, width, timerWidth, alpha << 24 | 0xffc52dbd); // bitwise OR to combine alpha and color
         }
-        graphics.text(client.font, Component.literal(message), x + 14, y + 11, alpha << 24 | 0xffffffff, false); // bitwsiue to combine
+        graphics.text(client.font, QolHudRenderer.styled(message), x + 14, y + 11, alpha << 24 | 0xffffffff, false); // bitwsiue to combine
     }
 
     private static void roundedFill(net.minecraft.client.gui.GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {

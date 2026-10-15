@@ -57,7 +57,7 @@ public final class KeystrokesModule extends HudDisplayModule {
         int color = blend(colorFromUser, 0xff8d3e9a, level);
         g.fill(x, y, x + width, y + height, color);
         int textWidth = QolHudRenderer.getTextWidth(client, label);
-        g.text(client.font, label, x + (width - textWidth) / 2, y + (height - 8) / 2, blend(QolHudRenderer.getTEXT(), 0xffffffff, level));
+        g.text(client.font, QolHudRenderer.styled(label), x + (width - textWidth) / 2, y + (height - 8) / 2, blend(QolHudRenderer.getTEXT(), 0xffffffff, level));
     }
     public static int blend(int from, int to, float amount) {
         // i had to look up whatever the hell this does, but it basically blends two colors together based on the amount (0-1)

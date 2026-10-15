@@ -196,7 +196,6 @@ public final class HudGuiRenderer extends Screen {
     }
 
     private static boolean isHovered(int mouseX, int mouseY, int x, int y, int width, int height) {
-        // use conditional rather than one line
         if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
             return true;
         }

@@ -1,11 +1,13 @@
 package Main.main.meow.client.ui.hud.hudgui;
 
 import Main.main.meow.client.module.modules.client.ClickGuiModule;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ public final class HudGuiStyler {
     // this is pretty to look at, ai generated again but im not an artist so i cant do better
     public static final int ROW = 0xe62c313b, ROW_HOVER = 0xf03a404b, SETTING_ROW = 0xff171a22, TEXT = 0xfff7f4f7, CATEGORY_TEXT = 0xff000000, MUTED = 0xffc9c8cc, BORDER = 0xffffffff, CORNER_RADIUS = 16;
 
-    private static final FontDescription ODIN_FONT = new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "odin"));
+    private static final FontDescription INTER_FONT = new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "inter"));
 
     private final Font font;
 
@@ -23,10 +25,17 @@ public final class HudGuiStyler {
         this.font = font;
     }
 
+    public static FontDescription getFont() {
+        if(ClickGuiModule.interFont()) {
+            return INTER_FONT;
+        }
+        return Style.EMPTY.getFont();
+    }
+
     public Component styled(String value) {
         MutableComponent component = Component.literal(value);
-        if (ClickGuiModule.odinFont()) {
-            return component.withStyle(style -> style.withFont(ODIN_FONT));
+        if (ClickGuiModule.interFont()) {
+            return component.withStyle(style -> style.withFont(INTER_FONT));
         } else {
             return component;
         }
@@ -49,7 +58,7 @@ public final class HudGuiStyler {
         graphics.pose().pushMatrix();
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
-        graphics.text(font, value, 0, 0, color, shadow && !ClickGuiModule.odinFont());
+        graphics.text(font, value, 0, 0, color, shadow && !ClickGuiModule.interFont());
         graphics.pose().popMatrix();
     }
 

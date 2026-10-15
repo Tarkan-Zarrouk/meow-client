@@ -23,7 +23,7 @@ public final class ClickGuiSettings {
         return MODULE_COLOR.color();
     }
 
-    public static boolean odinFont() {
+    public static boolean interFont() {
         return FONT.enabled();
     }
 
