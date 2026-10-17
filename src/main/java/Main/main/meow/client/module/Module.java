@@ -34,7 +34,18 @@ public abstract class Module {
     }
 
     public final String name() {
-        return name;
+        // use the exceedsClickGuiWidth method to truncate the name if it exceeds the clickgui width
+        return exceedsClickGuiWidth(name);
+    }
+
+    public static String exceedsClickGuiWidth(String text) {
+        // The clickgui has a feature that allows you to dynamically change the width of the text, factor this in and calculate the length of the character
+        // if the text width is greater than the clickgui width truncate the last n letters such that it fits the clickgui width and add "..." to the end of the string
+        int clickGuiWidth = 200; // default width
+        if (text.length() > clickGuiWidth / 6) { // 6 is the average width of a character in pixels
+            return text.substring(0, clickGuiWidth / 6 - 3) + "..."; // 3 is the length of "..."
+        }
+        return text;
     }
 
     public final Category category() {

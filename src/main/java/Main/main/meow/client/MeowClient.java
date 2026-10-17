@@ -22,13 +22,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 public class MeowClient implements ClientModInitializer {
     public static final ModuleManager MODULE_MANAGER = new ModuleManager();
     public static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
-    private static final Deque<Long> CLICKS = new ArrayDeque<>();
     private static boolean rightShiftDown;
 
     @Override
@@ -40,6 +37,11 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.setEnabledChangeListener(NotificationManager::moduleChanged);
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::handleHudEditorKey);
         ClientTickEvents.END_CLIENT_TICK.register(BpsModule::getBps);
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (MODULE_MANAGER.byName("Sprint") instanceof SprintModule sprint) {
+                sprint.tick(client);
+            }
+        });
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> MeowConfig.save(client, MODULE_MANAGER, HUD_COMPONENTS));
     }
 

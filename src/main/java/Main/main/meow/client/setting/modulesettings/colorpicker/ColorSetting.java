@@ -1,5 +1,6 @@
 package Main.main.meow.client.setting.modulesettings.colorpicker;
 
+import Main.main.meow.client.module.Module;
 import Main.main.meow.client.setting.Setting;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
@@ -34,7 +35,7 @@ public final class ColorSetting extends Setting<Integer> {
 
     @Override
     public String label() {
-        return name() + ": " + String.format("#%06X", value() & 0xffffff);
+        return Module.exceedsClickGuiWidth(name()) +  ": " + Module.exceedsClickGuiWidth(String.format("#%06X", value() & 0xffffff));
     }
 
     @Override

@@ -6,6 +6,7 @@ import Main.main.meow.client.module.modules.client.ClickGuiModule;
 import Main.main.meow.client.setting.NumberSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.manager.ModuleManager;
+import Main.main.meow.client.ui.hud.QolHudRenderer;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -101,8 +102,7 @@ public final class HudGuiRenderer extends Screen {
                 boolean lastModule = row == entries.size() - 1;
                 renderModuleRow(graphics, module, x, y, columnWidth, hovered, lastModule, alpha);
                 if (settings.isExpanded(module)) {
-                    String settingTooltip = renderSettings(graphics, module, x, y + ROW_HEIGHT,
-                            columnWidth, mouseX, mouseY, lastModule, alpha);
+                    String settingTooltip = renderSettings(graphics, module, x, y + ROW_HEIGHT, columnWidth, mouseX, mouseY, lastModule, alpha);
                     if (settingTooltip != null) tooltipDescription = settingTooltip;
                 }
             }
@@ -184,14 +184,15 @@ public final class HudGuiRenderer extends Screen {
             tooltipY = mouseY - tooltipHeight - 12;
         tooltipX = Math.max(4, tooltipX);
         tooltipY = Math.max(4, tooltipY);
-        HudGuiStyler.roundedFill(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, 0xf0181b22, true, true, true, true);
+        if(ClickGuiModule.showOutline()) {
+            graphics.outline(tooltipX - 1, tooltipY - 1, tooltipWidth + 2, tooltipHeight + 2, ClickGuiModule.tooltipBorderColor());
+        }
+        QolHudRenderer.panel(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, ClickGuiModule.getToolTipBackgroundColor());
         for (int line = 0; line < lines.size(); line++) {
             Component text = styler.styled(lines.get(line));
             int x = tooltipX + 6;
             int y = tooltipY + 4 + line * styler.textLineHeight();
-            int color = HudGuiStyler.TEXT;
-            boolean shadow = false;
-            styler.drawText(graphics, text, x, y, color, shadow);
+            styler.drawText(graphics, text, x, y, ClickGuiModule.getToolTipTextColor(), ClickGuiModule.getShadowBoolean());
         }
     }
 

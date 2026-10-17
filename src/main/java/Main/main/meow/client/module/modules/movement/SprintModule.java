@@ -14,7 +14,7 @@ public final class SprintModule extends ClientModule {
     }
 
     public void tick(Minecraft client) {
-        if (client.player == null || client.screen != null) {
+        if (!isEnabled() || client.player == null || client.screen != null) {
             return;
         }
         if (client.options.keyUp.isDown() && !client.options.keyDown.isDown() && !client.options.keyShift.isDown() && !client.player.isPassenger()) {
