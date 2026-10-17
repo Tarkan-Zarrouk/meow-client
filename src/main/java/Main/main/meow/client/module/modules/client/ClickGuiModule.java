@@ -1,19 +1,26 @@
 package Main.main.meow.client.module.modules.client;
 
 import Main.main.meow.client.module.modules.ClientModule;
+import Main.main.meow.client.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.setting.NumberSetting;
 import Main.main.meow.client.ui.hud.QolHudRenderer;
+import net.minecraft.network.chat.FontDescription;
 import org.lwjgl.glfw.GLFW;
 
 public final class ClickGuiModule extends ClientModule {
+    public enum Font implements FontDescription {
+        INTER,
+        MINECRAFT,
+        BACKUP,
+    }
     private static final ColorSetting CATEGORY_COLOR = new ColorSetting("Category colour", "Opens a picker that changes the color of every category header in real time.", 0xffc52dbd);
     private static final ColorSetting MODULE_COLOR = new ColorSetting("Module colour", "Opens a picker that changes the color of every module row in real time.", 0xffc52dbd);
     private static final ColorSetting TOOL_TIP_BACKGROUND_COLOR = new ColorSetting("Tooltip Color", "Change the background color of the tooltip", QolHudRenderer.getPanel());
     private static final ColorSetting TOOL_TIP_TEXT_BACKGROUND_COLOR = new ColorSetting("Tool Text Color", "Change the color of the tooltip text", QolHudRenderer.getTEXT());
-    private static final BooleanSetting FONT = new BooleanSetting("Font", "Switches the ClickGUI between the custom Inter font and Minecraft's default font.", false, "Font: Inter", "Font: Minecraft");
+    private static final EnumSetting<Font> FONT = new EnumSetting<>("Font", "ClickGui and HUDUI switcher between Inter, built-in, and the backup font", Font.MINECRAFT);
     private static final BooleanSetting SHOW_SHADOW = new BooleanSetting("Font Shadow", "Toggle between shadow on text font", false);
     private static final BooleanSetting SHOW_OUTLINE = new BooleanSetting("Toggle ToolTip Border", "Toggle ToolTip border", false);
     private static final ColorSetting TOOLTIP_BORDER_COLOR = new ColorSetting("Tooltip Border Color", "Change the color of the tooltip border", 0xffffffff);
@@ -52,8 +59,8 @@ public final class ClickGuiModule extends ClientModule {
         return MODULE_COLOR.color();
     }
 
-    public static boolean interFont() {
-        return FONT.enabled();
+    public static Font font() {
+        return FONT.value();
     }
 
     public static int fontSize() {

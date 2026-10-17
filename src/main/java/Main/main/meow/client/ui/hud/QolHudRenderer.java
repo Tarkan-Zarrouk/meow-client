@@ -4,6 +4,7 @@ import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
 
 import Main.main.meow.client.manager.NotificationManager;
+import Main.main.meow.client.module.modules.client.ClickGuiModule;
 import Main.main.meow.client.ui.hud.hudgui.HudGuiStyler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -11,6 +12,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
