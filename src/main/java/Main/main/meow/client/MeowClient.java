@@ -4,7 +4,6 @@ import Main.main.meow.client.ui.hud.hudgui.HudGuiRenderer;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.ui.hud.HudComponentManager;
 import Main.main.meow.client.ui.hud.HudEditorScreen;
-import Main.main.meow.client.ui.hud.QolHudRenderer;
 import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.ModuleManager;
@@ -48,7 +47,6 @@ public class MeowClient implements ClientModInitializer {
     private static void registerHudComponents() {
         PositionModule coordinates = (PositionModule) MODULE_MANAGER.byName("PositionModule");
         ArmorStatusModule armor = (ArmorStatusModule) MODULE_MANAGER.byName("Armor Status");
-        ItemDurabilityModule itemDurability = (ItemDurabilityModule) MODULE_MANAGER.byName("Item Durability");
         PotionEffectsModule effects = (PotionEffectsModule) MODULE_MANAGER.byName("Potion Effects");
         KeystrokesModule keystrokes = (KeystrokesModule) MODULE_MANAGER.byName("Keystrokes");
         InventoryViewer inventory = (InventoryViewer) MODULE_MANAGER.byName("Inventory Viewer");
@@ -62,7 +60,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("BPS", 8, 8, bps) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || bps.isEnabled()) && c.player != null) {
-                    BpsModule.drawInfo(g, c, c.player, x(), y());
+                    BpsModule.drawInfo(g, c,x(), y());
                 }
             }
         });
@@ -113,13 +111,6 @@ public class MeowClient implements ClientModInitializer {
                 }
             }
         });
-        HUD_COMPONENTS.add(new HudComponent("item-durability", 8, 188, itemDurability) {
-            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if (c.player != null && (editor || itemDurability.isEnabled())) {
-                    QolHudRenderer.drawItemDurability(g, c, c.player, x(), y());
-                }
-            }
-        });
         HUD_COMPONENTS.add(new HudComponent("effects", 8, 128, effects) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || effects.isEnabled()) && c.player != null) {
@@ -163,7 +154,6 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new PositionModule());
         MODULE_MANAGER.register(new BiomeModule());
         MODULE_MANAGER.register(new ClockModule());
-        MODULE_MANAGER.register(new ItemDurabilityModule());
         MODULE_MANAGER.register(new TotemCounterModule());
         MODULE_MANAGER.register(new ArrowCounterModule());
         MODULE_MANAGER.register(new InventoryViewer());

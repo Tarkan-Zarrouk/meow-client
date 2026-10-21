@@ -1,10 +1,11 @@
 package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.module.HudDisplayModule;
-import Main.main.meow.client.ui.hud.QolHudRenderer;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -29,7 +30,7 @@ public final class PositionModule extends HudDisplayModule {
         if (client.player == null) {
             return 0;
         }
-        return QolHudRenderer.getTextWidth(client, position(client.player)) + (HAVE_BACKGROUND.enabled() ? 4 : 0);
+        return TextUtil.getTextWidth(client, position(client.player)) + (HAVE_BACKGROUND.enabled() ? 4 : 0);
     }
 
     @Override
@@ -37,7 +38,7 @@ public final class PositionModule extends HudDisplayModule {
         if (client.player == null) {
             return 0;
         }
-        return QolHudRenderer.getTextHeight(client) + (HAVE_BACKGROUND.enabled() ? 4 : 0);
+        return TextUtil.getTextHeight(client) + (HAVE_BACKGROUND.enabled() ? 4 : 0);
     }
 
     private static String position(LocalPlayer player) {
@@ -59,9 +60,9 @@ public final class PositionModule extends HudDisplayModule {
             case Modes.COORDINATES -> position(player);
         };
         if (HAVE_BACKGROUND.enabled()) {
-            QolHudRenderer.panel(g, x, y, QolHudRenderer.getTextWidth(client, text) + 4, QolHudRenderer.getTextHeight(client) + 4);
+            RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, text) + 4, TextUtil.getTextHeight(client) + 4);
         }
-        QolHudRenderer.text(g, client, text, x + (HAVE_BACKGROUND.enabled() ? 2 : 0), y + (HAVE_BACKGROUND.enabled() ? 2 : 0), QolHudRenderer.getTEXT());
+        RenderUtil.drawText(g, client, text, x + (HAVE_BACKGROUND.enabled() ? 2 : 0), y + (HAVE_BACKGROUND.enabled() ? 2 : 0), RenderUtil.getGuiTextColor());
     }
 
 }

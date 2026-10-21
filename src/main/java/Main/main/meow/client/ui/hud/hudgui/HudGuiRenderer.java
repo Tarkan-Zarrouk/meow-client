@@ -6,7 +6,7 @@ import Main.main.meow.client.module.modules.client.ClickGuiModule;
 import Main.main.meow.client.setting.NumberSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.manager.ModuleManager;
-import Main.main.meow.client.ui.hud.QolHudRenderer;
+import Main.main.meow.client.util.RenderUtil;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -187,7 +187,7 @@ public final class HudGuiRenderer extends Screen {
         if(ClickGuiModule.showOutline()) {
             graphics.outline(tooltipX - 1, tooltipY - 1, tooltipWidth + 2, tooltipHeight + 2, ClickGuiModule.tooltipBorderColor());
         }
-        QolHudRenderer.panel(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, ClickGuiModule.getToolTipBackgroundColor());
+        RenderUtil.drawPanel(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, ClickGuiModule.getToolTipBackgroundColor());
         for (int line = 0; line < lines.size(); line++) {
             Component text = styler.styled(lines.get(line));
             int x = tooltipX + 6;

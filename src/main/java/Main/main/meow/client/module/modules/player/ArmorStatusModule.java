@@ -1,11 +1,12 @@
 package Main.main.meow.client.module.modules.player;
 
-import Main.main.meow.client.ui.hud.QolHudRenderer;
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -20,7 +21,7 @@ public final class ArmorStatusModule extends HudDisplayModule {
     }
     private static final EnumSetting<Modes> ORIENTATION = new EnumSetting<>("Orientation", "Change the orientation from horizontal to vertical", Modes.HORIZONTAL);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show background", "Show the background or not", true);
-    private static final ColorSetting COLOR_OF_BACKGROUND = new ColorSetting("Background Color", "Change the background of the colour", QolHudRenderer.getPanel());
+    private static final ColorSetting COLOR_OF_BACKGROUND = new ColorSetting("Background Color", "Change the background of the colour", RenderUtil.getGuiColorPanel());
     public ArmorStatusModule() {
         super("Armor Status", Category.PLAYER, true, "Shows your equipped armor and its remaining durability on the HUD.");
         addSetting(ORIENTATION, SHOW_BACKGROUND, COLOR_OF_BACKGROUND);
@@ -40,7 +41,7 @@ public final class ArmorStatusModule extends HudDisplayModule {
 
     // slot width is item (16px) + gap + text + padding, so horizontal slots never overlap
     private static int slotWidth(Minecraft client, ItemStack piece) {
-        return 18 + QolHudRenderer.getTextWidth(client, (piece + "%") + 4);
+        return 18 + TextUtil.getTextWidth(client, (piece + "%") + 4);
     }
 
     public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y, int color) {
@@ -55,10 +56,10 @@ public final class ArmorStatusModule extends HudDisplayModule {
             }
             int width = slotWidth(client, piece);
             if (SHOW_BACKGROUND.enabled()) {
-                QolHudRenderer.panel(g, slotX, slotY, width, 18, COLOR_OF_BACKGROUND.color());
+                RenderUtil.drawPanel(g, slotX, slotY, width, 18, COLOR_OF_BACKGROUND.color());
             }
             g.item(piece, slotX + 1, slotY + 1);
-            QolHudRenderer.text(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + String.valueOf(armourPercentageCalc(piece)) + "%", slotX + 19, slotY + 5, QolHudRenderer.getTEXT());
+            RenderUtil.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + String.valueOf(armourPercentageCalc(piece)) + "%", slotX + 19, slotY + 5, RenderUtil.getGuiTextColor());
             if (ORIENTATION.value() == Modes.VERTICAL) {
                 offset += 18;
             } else {

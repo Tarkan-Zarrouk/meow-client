@@ -3,6 +3,7 @@ package Main.main.meow.client.ui.hud;
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.modules.client.ClickGuiModule;
 import Main.main.meow.client.ui.hud.hudgui.HudGuiStyler;
+import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -39,7 +40,7 @@ public final class HudEditorScreen extends Screen {
         if (hovered != null) {
             graphics.fill(hovered.x(), hovered.y(), hovered.x() + hovered.width(), hovered.y() + hovered.height(), HOVER_DARKEN);
         }
-        graphics.text(font, QolHudRenderer.styled("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
+        graphics.text(font, TextUtil.setFont("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
     }
 
     @Override

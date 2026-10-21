@@ -2,7 +2,7 @@ package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.client.ui.hud.QolHudRenderer;
+import Main.main.meow.client.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -21,9 +21,9 @@ public final class PotionEffectsModule extends HudDisplayModule {
 
     public static void drawEffects(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects()); // it took a while to figure out how to get the effects, but this works ig
-        QolHudRenderer.panel(g, x, y, 210, effects.size() * 20 + 12);
+        RenderUtil.drawPanel(g, x, y, 210, effects.size() * 20 + 12);
         if (effects.isEmpty()) {
-            QolHudRenderer.text(g, client, "No active effects", x + 27, y+2, QolHudRenderer.getTEXT());
+            RenderUtil.drawText(g, client, "No active effects", x + 27, y+2, RenderUtil.getGuiTextColor());
         }
         for (int i = 0; i < effects.size(); i++) {
             MobEffectInstance effect = effects.get(i);
@@ -34,7 +34,7 @@ public final class PotionEffectsModule extends HudDisplayModule {
             g.blitSprite(RenderPipelines.GUI_TEXTURED, Gui.getMobEffectSprite(effect.getEffect()), effectX, effectY, effectWidth, effectHeight);
             int textX = x + 27;
             int textY = y + 7 + i * 20;
-            QolHudRenderer.text(g, client, effect.getEffect().value().getDisplayName().getString() + " " + formatDuration(effect.getDuration()), textX, textY, QolHudRenderer.getTEXT());
+            RenderUtil.drawText(g, client, effect.getEffect().value().getDisplayName().getString() + " " + formatDuration(effect.getDuration()), textX, textY, RenderUtil.getGuiTextColor());
         }
     }
 

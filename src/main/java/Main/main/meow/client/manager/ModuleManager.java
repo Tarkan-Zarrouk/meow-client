@@ -11,12 +11,12 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public final class ModuleManager {
-    private final List<Main.main.meow.client.module.Module> modules = new ArrayList<>();
+    private final List<Module> modules = new ArrayList<>();
     private Runnable changeListener = () -> {};
-    private Consumer<Main.main.meow.client.module.Module> enabledChangeListener = module -> {};
+    private Consumer<Module> enabledChangeListener = module -> {};
     private final Set<Integer> pressedKeybinds = new HashSet<>();
 
-    public void register(Main.main.meow.client.module.Module module) {
+    public void register(Module module) {
         if (modules.stream().anyMatch(existing -> existing.name().equalsIgnoreCase(module.name()))) {
             throw new IllegalArgumentException("A module named " + module.name() + " is already registered");
         }
@@ -30,20 +30,20 @@ public final class ModuleManager {
         modules.forEach(module -> module.onChange(listener));
     }
 
-    public void setEnabledChangeListener(Consumer<Main.main.meow.client.module.Module> listener) {
+    public void setEnabledChangeListener(Consumer<Module> listener) {
         enabledChangeListener = listener;
         modules.forEach(module -> module.onEnabledChange(listener));
     }
 
-    public List<Main.main.meow.client.module.Module> all() {
+    public List<Module> all() {
         return Collections.unmodifiableList(modules);
     }
 
-    public List<Main.main.meow.client.module.Module> inCategory(Category category) {
+    public List<Module> inCategory(Category category) {
         return modules.stream().filter(module -> module.category() == category).toList();
     }
 
-    public Main.main.meow.client.module.Module byName(String name) {
+    public Module byName(String name) {
         return modules.stream().filter(module -> module.name().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 

@@ -1,11 +1,12 @@
 package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.module.HudDisplayModule;
-import Main.main.meow.client.ui.hud.QolHudRenderer;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -25,9 +26,9 @@ public class InfoModule extends HudDisplayModule {
         SHOW_FPS_PING_TPS,
     }
     private static final BooleanSetting HAVE_BACKGROUND = new BooleanSetting("Show Background", "Show the background of HUD Module", false);
-    private static final ColorSetting TEXT_COLOUR = new ColorSetting("Text Colour", "Change the colour of your text", QolHudRenderer.getTEXT());
+    private static final ColorSetting TEXT_COLOUR = new ColorSetting("Text Colour", "Change the colour of your text", RenderUtil.getGuiTextColor());
     private static final EnumSetting<Modes> INFO_CYCLE = new EnumSetting<>("Info Cycle", "Toggle between Showing fps and tps and ping, showing fps and ping, showing fps and showing", Modes.SHOW_FPS_PING_TPS);
-    private static final ColorSetting BACKGROUND_COLOUR = new ColorSetting("Background Colour", "Change the colour of the background", QolHudRenderer.getTEXT());
+    private static final ColorSetting BACKGROUND_COLOUR = new ColorSetting("Background Colour", "Change the colour of the background", RenderUtil.getGuiTextColor());
     public InfoModule() {
         super("Info", Category.HUD, false, "Displays information about the client on the HUD.");
         addSetting(HAVE_BACKGROUND, TEXT_COLOUR, INFO_CYCLE, BACKGROUND_COLOUR);
@@ -56,10 +57,10 @@ public class InfoModule extends HudDisplayModule {
             case SHOW_FPS_PING_TPS -> "FPS: " + fps + " PING: " + ping + " TPS: " + tps;
         };
         if(HAVE_BACKGROUND.enabled()) {
-            QolHudRenderer.panel(g, x,y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client), BACKGROUND_COLOUR.color());
-//            QolHudRenderer.panel(g, x, y, QolHudRenderer.getTextWidth(client, text), QolHudRenderer.getTextHeight(client, text));
+            RenderUtil.drawPanel(g, x,y, TextUtil.getTextWidth(client, text), TextUtil.getTextHeight(client), BACKGROUND_COLOUR.color());
+//            RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, text), TextUtil.getTextHeight(client, text));
         }
-        QolHudRenderer.text(g, client, text, x, y, TEXT_COLOUR.color());
+        RenderUtil.drawText(g, client, text, x, y, TEXT_COLOUR.color());
     }
 
     @Override

@@ -1,10 +1,11 @@
 package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
-import Main.main.meow.client.ui.hud.QolHudRenderer;
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -12,9 +13,9 @@ import net.minecraft.client.player.LocalPlayer;
 
 public final class KeystrokesModule extends HudDisplayModule {
     private static long lastKeyTime = System.nanoTime();
-    private static final ColorSetting COLOR_OF_KEYS = new ColorSetting("Color of Background", "The background of the each key", QolHudRenderer.getPanel());
+    private static final ColorSetting COLOR_OF_KEYS = new ColorSetting("Color of Background", "The background of the each key", RenderUtil.getGuiColorPanel());
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Show the background of the keystrokes module", true);
-    private static final ColorSetting COLOR_OF_BACKGROUND = new ColorSetting("Color of Background", "The background of the keystrokes background", QolHudRenderer.getPanel());
+    private static final ColorSetting COLOR_OF_BACKGROUND = new ColorSetting("Color of Background", "The background of the keystrokes background", RenderUtil.getGuiColorPanel());
     private static final float[] KEY_LEVELS = new float[7];
     public KeystrokesModule() {
         super("Keystrokes", Category.HUD, true, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
@@ -56,8 +57,8 @@ public final class KeystrokesModule extends HudDisplayModule {
     public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level, int colorFromUser) {
         int color = blend(colorFromUser, 0xff8d3e9a, level);
         g.fill(x, y, x + width, y + height, color);
-        int textWidth = QolHudRenderer.getTextWidth(client, label);
-        g.text(client.font, QolHudRenderer.styled(label), x + (width - textWidth) / 2, y + (height - 8) / 2, blend(QolHudRenderer.getTEXT(), 0xffffffff, level));
+        int textWidth = TextUtil.getTextWidth(client, label);
+        g.text(client.font, TextUtil.setFont(label), x + (width - textWidth) / 2, y + (height - 8) / 2, blend(RenderUtil.getGuiTextColor(), 0xffffffff, level));
     }
     public static int blend(int from, int to, float amount) {
         // i had to look up whatever the hell this does, but it basically blends two colors together based on the amount (0-1)
