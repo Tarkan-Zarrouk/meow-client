@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.hud.modules;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.util.RenderUtil;
@@ -10,11 +10,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 
-@RequireHudModuleFields
+
 public final class KeystrokesModule extends HudDisplayModule {
     private static long lastKeyTime = System.nanoTime();
     private static final ColorSetting COLOR_OF_KEYS = new ColorSetting("Color of Background", "The background of the each key", RenderUtil.getGuiColorPanel());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
+    private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Color of Background", "The background of the keystrokes background", RenderUtil.getGuiColorPanel());
     private static final ColorSetting COLOR_OF_KEY_ONE = new ColorSetting("Key 1 Color", "Background color of Key 1", RenderUtil.getGuiColorPanel());
     private static final ColorSetting COLOR_OF_KEY_TWO = new ColorSetting("Key 2 Color", "Background color of Key 2", RenderUtil.getGuiColorPanel());
@@ -26,7 +27,7 @@ public final class KeystrokesModule extends HudDisplayModule {
     private static final float[] KEY_LEVELS = new float[7];
     public KeystrokesModule() {
         super("Keystrokes", Category.HUD, true, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
-        super.addSetting(COLOR_OF_KEYS, BACKGROUND_COLOR, COLOR_OF_KEY_ONE, COLOR_OF_KEY_TWO, COLOR_OF_KEY_THREE, COLOR_OF_KEY_FOUR, COLOR_OF_KEY_FIVE, COLOR_OF_KEY_SIX, COLOR_OF_KEY_SEVEN);
+        super.addSetting(SHOW_BACKGROUND, COLOR_OF_KEYS, BACKGROUND_COLOR, COLOR_OF_KEY_ONE, COLOR_OF_KEY_TWO, COLOR_OF_KEY_THREE, COLOR_OF_KEY_FOUR, COLOR_OF_KEY_FIVE, COLOR_OF_KEY_SIX, COLOR_OF_KEY_SEVEN);
     }
     @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
@@ -45,7 +46,9 @@ public final class KeystrokesModule extends HudDisplayModule {
             }
             KEY_LEVELS[i] += (target - KEY_LEVELS[i]) * (1f - (float) Math.exp(-delta * 18f)); // genuinely what is this :sob:
         }
-        g.fill(x, y, x + 122, y + 122, BACKGROUND_COLOR.color());
+        if (SHOW_BACKGROUND.value()) {
+            RenderUtil.drawPanel(g, x, y, 122, 122, BACKGROUND_COLOR.color());
+        }
         key(g, client, "W", x + 41, y + 8, 40, 28, KEY_LEVELS[0], COLOR_OF_KEY_ONE.color());
         key(g, client, "A", x + 7, y + 40, 40, 28, KEY_LEVELS[1], COLOR_OF_KEY_TWO.color());
         key(g, client, "S", x + 41, y + 40, 40, 28, KEY_LEVELS[2], COLOR_OF_KEY_THREE.color());

@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.hud.modules.bps;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.Category;
@@ -12,19 +12,20 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec3;
 
-@RequireHudModuleFields
+
 public final class BpsModule extends HudDisplayModule {
     private static int panelWidthValue = 0;
     private static int panelHeightValue = 0;
     private static Vec3 lastPosition = null;
     private static double currentBps = 0.0;
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background colour", RenderUtil.getGuiColorPanel());
+    private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text color", "Change the text color", RenderUtil.getGuiTextColor());
     private static final EnumSetting<Mode> UNITS_OF_MEASUREMENT = new EnumSetting<>("Units", "Swap between MPH, KMH, BPS", Mode.BPS);
 
     public BpsModule() {
         super("BPS", Category.HUD, false, "Displays your horizontal movement speed in blocks per second.");
-        super.addSetting(BACKGROUND_COLOR, TEXT_COLOR, UNITS_OF_MEASUREMENT);
+        super.addSetting(SHOW_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR, UNITS_OF_MEASUREMENT);
     }
     @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
@@ -39,7 +40,9 @@ public final class BpsModule extends HudDisplayModule {
         int height = 18;
         panelWidthValue = width;
         panelHeightValue = height;
-        RenderUtil.drawPanel(g, x, y, width, height, BACKGROUND_COLOR.color());
+        if (SHOW_BACKGROUND.value()) {
+            RenderUtil.drawPanel(g, x, y, width, height, BACKGROUND_COLOR.color());
+        }
         RenderUtil.drawText(g, client, text, x + 2, y + 5, TEXT_COLOR.color());
     }
 

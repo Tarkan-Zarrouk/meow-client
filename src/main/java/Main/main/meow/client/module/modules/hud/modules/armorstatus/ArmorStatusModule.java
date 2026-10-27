@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.hud.modules.armorstatus;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
@@ -14,15 +14,16 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
-@RequireHudModuleFields
+
 public final class ArmorStatusModule extends HudDisplayModule {
     private static final EnumSetting<Modes> ORIENTATION = new EnumSetting<>("Orientation", "Change the orientation from horizontal to vertical", Modes.HORIZONTAL);
+    private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background of your panel", RenderUtil.getGuiColorPanel());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
 
     public ArmorStatusModule() {
         super("Armor Status", Category.HUD, true, "Shows your equipped armor and its remaining durability on the HUD.");
-        super.addSetting(BACKGROUND_COLOR, TEXT_COLOR, ORIENTATION);
+        super.addSetting(SHOW_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR, ORIENTATION);
     }
 
     // equipped pieces ordered helmet, chestplate, leggings, boots; empty slots are skipped
@@ -54,7 +55,9 @@ public final class ArmorStatusModule extends HudDisplayModule {
                 slotX += offset;
             }
             int width = slotWidth(client, piece);
-            RenderUtil.drawPanel(g, slotX, slotY, width, 18, BACKGROUND_COLOR.color());
+            if(SHOW_BACKGROUND.value()) {
+                RenderUtil.drawPanel(g, slotX, slotY, width, 18, BACKGROUND_COLOR.color());
+            }
             g.item(piece, slotX + 1, slotY + 1);
             RenderUtil.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + armourPercentageCalc(piece) + "%", slotX + 19, slotY + 5, TEXT_COLOR.color());
             if (ORIENTATION.value() == Modes.VERTICAL) {

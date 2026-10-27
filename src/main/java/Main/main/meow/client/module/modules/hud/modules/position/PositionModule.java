@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.hud.modules.position;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
@@ -13,14 +13,15 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import org.apache.commons.lang3.StringUtils;
 
-@RequireHudModuleFields
+
 public final class PositionModule extends HudDisplayModule {
+    private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Set background color", RenderUtil.getGuiColorPanel());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change text color", RenderUtil.getGuiTextColor());
     private static final EnumSetting<Modes> DIRECTION_TYPE = new EnumSetting<>("Modes", "Cycles between direction and coordinates, coordinates, or just direction", Modes.DIRECTIONCOORDINATES);
     public PositionModule() {
         super("PositionModule", Category.HUD, false, "Displays your current X, Y, and Z world coordinates.");
-        super.addSetting(DIRECTION_TYPE, BACKGROUND_COLOR, TEXT_COLOR);
+        super.addSetting(SHOW_BACKGROUND, DIRECTION_TYPE, BACKGROUND_COLOR, TEXT_COLOR);
     }
 
     @Override
@@ -57,7 +58,9 @@ public final class PositionModule extends HudDisplayModule {
             case Modes.DIRECTION -> "Direction: " + direction(player);
             case Modes.COORDINATES -> position(player);
         };
-        RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, text) + 4, TextUtil.getTextHeight(client) + 4, BACKGROUND_COLOR.color());
+        if (SHOW_BACKGROUND.value()) {
+            RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, text) + 4, TextUtil.getTextHeight(client) + 4, BACKGROUND_COLOR.color());
+        }
         RenderUtil.drawText(g, client, text, x + 2, y + 2, TEXT_COLOR.color());
     }
 }

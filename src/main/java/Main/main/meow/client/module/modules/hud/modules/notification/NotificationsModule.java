@@ -10,6 +10,7 @@ import Main.main.meow.client.util.RenderUtil;
 
 public final class NotificationsModule extends ClientModule {
     private static final EnumSetting<Mode> MODE = new EnumSetting<>("Type", "Switches between pink [MeowMod] chat messages and animated top-right alerts.", Mode.CHAT);
+    private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the color of the background", 0xff202632);
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil.getGuiTextColor());
     private static final ColorSetting TIMER_COLOR = new ColorSetting("Timer Setting", "Change the color of the timer", 0xffc52dbd);

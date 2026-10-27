@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.hud.modules;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
+import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.util.RenderUtil;
@@ -14,13 +14,14 @@ import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequireHudModuleFields
+
 public class InventoryViewer extends HudDisplayModule {
+    private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the color of the background", RenderUtil.getGuiColorPanel());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil.getGuiTextColor());
     public InventoryViewer() {
         super("Inventory Viewer", Category.HUD, false, "Shows the content of your inventory updating in real time");
-        addSetting(BACKGROUND_COLOR, TEXT_COLOR);
+        super.addSetting(SHOW_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR);
     }
 
     @Override
@@ -35,7 +36,9 @@ public class InventoryViewer extends HudDisplayModule {
                 playerInventoryStorage.put(itemStack, i);
             }
         }
-        RenderUtil.drawPanel(g, x, y, 162, 54, BACKGROUND_COLOR.color());
+        if (SHOW_BACKGROUND.value()) {
+            RenderUtil.drawPanel(g, x, y, 162, 54, BACKGROUND_COLOR.color());
+        }
         for(ItemStack item : playerInventoryStorage.keySet()) {
             int column = playerInventoryStorage.get(item) % 9;
             int row = playerInventoryStorage.get(item) / 9 - 1;
