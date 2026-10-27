@@ -1,8 +1,8 @@
 package Main.main.meow.client.module.modules.hud.modules.armorstatus;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
+import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
 import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.util.RenderUtil;
@@ -14,18 +14,20 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 
+@RequireHudModuleFields
 public final class ArmorStatusModule extends HudDisplayModule {
     private static final EnumSetting<Modes> ORIENTATION = new EnumSetting<>("Orientation", "Change the orientation from horizontal to vertical", Modes.HORIZONTAL);
-    private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show background", "Show the background or not", true);
-    private static final ColorSetting COLOR_OF_BACKGROUND = new ColorSetting("Background Color", "Change the background of the colour", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background of your panel", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
+
     public ArmorStatusModule() {
         super("Armor Status", Category.HUD, true, "Shows your equipped armor and its remaining durability on the HUD.");
-        addSetting(ORIENTATION, SHOW_BACKGROUND, COLOR_OF_BACKGROUND);
+        super.addSetting(BACKGROUND_COLOR, TEXT_COLOR, ORIENTATION);
     }
 
     // equipped pieces ordered helmet, chestplate, leggings, boots; empty slots are skipped
     private static List<ItemStack> equippedPieces(LocalPlayer player) {
-        List<ItemStack> pieces = new ArrayList<>();
+        List<ItemStack> pieces = new ArrayList<>(); // good look up times here and desired data structure
         for (int slot = 39; slot >= 36; slot--) {
             ItemStack piece = player.getInventory().getItem(slot);
             if (!piece.isEmpty()) {
@@ -52,21 +54,15 @@ public final class ArmorStatusModule extends HudDisplayModule {
                 slotX += offset;
             }
             int width = slotWidth(client, piece);
-            if (SHOW_BACKGROUND.enabled()) {
-                RenderUtil.drawPanel(g, slotX, slotY, width, 18, COLOR_OF_BACKGROUND.color());
-            }
+            RenderUtil.drawPanel(g, slotX, slotY, width, 18, BACKGROUND_COLOR.color());
             g.item(piece, slotX + 1, slotY + 1);
-            RenderUtil.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + armourPercentageCalc(piece) + "%", slotX + 19, slotY + 5, RenderUtil.getGuiTextColor());
+            RenderUtil.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + armourPercentageCalc(piece) + "%", slotX + 19, slotY + 5, TEXT_COLOR.color());
             if (ORIENTATION.value() == Modes.VERTICAL) {
                 offset += 18;
             } else {
                 offset += width;
             }
         }
-    }
-
-    public int getColor() {
-        return COLOR_OF_BACKGROUND.color();
     }
 
     private static float armourPercentageCalc(ItemStack armourPiece) {

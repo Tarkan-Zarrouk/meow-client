@@ -19,6 +19,30 @@ repositories {
     // for more information about repositories.
 }
 
+sourceSets {
+    hudModuleProcessor {
+        java {
+            srcDir "src/main/java"
+            include "Main/main/meow/client/module/modules/hud/annotation/RequireHudModuleFieldsProcessor.java"
+        }
+    }
+    main {
+        java {
+            exclude "Main/main/meow/client/module/modules/hud/annotation/RequireHudModuleFieldsProcessor.java"
+        }
+        compileClasspath += hudModuleProcessor.output
+    }
+}
+
+tasks.named("compileJava") {
+    dependsOn tasks.named("hudModuleProcessorClasses")
+    options.annotationProcessorPath = sourceSets.hudModuleProcessor.output
+    options.compilerArgs.addAll([
+            "-processor",
+            "Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFieldsProcessor"
+    ])
+}
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"

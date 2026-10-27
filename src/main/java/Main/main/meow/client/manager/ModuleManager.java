@@ -20,6 +20,7 @@ public final class ModuleManager {
         if (modules.stream().anyMatch(existing -> existing.name().equalsIgnoreCase(module.name()))) {
             throw new IllegalArgumentException("A module named " + module.name() + " is already registered");
         }
+
         module.onChange(changeListener);
         module.onEnabledChange(enabledChangeListener);
         modules.add(module);

@@ -1,9 +1,7 @@
-package Main.main.meow.client.manager;
+package Main.main.meow.client.module.modules.hud.modules.notification;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.module.modules.hud.modules.notification.Mode;
-import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -85,7 +83,7 @@ public final class NotificationManager {
         int x = client.getWindow().getGuiScaledWidth() - width - 12; // 12px from right edge
         int y = 12 - Math.round((1f - eased) * 18f); // 18px slide-in from top
         int alpha = Math.round(eased * 255f); // 0-255 alpha value or smth
-        RenderUtil.roundedFill(graphics, x, y, width, 32, alpha << 24 | 0xff202632, 4); // 32px height, 4px corner radius, bitwise OR to combine alpha and color
+        RenderUtil.roundedFill(graphics, x, y, width, 32, alpha << 24 | NotificationsModule.getBackgroundColor(), 4); // 32px height, 4px corner radius, bitwise OR to combine alpha and color
         // the timer drains from full to empty while the toast is held, so it is already gone when the toast slides away
         float remaining = 1f;
         if (notifications.showTimer()) {
@@ -99,24 +97,25 @@ public final class NotificationManager {
         }
         int timerWidth = Math.round(width * remaining);
         if (timerWidth > 0) {
-            drawTimerBorder(graphics, x, y, width, timerWidth, alpha << 24 | 0xffc52dbd); // bitwise OR to combine alpha and color
+//            RenderUtil.roundedFill(graphics, x, y, width, timerWidth, (alpha << 24) | (NotificationsModule.getTimerColor() & 0x00ffffff), 4);
+            RenderUtil.roundedFill(graphics, x, y + 30, timerWidth, 2, (alpha << 24) | (NotificationsModule.getTimerColor() & 0x00ffffff), 4);
         }
-        RenderUtil.drawText(graphics, client, message, x + 14, y + 11, 0xffffffff);
+        RenderUtil.drawText(graphics, client, message, x + 14, y + 11, NotificationsModule.getTextColor());
     }
 
-    private static void drawTimerBorder(GuiGraphicsExtractor graphics, int x, int y, int width, int timerWidth, int color) {
-        int radius = 4;
-        boolean reachesRightEdge = timerWidth >= width;
-        for (int row = 0; row < 2; row++) {
-            int bottomDistance = 1 - row; // distance from bottom of the timer bar
-            int leftInset = RenderUtil.roundedInset(radius, bottomDistance);
-            int rightInset;
-            if (reachesRightEdge) {
-                rightInset = RenderUtil.roundedInset(radius, bottomDistance);
-            } else {
-                rightInset = 0;
-            }
-            graphics.fill(x + leftInset, y + 30 + row, x + timerWidth - rightInset, y + 31 + row, color);
-        }
-    }
+//    private static void drawTimerBorder(GuiGraphicsExtractor graphics, int x, int y, int width, int timerWidth, int color) {
+//        int radius = 4;
+//        boolean reachesRightEdge = timerWidth >= width;
+//        for (int row = 0; row < 2; row++) {
+//            int bottomDistance = 1 - row; // distance from bottom of the timer bar
+//            int leftInset = RenderUtil.roundedInset(radius, bottomDistance);
+//            int rightInset;
+//            if (reachesRightEdge) {
+//                rightInset = RenderUtil.roundedInset(radius, bottomDistance);
+//            } else {
+//                rightInset = 0;
+//            }
+//            graphics.fill(x + leftInset, y + 30 + row, x + timerWidth - rightInset, y + 31 + row, color);
+//        }
+//    }
 }

@@ -11,7 +11,7 @@ import Main.main.meow.client.ui.hud.hudgui.HudGuiRenderer;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.ui.hud.HudComponentManager;
 import Main.main.meow.client.ui.hud.HudEditorScreen;
-import Main.main.meow.client.manager.NotificationManager;
+import Main.main.meow.client.module.modules.hud.modules.notification.NotificationManager;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;

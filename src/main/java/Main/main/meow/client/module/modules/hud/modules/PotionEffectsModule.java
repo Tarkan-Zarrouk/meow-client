@@ -1,6 +1,8 @@
 package Main.main.meow.client.module.modules.hud.modules;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
+import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
+import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.util.RenderUtil;
 import net.minecraft.client.Minecraft;
@@ -14,17 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@RequireHudModuleFields
 public final class PotionEffectsModule extends HudDisplayModule {
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background color", "Change the background color", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text color", "Change the color of the text", RenderUtil.getGuiTextColor());
     public PotionEffectsModule() {
         super("Potion Effects", Category.HUD, true, "Displays active potion effects with their icons, levels, and remaining time.");
+        super.addSetting(BACKGROUND_COLOR, TEXT_COLOR);
     }
 
     @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects()); // it took a while to figure out how to get the effects, but this works ig
-        RenderUtil.drawPanel(g, x, y, 210, effects.size() * 20 + 12);
+        RenderUtil.drawPanel(g, x, y, 210, effects.size() * 20 + 12, BACKGROUND_COLOR.color());
         if (effects.isEmpty()) {
-            RenderUtil.drawText(g, client, "No active effects", x + 27, y+2, RenderUtil.getGuiTextColor());
+            RenderUtil.drawText(g, client, "No active effects", x + 27, y+2, TEXT_COLOR.color());
         }
         for (int i = 0; i < effects.size(); i++) {
             MobEffectInstance effect = effects.get(i);
@@ -35,7 +41,7 @@ public final class PotionEffectsModule extends HudDisplayModule {
             g.blitSprite(RenderPipelines.GUI_TEXTURED, Gui.getMobEffectSprite(effect.getEffect()), effectX, effectY, effectWidth, effectHeight);
             int textX = x + 27;
             int textY = y + 7 + i * 20;
-            RenderUtil.drawText(g, client, effect.getEffect().value().getDisplayName().getString() + " " + formatDuration(effect.getDuration()), textX, textY, RenderUtil.getGuiTextColor());
+            RenderUtil.drawText(g, client, effect.getEffect().value().getDisplayName().getString() + " " + formatDuration(effect.getDuration()), textX, textY, TEXT_COLOR.color());
         }
     }
 

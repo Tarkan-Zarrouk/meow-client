@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.hud.modules.clock;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.module.modules.hud.annotation.RequireHudModuleFields;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.Category;
@@ -14,14 +14,15 @@ import net.minecraft.client.player.LocalPlayer;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+@RequireHudModuleFields
 public final class ClockModule extends HudDisplayModule {
     private static int panelWidth, panelHeight;
     private static final EnumSetting<Modes> CLOCK_FORMAT = new EnumSetting<>("Standard", "Switches between 24h clock and 12 hour clock", Modes.MILITARY);
-    private static final BooleanSetting HAVE_BACKGROUND = new BooleanSetting("Show background", "Show the background colour", true);
-    private static final ColorSetting BACKGROUND_COLOUR = new ColorSetting("Background Colour", "Colour of background", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Colour", "Colour of background", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Colour of text", RenderUtil.getGuiTextColor());
     public ClockModule() {
         super("Clock", Category.HUD, false, "Displays the current local and world time on the HUD.");
-        addSetting(CLOCK_FORMAT, HAVE_BACKGROUND, BACKGROUND_COLOUR);
+        super.addSetting(CLOCK_FORMAT, BACKGROUND_COLOR, TEXT_COLOR);
     }
     @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
@@ -32,11 +33,8 @@ public final class ClockModule extends HudDisplayModule {
         };
         panelWidth = TextUtil.getTextWidth(client, clock);
         panelHeight = TextUtil.getTextHeight(client);
-        if(HAVE_BACKGROUND.enabled()) {
-            RenderUtil.drawPanel(g, x, y, panelWidth + 4, panelHeight + 4);
-        }
-
-        RenderUtil.drawText(g, client, clock, x, y, RenderUtil.getGuiTextColor());
+        RenderUtil.drawPanel(g, x, y, panelWidth + 4, panelHeight + 4, BACKGROUND_COLOR.color());
+        RenderUtil.drawText(g, client, clock, x, y, BACKGROUND_COLOR.color());
     }
 
     @Override

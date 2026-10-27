@@ -7,6 +7,7 @@ import Main.main.meow.client.setting.modulesettings.KeybindSetting;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
+
 public final class ZoomModule extends ClientModule {
     private static final float ZOOM_FOV = 30f;
     private static float progress;
