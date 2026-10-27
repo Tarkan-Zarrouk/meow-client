@@ -44,10 +44,6 @@ public final class BpsModule extends HudDisplayModule {
         RenderUtil.drawText(g, client, text, x + 2, y + 5, RenderUtil.getGuiTextColor());
     }
 
-    public int getColor() {
-        return BACKGROUND_COLOUR.color();
-    }
-
     public static double getCurrentMph() {
         // assume one block width is the size of a meter
         return currentBps * 2.237;

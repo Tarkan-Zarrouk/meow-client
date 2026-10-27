@@ -38,9 +38,6 @@ public final class BiomeModule extends HudDisplayModule {
         }
     }
 
-    public int getColor() {
-        return TEXT_COLOR.color();
-    }
 
     public static String getBiome(Minecraft client, LocalPlayer player) {
         if(client.level == null) return "Unknown";

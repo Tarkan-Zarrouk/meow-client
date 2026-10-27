@@ -62,7 +62,4 @@ public final class PositionModule extends HudDisplayModule {
         }
         RenderUtil.drawText(g, client, text, x + (HAVE_BACKGROUND.enabled() ? 2 : 0), y + (HAVE_BACKGROUND.enabled() ? 2 : 0), RenderUtil.getGuiTextColor());
     }
-    public int getColor() {
-        return 1;
-    }
 }

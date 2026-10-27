@@ -38,9 +38,6 @@ public final class ClockModule extends HudDisplayModule {
 
         RenderUtil.drawText(g, client, clock, x, y, RenderUtil.getGuiTextColor());
     }
-    public int getBackgroundColour() {
-        return BACKGROUND_COLOUR.color();
-    }
 
     @Override
     public int panelWidth(Minecraft client) {

@@ -50,9 +50,6 @@ public final class KeystrokesModule extends HudDisplayModule {
         key(g, client, "RMB", x + 63, y + 96, 52, 22, KEY_LEVELS[6]);
     }
 
-    public int getBackgroundColour() {
-        return COLOR_OF_KEYS.color();
-    }
 
     public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level) {
         int color = blend(COLOR_OF_BACKGROUND.color(), 0xff8d3e9a, level);

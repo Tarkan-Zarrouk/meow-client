@@ -49,7 +49,6 @@ public class InfoModule extends HudDisplayModule {
         };
         if(HAVE_BACKGROUND.enabled()) {
             RenderUtil.drawPanel(g, x,y, TextUtil.getTextWidth(client, text), TextUtil.getTextHeight(client), BACKGROUND_COLOUR.color());
-//            RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, text), TextUtil.getTextHeight(client, text));
         }
         RenderUtil.drawText(g, client, text, x, y, TEXT_COLOUR.color());
     }

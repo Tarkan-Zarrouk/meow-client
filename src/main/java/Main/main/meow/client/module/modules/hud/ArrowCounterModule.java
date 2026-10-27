@@ -42,10 +42,6 @@ public final class ArrowCounterModule extends HudDisplayModule {
         RenderUtil.drawText(g, client, String.valueOf(count), x + 19, y + 5, RenderUtil.getGuiTextColor());
     }
 
-    public int getColor() {
-        return BACKGROUND_COLOR.color();
-    }
-
     @Override
     public int panelWidth(Minecraft client) {
         if (client == null || client.player == null)

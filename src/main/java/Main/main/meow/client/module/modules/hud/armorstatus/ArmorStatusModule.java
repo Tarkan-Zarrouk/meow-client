@@ -56,7 +56,7 @@ public final class ArmorStatusModule extends HudDisplayModule {
                 RenderUtil.drawPanel(g, slotX, slotY, width, 18, COLOR_OF_BACKGROUND.color());
             }
             g.item(piece, slotX + 1, slotY + 1);
-            RenderUtil.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + String.valueOf(armourPercentageCalc(piece)) + "%", slotX + 19, slotY + 5, RenderUtil.getGuiTextColor());
+            RenderUtil.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + armourPercentageCalc(piece) + "%", slotX + 19, slotY + 5, RenderUtil.getGuiTextColor());
             if (ORIENTATION.value() == Modes.VERTICAL) {
                 offset += 18;
             } else {
