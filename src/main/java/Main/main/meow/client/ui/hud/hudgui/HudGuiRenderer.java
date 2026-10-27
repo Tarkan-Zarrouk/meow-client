@@ -21,7 +21,6 @@ import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.SUBCATEGORY_HEIGH
 import static Main.main.meow.client.ui.hud.hudgui.HudGuiStyler.CORNER_RADIUS;
 import static Main.main.meow.client.ui.hud.hudgui.HudGuiStyler.withAlpha;
 
-// the clickgui screen: renders the ui and delegates state, layout and input to the other hudgui classes
 public final class HudGuiRenderer extends Screen {
     private final ModuleManager modules;
     private HudGuiSettingsHandler settings;
@@ -30,7 +29,7 @@ public final class HudGuiRenderer extends Screen {
     private HudGuiInputHandler input;
 
     public HudGuiRenderer(ModuleManager modules) {
-        super(Component.literal("HUD Modules"));
+        super(Component.literal("HUD Modules")); // screen reader purpose
         this.modules = modules;
     }
 
@@ -82,15 +81,15 @@ public final class HudGuiRenderer extends Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-        int screenWidth = width;
-        int screenHeight = height;
+        int screenWidth = super.width;
+        int screenHeight = super.height;
         int alpha = layout.transitionAlpha();
-        int animationOffset = (int) ((1f - HudGuiStyler.easeIn(layout.transitionProgress())) * -18f);
+        int animationOffset = (int) ((1f - HudGuiStyler.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
         int columnWidth = layout.columnWidth();
         String tooltipDescription = null;
         for (int column = 0; column < layout.columnCount(); column++) {
             int x = layout.columnX(column);
-            renderHeader(graphics, layout.category(column), x, layout.columnY(column) + animationOffset, columnWidth, alpha);
+            renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset, columnWidth, alpha);
 
             List<Module> entries = layout.modulesIn(column);
             for (int row = 0; row < entries.size(); row++) {
@@ -117,13 +116,33 @@ public final class HudGuiRenderer extends Screen {
         }
     }
 
-    private void renderHeader(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
+    /**
+     * assist extractRenderState method by drawing the categories
+     * @param graphics graphics library
+     * @param category a category
+     * @param x desired x position
+     * @param y desired y position
+     * @param columnWidth width of category
+     * @param alpha alpha value for transparency
+     */
+    private void renderCategories(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
         RenderUtil.roundedFill(graphics, x, y, columnWidth, HEADER_HEIGHT, withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false, ClickGuiModule.getClickGuiHeaderBorderRadius());
         graphics.fill(x + HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT - 1, x + columnWidth - HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT, withAlpha(HudGuiStyler.BORDER, alpha));
         String label = styler.truncate(category.title(), columnWidth - 10);
         styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, HEADER_HEIGHT), withAlpha(HudGuiStyler.CATEGORY_TEXT, alpha), false);
     }
 
+    /**
+     * Renders a single module row for a given module at the specified position and size.
+     * @param graphics graphics library
+     * @param module a module
+     * @param x desired x position
+     * @param y desired y position
+     * @param columnWidth width of category
+     * @param hovered hovered state
+     * @param lastModule last in the list
+     * @param alpha transparency value
+     */
     private void renderModuleRow(GuiGraphicsExtractor graphics, Module module, int x, int y, int columnWidth, boolean hovered, boolean lastModule, int alpha) {
         boolean roundedBottom = lastModule && !settings.isExpanded(module);
         int background;
@@ -140,7 +159,19 @@ public final class HudGuiRenderer extends Screen {
         styler.drawText(graphics, styler.styled("..."), x + columnWidth - 14, y + 10, withAlpha(HudGuiStyler.MUTED, alpha), false);
     }
 
-    // returns the description of the hovered setting, if any
+    /**
+     * Renders the settings for a given module at the specified position and size, and returns a tooltip description if any setting is hovered.
+     * @param graphics graphics library
+     * @param module a module
+     * @param x desired x position
+     * @param dropdownY desired y position for the dropdown
+     * @param columnWidth width of category
+     * @param mouseX position of mouse in x axis
+     * @param mouseY position of mouse in y axis
+     * @param lastModule last in the list
+     * @param alpha transparency value
+     * @return tooltip description if any setting is hovered, null otherwise
+     */
     private String renderSettings(GuiGraphicsExtractor graphics, Module module, int x, int dropdownY, int columnWidth, int mouseX, int mouseY, boolean lastModule, int alpha) {
         String tooltip = null;
         List<String> entries = settings.settingsFor(module);
@@ -160,6 +191,14 @@ public final class HudGuiRenderer extends Screen {
         return tooltip;
     }
 
+    /**
+     * Renders a slider for a given NumberSetting at the specified position and size.
+     * @param graphics graphics library
+     * @param slider the slider to render
+     * @param x desired x position
+     * @param settingY the setting position in y axis
+     * @param columnWidth width of module
+     */
     private void renderSlider(GuiGraphicsExtractor graphics, NumberSetting slider, int x, int settingY, int columnWidth) {
         int sliderX = x + 8; // +8 for padding
         int sliderY = settingY + SUBCATEGORY_HEIGHT - 4; // -4 for padding
@@ -169,6 +208,15 @@ public final class HudGuiRenderer extends Screen {
         graphics.fill(knobX - 2, sliderY - 2, knobX + 3, sliderY + 4, ClickGuiModule.moduleColor()); // +3 for width of knob
     }
 
+    /**
+     * Renders a tooltip with the given description at the specified mouse position, ensuring it stays within the screen bounds.
+     * @param graphics graphics library
+     * @param description tooltip
+     * @param mouseX mouse in x axis value
+     * @param mouseY mouse in y axis value
+     * @param screenWidth user screen instance height
+     * @param screenHeight user screeninstance height
+     */
     private void renderTooltip(GuiGraphicsExtractor graphics, String description, int mouseX, int mouseY, int screenWidth, int screenHeight) {
         List<String> lines = styler.wrapTooltip(description, 220);
         int tooltipWidth = 0;
@@ -197,6 +245,16 @@ public final class HudGuiRenderer extends Screen {
         }
     }
 
+    /**
+     * Checks if the mouse is hovered over a given rectangle defined by x, y, width, and height.
+     * @param mouseX mouse in x-axis
+     * @param mouseY mouse in y-axis
+     * @param x desired x position
+     * @param y desired y position
+     * @param width width of tooltip
+     * @param height height of tooltip
+     * @return true: hovered; false: not hovered
+     */
     private static boolean isHovered(int mouseX, int mouseY, int x, int y, int width, int height) {
         return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
     }
