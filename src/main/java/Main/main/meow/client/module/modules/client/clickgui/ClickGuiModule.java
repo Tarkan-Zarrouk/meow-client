@@ -21,10 +21,19 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting FONT_SIZE = new NumberSetting("Font size", "Drag across this slider to change the active font size in real time.", 11, 5, 20);
     private static final NumberSetting CLICK_GUI_BORDER_RADIUS = new NumberSetting("Border Radius", "Change the roundedness of the borders", 16, 5,20);
     private static final NumberSetting CLICK_GUI_HEADER_RADIUS = new NumberSetting("Header Radius","Change the header radius", 16, 5, 20);
+    private static final BooleanSetting SHOW_TOOL_TIP = new BooleanSetting("Draw Tooltips", "Show the tooltips for each module and their respective setting", true);
     public ClickGuiModule() {
         super("ClickGUI", Category.CLIENT, true, "Opens this ClickGUI and lets you customize its colors and keybind.");
-        super.addSetting(CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, FONT, SHOW_SHADOW, SHOW_OUTLINE, TOOLTIP_BORDER_COLOR, FONT_SIZE, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS);
+        super.addSetting(CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, FONT, SHOW_SHADOW, SHOW_OUTLINE, TOOLTIP_BORDER_COLOR, FONT_SIZE, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, SHOW_TOOL_TIP);
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+
+    /**
+     *
+     * @return true if enabled, false otherwise
+     */
+    public static boolean getToolTipShowVal() {
+        return SHOW_TOOL_TIP.enabled();
     }
     public static int getClickGuiHeaderBorderRadius() {
         return CLICK_GUI_HEADER_RADIUS.value();

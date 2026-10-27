@@ -97,14 +97,14 @@ public final class HudGuiRenderer extends Screen {
                 Module module = entries.get(row);
                 int y = layout.moduleY(column, row);
                 boolean hovered = isHovered(mouseX, mouseY, x, y, columnWidth, ROW_HEIGHT);
-                if (hovered) {
+                if (hovered && ClickGuiModule.getToolTipShowVal()) {
                     tooltipDescription = module.description();
                 }
                 boolean lastModule = row == entries.size() - 1;
                 renderModuleRow(graphics, module, x, y, columnWidth, hovered, lastModule, alpha);
                 if (settings.isExpanded(module)) {
                     String settingTooltip = renderSettings(graphics, module, x, y + ROW_HEIGHT, columnWidth, mouseX, mouseY, lastModule, alpha);
-                    if (settingTooltip != null) tooltipDescription = settingTooltip;
+                    if (settingTooltip != null && ClickGuiModule.getToolTipShowVal()) tooltipDescription = settingTooltip;
                 }
             }
         }
