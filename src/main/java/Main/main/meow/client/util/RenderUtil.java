@@ -62,39 +62,68 @@ public class RenderUtil {
     public static void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height) {
         graphics.fill(x, y, x + width, y + height, getGuiColorPanel());
     }
+    public static void roundedFill(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight, int radius) {
+        int borderRadius = Math.min(radius, width / 2);
+        for (int row = 0; row < height; row++) {
+            int leftInset = 0;
+            int rightInset = 0;
+            if (topLeft && row < borderRadius) {
+                leftInset = roundedInset(borderRadius, row);
+            }
+            if (topRight && row < borderRadius) {
+                rightInset = roundedInset(borderRadius, row);
+            }
+            if (bottomLeft && row >= height - borderRadius) {
+                leftInset = roundedInset(borderRadius, height - row - 1);
+            }
+            if (bottomRight && row >= height - borderRadius) {
+                rightInset = roundedInset(borderRadius, height - row - 1);
+            }
+            if (leftInset > 0 || rightInset > 0) {
+                graphics.fill(x + leftInset, y + row, x + width - rightInset, y + row + 1, color);
+            } else {
+                graphics.fill(x, y + row, x + width, y + row + 1, color);
+            }
+        }
+    }
 
-    /**
-     * Calculates the amount of pixels to insert for a rounded corner based on the radius and distance from the corner
-     * @param radius Radius of the rounded corner
-     * @param distance Distance from the corner
-     * @return The amount of pixels to inset for the rounded corner
-     */
-    public static int roundedInset(int radius, int distance) {
+    private static int roundedInset(int radius, int distance) {
         double circle = radius - 0.5;
         double offset = distance - circle;
         return Math.max(0, (int) Math.ceil(circle - Math.sqrt(Math.max(0, circle * circle - offset * offset)))); // read a minecraft clients code for this, i have no idea how this works but it does and it looks good so im not complaining
     }
-
-    /**
-     * Draws a rounded shape
-     * @param graphics Graphics renderer class
-     * @param x The x position
-     * @param y The y position
-     * @param width The width
-     * @param height The height
-     * @param color The color
-     * @param radius Distance to the midpoint of the shape
-     */
-    public static void roundedFill(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {
-        radius = Math.min(radius, Math.min(width / 2, height / 2));
-        for (int row = 0; row < height; row++) {
-            int inset = 0;
-            if (row < radius) {
-                inset = roundedInset(radius, row);
-            } else if (row >= height - radius) {
-                inset = roundedInset(radius, height - row - 1); // bottom corner
-            }
-            graphics.fill(x + inset, y + row, x + width - inset, y + row + 1, color); // horizontal line current riow
-        }
-    }
+//    /**
+//     * Calculates the amount of pixels to insert for a rounded corner based on the radius and distance from the corner
+//     * @param radius Radius of the rounded corner
+//     * @param distance Distance from the corner
+//     * @return The amount of pixels to inset for the rounded corner
+//     */
+//    public static int roundedInset(int radius, int distance) {
+//        double circle = radius - 0.5;
+//        double offset = distance - circle;
+//        return Math.max(0, (int) Math.ceil(circle - Math.sqrt(Math.max(0, circle * circle - offset * offset)))); // read a minecraft clients code for this, i have no idea how this works but it does and it looks good so im not complaining
+//    }
+//
+//    /**
+//     * Draws a rounded shape
+//     * @param graphics Graphics renderer class
+//     * @param x The x position
+//     * @param y The y position
+//     * @param width The width
+//     * @param height The height
+//     * @param color The color
+//     * @param radius Distance to the midpoint of the shape
+//     */
+//    public static void roundedFill(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {
+//        radius = Math.min(radius, Math.min(width / 2, height / 2));
+//        for (int row = 0; row < height; row++) {
+//            int inset = 0;
+//            if (row < radius) {
+//                inset = roundedInset(radius, row);
+//            } else if (row >= height - radius) {
+//                inset = roundedInset(radius, height - row - 1); // bottom corner
+//            }
+//            graphics.fill(x + inset, y + row, x + width - inset, y + row + 1, color); // horizontal line current riow
+//        }
+//    }
 }

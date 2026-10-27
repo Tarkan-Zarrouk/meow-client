@@ -41,6 +41,11 @@ public class MeowClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::handleHudEditorKey);
         ClientTickEvents.END_CLIENT_TICK.register(BpsModule::getBps);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (client.screen == null) {
+                MODULE_MANAGER.handleKeybinds(client.getWindow().handle());
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (MODULE_MANAGER.byName("Sprint") instanceof SprintModule sprint) {
                 sprint.tick(client);
             }

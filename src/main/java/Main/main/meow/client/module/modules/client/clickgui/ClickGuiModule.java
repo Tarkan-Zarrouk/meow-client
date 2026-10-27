@@ -19,10 +19,18 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting SHOW_OUTLINE = new BooleanSetting("Toggle ToolTip Border", "Toggle ToolTip border", false);
     private static final ColorSetting TOOLTIP_BORDER_COLOR = new ColorSetting("Tooltip Border Color", "Change the color of the tooltip border", 0xffffffff);
     private static final NumberSetting FONT_SIZE = new NumberSetting("Font size", "Drag across this slider to change the active font size in real time.", 11, 5, 20);
+    private static final NumberSetting CLICK_GUI_BORDER_RADIUS = new NumberSetting("Border Radius", "Change the roundedness of the borders", 16, 5,20);
+    private static final NumberSetting CLICK_GUI_HEADER_RADIUS = new NumberSetting("Header Radius","Change the header radius", 16, 5, 20);
     public ClickGuiModule() {
         super("ClickGUI", Category.CLIENT, true, "Opens this ClickGUI and lets you customize its colors and keybind.");
-        addSetting(CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, FONT, SHOW_SHADOW, SHOW_OUTLINE, TOOLTIP_BORDER_COLOR, FONT_SIZE);
-        setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+        super.addSetting(CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, FONT, SHOW_SHADOW, SHOW_OUTLINE, TOOLTIP_BORDER_COLOR, FONT_SIZE, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS);
+        super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getClickGuiHeaderBorderRadius() {
+        return CLICK_GUI_HEADER_RADIUS.value();
+    }
+    public static int getClickGuiBorderRadius() {
+        return CLICK_GUI_BORDER_RADIUS.value();
     }
 
     public static int tooltipBorderColor() {

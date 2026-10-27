@@ -18,6 +18,7 @@ import java.util.List;
 import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.HEADER_HEIGHT;
 import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.ROW_HEIGHT;
 import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.SUBCATEGORY_HEIGHT;
+import static Main.main.meow.client.ui.hud.hudgui.HudGuiStyler.CORNER_RADIUS;
 import static Main.main.meow.client.ui.hud.hudgui.HudGuiStyler.withAlpha;
 
 // the clickgui screen: renders the ui and delegates state, layout and input to the other hudgui classes
@@ -117,7 +118,7 @@ public final class HudGuiRenderer extends Screen {
     }
 
     private void renderHeader(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
-        HudGuiStyler.roundedFill(graphics, x, y, columnWidth, HEADER_HEIGHT, withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false);
+        RenderUtil.roundedFill(graphics, x, y, columnWidth, HEADER_HEIGHT, withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false, ClickGuiModule.getClickGuiHeaderBorderRadius());
         graphics.fill(x + HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT - 1, x + columnWidth - HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT, withAlpha(HudGuiStyler.BORDER, alpha));
         String label = styler.truncate(category.title(), columnWidth - 10);
         styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, HEADER_HEIGHT), withAlpha(HudGuiStyler.CATEGORY_TEXT, alpha), false);
@@ -133,7 +134,7 @@ public final class HudGuiRenderer extends Screen {
         } else {
             background = HudGuiStyler.ROW;
         }
-        HudGuiStyler.roundedFill(graphics, x, y, columnWidth, ROW_HEIGHT, withAlpha(background, alpha), false, false, roundedBottom, roundedBottom);
+        RenderUtil.roundedFill(graphics, x, y, columnWidth, ROW_HEIGHT, withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
         String label = styler.truncate(module.name(), columnWidth - 24);
         styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, ROW_HEIGHT), withAlpha(HudGuiStyler.TEXT, alpha), true);
         styler.drawText(graphics, styler.styled("..."), x + columnWidth - 14, y + 10, withAlpha(HudGuiStyler.MUTED, alpha), false);
@@ -150,7 +151,7 @@ public final class HudGuiRenderer extends Screen {
                 tooltip = settings.settingDescription(module, setting);
             }
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
-            HudGuiStyler.roundedFill(graphics, x, settingY, columnWidth, SUBCATEGORY_HEIGHT, withAlpha(HudGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting);
+            RenderUtil.roundedFill(graphics, x, settingY, columnWidth, SUBCATEGORY_HEIGHT, withAlpha(HudGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
             styler.drawText(graphics, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, SUBCATEGORY_HEIGHT), withAlpha(HudGuiStyler.MUTED, alpha), false);
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)
@@ -197,9 +198,6 @@ public final class HudGuiRenderer extends Screen {
     }
 
     private static boolean isHovered(int mouseX, int mouseY, int x, int y, int width, int height) {
-        if (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height) {
-            return true;
-        }
-        return false;
+        return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
     }
 }

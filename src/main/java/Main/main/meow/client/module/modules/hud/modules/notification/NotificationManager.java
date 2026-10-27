@@ -2,6 +2,7 @@ package Main.main.meow.client.module.modules.hud.modules.notification;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
+import Main.main.meow.client.ui.hud.hudgui.HudGuiStyler;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -83,7 +84,7 @@ public final class NotificationManager {
         int x = client.getWindow().getGuiScaledWidth() - width - 12; // 12px from right edge
         int y = 12 - Math.round((1f - eased) * 18f); // 18px slide-in from top
         int alpha = Math.round(eased * 255f); // 0-255 alpha value or smth
-        RenderUtil.roundedFill(graphics, x, y, width, 32, alpha << 24 | NotificationsModule.getBackgroundColor(), 4); // 32px height, 4px corner radius, bitwise OR to combine alpha and color
+        RenderUtil.roundedFill(graphics, x, y, width, 32, alpha << 24 | NotificationsModule.getBackgroundColor(), true, true, true, true, NotificationsModule.getBorderRadiusValue()); // 32px height, 4px corner radius, bitwise OR to combine alpha and color
         // the timer drains from full to empty while the toast is held, so it is already gone when the toast slides away
         float remaining = 1f;
         if (notifications.showTimer()) {
@@ -98,7 +99,7 @@ public final class NotificationManager {
         int timerWidth = Math.round(width * remaining);
         if (timerWidth > 0) {
 //            RenderUtil.roundedFill(graphics, x, y, width, timerWidth, (alpha << 24) | (NotificationsModule.getTimerColor() & 0x00ffffff), 4);
-            RenderUtil.roundedFill(graphics, x, y + 30, timerWidth, 2, (alpha << 24) | (NotificationsModule.getTimerColor() & 0x00ffffff), 4);
+            RenderUtil.roundedFill(graphics, x, y + 30, timerWidth, 2, (alpha << 24) | (NotificationsModule.getTimerColor() & 0x00ffffff), true, true, true, true, NotificationsModule.getBorderRadiusValue());
         }
         RenderUtil.drawText(graphics, client, message, x + 14, y + 11, NotificationsModule.getTextColor());
     }

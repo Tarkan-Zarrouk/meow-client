@@ -1,6 +1,7 @@
 package Main.main.meow.client.module.modules.visuals;
 
 import Main.main.meow.client.MeowClient;
+import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.KeybindSetting;
@@ -16,7 +17,7 @@ public final class ZoomModule extends ClientModule {
 
     public ZoomModule() {
         super("Zoom", Category.VISUALS, false, "Hold the zoom key to smoothly zoom the camera like OptiFine.");
-        addSetting(zoomKey);
+        super.addSetting(zoomKey);
     }
 
     private static void update(long window) {

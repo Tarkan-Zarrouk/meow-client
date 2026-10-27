@@ -35,7 +35,7 @@ public final class ColorSetting extends Setting<Integer> {
 
     @Override
     public String label() {
-        return Module.exceedsClickGuiWidth(name()) +  ": " + Module.exceedsClickGuiWidth(String.format("#%06X", value() & 0xffffff));
+        return name() +  ": " + String.format("#%06X", value() & 0xffffff);
     }
 
     @Override
