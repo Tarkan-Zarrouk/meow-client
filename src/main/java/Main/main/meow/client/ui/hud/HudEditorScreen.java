@@ -1,10 +1,7 @@
 package Main.main.meow.client.ui.hud;
 
 import Main.main.meow.client.MeowClient;
-import Main.main.meow.client.module.modules.client.ClickGuiModule;
-import Main.main.meow.client.ui.hud.hudgui.HudGuiStyler;
 import Main.main.meow.client.util.TextUtil;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;

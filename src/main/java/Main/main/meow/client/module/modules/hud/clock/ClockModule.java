@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.hud;
+package Main.main.meow.client.module.modules.hud.clock;
 
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
@@ -15,10 +15,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public final class ClockModule extends HudDisplayModule {
-    private enum Modes {
-        MILITARY,
-        CIVIL,
-    }
     private static int panelWidth, panelHeight;
     private static final EnumSetting<Modes> CLOCK_FORMAT = new EnumSetting<>("Standard", "Switches between 24h clock and 12 hour clock", Modes.MILITARY);
     private static final BooleanSetting HAVE_BACKGROUND = new BooleanSetting("Show background", "Show the background colour", true);
@@ -27,7 +23,8 @@ public final class ClockModule extends HudDisplayModule {
         super("Clock", Category.HUD, false, "Displays the current local and world time on the HUD.");
         addSetting(CLOCK_FORMAT, HAVE_BACKGROUND, BACKGROUND_COLOUR);
     }
-    public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y, int colour) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         LocalTime time = LocalTime.now();
         String clock = switch(CLOCK_FORMAT.value()) {
             case MILITARY -> time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
@@ -36,7 +33,7 @@ public final class ClockModule extends HudDisplayModule {
         panelWidth = TextUtil.getTextWidth(client, clock);
         panelHeight = TextUtil.getTextHeight(client);
         if(HAVE_BACKGROUND.enabled()) {
-            RenderUtil.drawPanel(g, x, y, panelWidth + 4, panelHeight + 4, colour);
+            RenderUtil.drawPanel(g, x, y, panelWidth + 4, panelHeight + 4);
         }
 
         RenderUtil.drawText(g, client, clock, x, y, RenderUtil.getGuiTextColor());

@@ -29,17 +29,21 @@ public final class ArrowCounterModule extends HudDisplayModule {
         }
         return count;
     }
-
-    public static void drawArrowCounter(GuiGraphicsExtractor g, Minecraft client, int x, int y, Item item, LocalPlayer player) {
-        int count = getItem(player, item);
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+        int count = getItem(player, Items.ARROW);
         int textWidth = TextUtil.getTextWidth(client, String.valueOf(count));
         int width = 22 + textWidth;
         int height = 18;
         if(SHOW_BACKGROUND.enabled()) {
             RenderUtil.drawPanel(g, x, y, width, height, BACKGROUND_COLOR.color());
         }
-        g.item(new ItemStack(item), x + 1, y + 1);
+        g.item(new ItemStack(Items.ARROW), x + 1, y + 1);
         RenderUtil.drawText(g, client, String.valueOf(count), x + 19, y + 5, RenderUtil.getGuiTextColor());
+    }
+
+    public int getColor() {
+        return BACKGROUND_COLOR.color();
     }
 
     @Override

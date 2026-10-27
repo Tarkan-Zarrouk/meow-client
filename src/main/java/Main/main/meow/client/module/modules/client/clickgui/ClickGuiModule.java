@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.client;
+package Main.main.meow.client.module.modules.client.clickgui;
 
 import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
@@ -7,15 +7,9 @@ import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.setting.NumberSetting;
 import Main.main.meow.client.util.RenderUtil;
-import net.minecraft.network.chat.FontDescription;
 import org.lwjgl.glfw.GLFW;
 
 public final class ClickGuiModule extends ClientModule {
-    public enum Font implements FontDescription {
-        INTER,
-        MINECRAFT,
-        BACKUP,
-    }
     private static final ColorSetting CATEGORY_COLOR = new ColorSetting("Category colour", "Opens a picker that changes the color of every category header in real time.", 0xffc52dbd);
     private static final ColorSetting MODULE_COLOR = new ColorSetting("Module colour", "Opens a picker that changes the color of every module row in real time.", 0xffc52dbd);
     private static final ColorSetting TOOL_TIP_BACKGROUND_COLOR = new ColorSetting("Tooltip Color", "Change the background color of the tooltip", RenderUtil.getGuiColorPanel());

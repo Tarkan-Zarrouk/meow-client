@@ -19,7 +19,8 @@ public final class PotionEffectsModule extends HudDisplayModule {
         super("Potion Effects", Category.HUD, true, "Displays active potion effects with their icons, levels, and remaining time.");
     }
 
-    public static void drawEffects(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects()); // it took a while to figure out how to get the effects, but this works ig
         RenderUtil.drawPanel(g, x, y, 210, effects.size() * 20 + 12);
         if (effects.isEmpty()) {

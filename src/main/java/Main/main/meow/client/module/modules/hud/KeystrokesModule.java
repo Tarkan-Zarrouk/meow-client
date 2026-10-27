@@ -21,8 +21,8 @@ public final class KeystrokesModule extends HudDisplayModule {
         super("Keystrokes", Category.HUD, true, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
         addSetting(COLOR_OF_KEYS, SHOW_BACKGROUND, COLOR_OF_BACKGROUND);
     }
-
-    public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y, int colourFromUser) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         // this entire method is ai, i lowkey have no idea how i could do this without it being buggy lol
         long now = System.nanoTime();
         float delta = Math.min(0.05f, (now - lastKeyTime) / 1000000000f);
@@ -41,21 +41,21 @@ public final class KeystrokesModule extends HudDisplayModule {
         if(SHOW_BACKGROUND.enabled()) {
             g.fill(x, y, x + 122, y + 122, COLOR_OF_BACKGROUND.color());
         }
-        key(g, client, "W", x + 41, y + 8, 40, 28, KEY_LEVELS[0], colourFromUser);
-        key(g, client, "A", x + 7, y + 40, 40, 28, KEY_LEVELS[1], colourFromUser);
-        key(g, client, "S", x + 41, y + 40, 40, 28, KEY_LEVELS[2], colourFromUser);
-        key(g, client, "D", x + 75, y + 40, 40, 28, KEY_LEVELS[3], colourFromUser);
-        key(g, client, "SPACE", x + 7, y + 72, 108, 22, KEY_LEVELS[4], colourFromUser);
-        key(g, client, "LMB", x + 7, y + 96, 52, 22, KEY_LEVELS[5], colourFromUser);
-        key(g, client, "RMB", x + 63, y + 96, 52, 22, KEY_LEVELS[6], colourFromUser);
+        key(g, client, "W", x + 41, y + 8, 40, 28, KEY_LEVELS[0]);
+        key(g, client, "A", x + 7, y + 40, 40, 28, KEY_LEVELS[1]);
+        key(g, client, "S", x + 41, y + 40, 40, 28, KEY_LEVELS[2]);
+        key(g, client, "D", x + 75, y + 40, 40, 28, KEY_LEVELS[3]);
+        key(g, client, "SPACE", x + 7, y + 72, 108, 22, KEY_LEVELS[4]);
+        key(g, client, "LMB", x + 7, y + 96, 52, 22, KEY_LEVELS[5]);
+        key(g, client, "RMB", x + 63, y + 96, 52, 22, KEY_LEVELS[6]);
     }
 
     public int getBackgroundColour() {
         return COLOR_OF_KEYS.color();
     }
 
-    public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level, int colorFromUser) {
-        int color = blend(colorFromUser, 0xff8d3e9a, level);
+    public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level) {
+        int color = blend(COLOR_OF_BACKGROUND.color(), 0xff8d3e9a, level);
         g.fill(x, y, x + width, y + height, color);
         int textWidth = TextUtil.getTextWidth(client, label);
         g.text(client.font, TextUtil.setFont(label), x + (width - textWidth) / 2, y + (height - 8) / 2, blend(RenderUtil.getGuiTextColor(), 0xffffffff, level));

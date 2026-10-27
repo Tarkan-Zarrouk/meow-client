@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.player;
+package Main.main.meow.client.module.modules.hud.armorstatus;
 
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
@@ -15,15 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import java.util.*;
 
 public final class ArmorStatusModule extends HudDisplayModule {
-    private enum Modes {
-        HORIZONTAL,
-        VERTICAL
-    }
     private static final EnumSetting<Modes> ORIENTATION = new EnumSetting<>("Orientation", "Change the orientation from horizontal to vertical", Modes.HORIZONTAL);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show background", "Show the background or not", true);
     private static final ColorSetting COLOR_OF_BACKGROUND = new ColorSetting("Background Color", "Change the background of the colour", RenderUtil.getGuiColorPanel());
     public ArmorStatusModule() {
-        super("Armor Status", Category.PLAYER, true, "Shows your equipped armor and its remaining durability on the HUD.");
+        super("Armor Status", Category.HUD, true, "Shows your equipped armor and its remaining durability on the HUD.");
         addSetting(ORIENTATION, SHOW_BACKGROUND, COLOR_OF_BACKGROUND);
     }
 
@@ -44,7 +40,8 @@ public final class ArmorStatusModule extends HudDisplayModule {
         return 18 + TextUtil.getTextWidth(client, (piece + "%") + 4);
     }
 
-    public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y, int color) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         int offset = 0;
         for (ItemStack piece : equippedPieces(player)) {
             int slotX = x;

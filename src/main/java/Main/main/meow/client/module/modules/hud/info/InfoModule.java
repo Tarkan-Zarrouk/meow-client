@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.hud;
+package Main.main.meow.client.module.modules.hud.info;
 
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
@@ -15,16 +15,6 @@ import java.util.Objects;
 
 public class InfoModule extends HudDisplayModule {
     private static double tps = 20.0;
-    // all possibilities of modes, we love customization :3
-    private enum Modes {
-        SHOW_FPS,
-        SHOW_TPS,
-        SHOW_PING,
-        SHOW_FPS_PING,
-        SHOW_FPS_TPS,
-        SHOW_PING_TPS,
-        SHOW_FPS_PING_TPS,
-    }
     private static final BooleanSetting HAVE_BACKGROUND = new BooleanSetting("Show Background", "Show the background of HUD Module", false);
     private static final ColorSetting TEXT_COLOUR = new ColorSetting("Text Colour", "Change the colour of your text", RenderUtil.getGuiTextColor());
     private static final EnumSetting<Modes> INFO_CYCLE = new EnumSetting<>("Info Cycle", "Toggle between Showing fps and tps and ping, showing fps and ping, showing fps and showing", Modes.SHOW_FPS_PING_TPS);
@@ -34,7 +24,8 @@ public class InfoModule extends HudDisplayModule {
         addSetting(HAVE_BACKGROUND, TEXT_COLOUR, INFO_CYCLE, BACKGROUND_COLOUR);
     }
 
-    public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         int fps = client.getFps();
         int ping = 0;
         if(client.getConnection() != null) {

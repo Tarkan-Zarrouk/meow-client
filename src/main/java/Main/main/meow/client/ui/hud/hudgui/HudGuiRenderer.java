@@ -2,7 +2,7 @@ package Main.main.meow.client.ui.hud.hudgui;
 
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.module.modules.client.ClickGuiModule;
+import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.setting.NumberSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.manager.ModuleManager;

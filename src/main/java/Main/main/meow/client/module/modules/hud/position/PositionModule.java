@@ -1,6 +1,7 @@
-package Main.main.meow.client.module.modules.hud;
+package Main.main.meow.client.module.modules.hud.position;
 
 import Main.main.meow.client.module.HudDisplayModule;
+import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.EnumSetting;
@@ -13,16 +14,13 @@ import net.minecraft.core.BlockPos;
 import org.apache.commons.lang3.StringUtils;
 
 public final class PositionModule extends HudDisplayModule {
-    public enum Modes {
-        DIRECTIONCOORDINATES,
-        COORDINATES,
-        DIRECTION
-    }
     private static final BooleanSetting HAVE_BACKGROUND = new BooleanSetting("Panel", "Displays the background", false);
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Set background color", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change text color", RenderUtil.getGuiTextColor());
     private static final EnumSetting<Modes> DIRECTION_TYPE = new EnumSetting<>("Modes", "Cycles between direction and coordinates, coordinates, or just direction", Modes.DIRECTIONCOORDINATES);
     public PositionModule() {
         super("PositionModule", Category.HUD, false, "Displays your current X, Y, and Z world coordinates.");
-        addSetting(HAVE_BACKGROUND, DIRECTION_TYPE);
+        addSetting(HAVE_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR, DIRECTION_TYPE);
     }
 
     @Override
@@ -49,8 +47,8 @@ public final class PositionModule extends HudDisplayModule {
     private static String direction(LocalPlayer player) {
         return StringUtils.capitalize(player.getDirection().getName());
     }
-
-    public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         if (client.player == null) {
             return;
         }
@@ -64,5 +62,7 @@ public final class PositionModule extends HudDisplayModule {
         }
         RenderUtil.drawText(g, client, text, x + (HAVE_BACKGROUND.enabled() ? 2 : 0), y + (HAVE_BACKGROUND.enabled() ? 2 : 0), RenderUtil.getGuiTextColor());
     }
-
+    public int getColor() {
+        return 1;
+    }
 }

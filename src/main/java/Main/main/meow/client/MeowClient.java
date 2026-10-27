@@ -1,5 +1,11 @@
 package Main.main.meow.client;
 
+import Main.main.meow.client.module.modules.hud.armorstatus.ArmorStatusModule;
+import Main.main.meow.client.module.modules.hud.bps.BpsModule;
+import Main.main.meow.client.module.modules.hud.clock.ClockModule;
+import Main.main.meow.client.module.modules.hud.info.InfoModule;
+import Main.main.meow.client.module.modules.hud.notification.NotificationsModule;
+import Main.main.meow.client.module.modules.hud.position.PositionModule;
 import Main.main.meow.client.ui.hud.hudgui.HudGuiRenderer;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.ui.hud.HudComponentManager;
@@ -7,19 +13,17 @@ import Main.main.meow.client.ui.hud.HudEditorScreen;
 import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.ModuleManager;
-import Main.main.meow.client.module.modules.client.ClickGuiModule;
+import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.module.modules.visuals.ZoomModule;
 import Main.main.meow.client.module.modules.hud.*;
 import Main.main.meow.client.module.modules.misc.WaypointsModule;
 import Main.main.meow.client.module.modules.movement.SprintModule;
-import Main.main.meow.client.module.modules.player.*;
 import Main.main.meow.client.setting.MeowConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 
 public class MeowClient implements ClientModInitializer {
@@ -45,7 +49,7 @@ public class MeowClient implements ClientModInitializer {
     }
 
     private static void registerHudComponents() {
-        PositionModule coordinates = (PositionModule) MODULE_MANAGER.byName("PositionModule");
+        PositionModule positionModule = (PositionModule) MODULE_MANAGER.byName("PositionModule");
         ArmorStatusModule armor = (ArmorStatusModule) MODULE_MANAGER.byName("Armor Status");
         PotionEffectsModule effects = (PotionEffectsModule) MODULE_MANAGER.byName("Potion Effects");
         KeystrokesModule keystrokes = (KeystrokesModule) MODULE_MANAGER.byName("Keystrokes");
@@ -60,7 +64,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("BPS", 8, 8, bps) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || bps.isEnabled()) && c.player != null) {
-                    BpsModule.drawInfo(g, c,x(), y());
+                    bps.drawInfo(g, c, c.player,x(), y());
                 }
             }
         });
@@ -68,7 +72,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("Arrow Counter", 8, 28, arrow) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || arrow.isEnabled()) && c.player != null) {
-                    ArrowCounterModule.drawArrowCounter(g, c, x(), y(), Items.ARROW, c.player);
+                    arrow.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
@@ -76,7 +80,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("Totem Counter", 8, 48, totem) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || totem.isEnabled()) && c.player != null) {
-                    TotemCounterModule.drawTotemCounter(g, c, x(), y(), Items.TOTEM_OF_UNDYING, c.player);
+                    totem.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
@@ -84,7 +88,7 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("clock", 200, 150, clock) {
             protected void renderComponent(GuiGraphicsExtractor graphics, Minecraft client, boolean editor) {
                 if((editor || clock.isEnabled()) && client.player != null) {
-                    ClockModule.drawInfo(graphics, client, client.player, x(), y(), clock.getBackgroundColour());
+                    clock.drawInfo(graphics, client, client.player, x(), y());
                 }
             }
         });
@@ -92,50 +96,50 @@ public class MeowClient implements ClientModInitializer {
         HUD_COMPONENTS.add(new HudComponent("biome", 200, 100, biome) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if((editor || biome.isEnabled()) && c.player != null) {
-                    BiomeModule.drawInfo(g,c, c.player, x(), y());
+                    biome.drawInfo(g,c, c.player, x(), y());
                 }
             }
         });
 
-        HUD_COMPONENTS.add(new HudComponent("coordinates", 200, 8, coordinates) {
+        HUD_COMPONENTS.add(new HudComponent("positionModule", 200, 8, positionModule) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
-                if ((editor || coordinates.isEnabled()) && c.player != null) {
-                    PositionModule.drawInfo(g, c, c.player, x(), y());
+                if ((editor || positionModule.isEnabled()) && c.player != null) {
+                    positionModule.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
         HUD_COMPONENTS.add(new HudComponent("armor", 8, 68, armor) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || armor.isEnabled()) && c.player != null) {
-                    ArmorStatusModule.drawInfo(g, c, c.player, x(), y(), armor.getColor());
+                    armor.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
         HUD_COMPONENTS.add(new HudComponent("effects", 8, 128, effects) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if ((editor || effects.isEnabled()) && c.player != null) {
-                    PotionEffectsModule.drawEffects(g, c, c.player, x(), y());
+                    effects.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
         HUD_COMPONENTS.add(new HudComponent("keystrokes", 8, 200, keystrokes) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if (c.player != null && (editor || keystrokes.isEnabled())) {
-                    KeystrokesModule.drawInfo(g, c, c.player, x(), y(), keystrokes.getBackgroundColour());
+                    keystrokes.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
         HUD_COMPONENTS.add(new HudComponent("inventory", 8, 280, inventory) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if (c.player != null && (editor || inventory.isEnabled())) {
-                    InventoryViewer.drawInventory(g, c, c.player, x(), y());
+                    inventory.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });
         HUD_COMPONENTS.add(new HudComponent("info", 8, 8, info) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
                 if (c.player != null && (editor || info.isEnabled())) {
-                    InfoModule.drawInfo(g, c, c.player, x(), y());
+                    info.drawInfo(g, c, c.player, x(), y());
                 }
             }
         });

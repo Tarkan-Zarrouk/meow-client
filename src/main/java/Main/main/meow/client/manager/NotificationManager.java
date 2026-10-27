@@ -2,7 +2,8 @@ package Main.main.meow.client.manager;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.module.modules.hud.NotificationsModule;
+import Main.main.meow.client.module.modules.hud.notification.Mode;
+import Main.main.meow.client.module.modules.hud.notification.NotificationsModule;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -32,7 +33,7 @@ public final class NotificationManager {
         } else {
             status = "disabled";
         }
-        if (notifications.mode() == NotificationsModule.Mode.CHAT) {
+        if (notifications.mode() == Mode.CHAT) {
             Minecraft client = Minecraft.getInstance();
             if (client.player != null) {
                 MutableComponent prefix = Component.literal("[MeowMod] ").withStyle(ChatFormatting.LIGHT_PURPLE);
@@ -69,7 +70,7 @@ public final class NotificationManager {
     public static void render(GuiGraphicsExtractor graphics, Minecraft client) {
         if (message == null) return;
         NotificationsModule notifications = (NotificationsModule) MeowClient.MODULE_MANAGER.byName("Notifications");
-        if (notifications == null || notifications.mode() != NotificationsModule.Mode.ALERT) {
+        if (notifications == null || notifications.mode() != Mode.ALERT) {
             message = null;
             return;
         }

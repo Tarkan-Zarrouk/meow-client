@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.hud;
+package Main.main.meow.client.module.modules.hud.bps;
 
 import Main.main.meow.client.module.HudDisplayModule;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
@@ -17,21 +17,16 @@ public final class BpsModule extends HudDisplayModule {
     private static int panelHeightValue = 0;
     private static Vec3 lastPosition = null;
     private static double currentBps = 0.0;
-    private enum Modes {
-        MPH,
-        KMH,
-        BPS
-    }
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Toggle Background", "Show a background", true);
     private static final ColorSetting BACKGROUND_COLOUR = new ColorSetting("Background Color", "Change the background colour", RenderUtil.getGuiColorPanel());
-    private static final EnumSetting<Modes> UNITS_OF_MEASUREMENT = new EnumSetting<>("Units", "Swap between MPH, KMH, BPS", Modes.BPS);
+    private static final EnumSetting<Mode> UNITS_OF_MEASUREMENT = new EnumSetting<>("Units", "Swap between MPH, KMH, BPS", Mode.BPS);
 
     public BpsModule() {
         super("BPS", Category.HUD, false, "Displays your horizontal movement speed in blocks per second.");
         addSetting(SHOW_BACKGROUND, BACKGROUND_COLOUR, UNITS_OF_MEASUREMENT);
     }
-
-    public static void drawInfo(GuiGraphicsExtractor g, Minecraft client, int x, int y) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         double speed = switch(UNITS_OF_MEASUREMENT.value()) {
             case MPH -> getCurrentMph();
             case KMH -> getCurrentKmh();
@@ -47,6 +42,10 @@ public final class BpsModule extends HudDisplayModule {
             RenderUtil.drawPanel(g, x, y, width, height, BACKGROUND_COLOUR.color());
         }
         RenderUtil.drawText(g, client, text, x + 2, y + 5, RenderUtil.getGuiTextColor());
+    }
+
+    public int getColor() {
+        return BACKGROUND_COLOUR.color();
     }
 
     public static double getCurrentMph() {

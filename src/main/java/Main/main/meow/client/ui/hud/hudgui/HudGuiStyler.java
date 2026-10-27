@@ -1,7 +1,6 @@
 package Main.main.meow.client.ui.hud.hudgui;
 
-import Main.main.meow.client.module.modules.client.ClickGuiModule;
-import net.minecraft.client.Minecraft;
+import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
@@ -25,11 +24,11 @@ public final class HudGuiStyler {
     }
 
     public static FontDescription getFont() {
-        ClickGuiModule.Font choice = ClickGuiModule.font();
-        if (choice == ClickGuiModule.Font.INTER) {
+        Main.main.meow.client.module.modules.client.clickgui.Font choice = ClickGuiModule.font();
+        if (choice == Main.main.meow.client.module.modules.client.clickgui.Font.INTER) {
             return INTER_FONT;
         }
-        if (choice == ClickGuiModule.Font.BACKUP) {
+        if (choice == Main.main.meow.client.module.modules.client.clickgui.Font.BACKUP) {
             return BACKUP_FONT;
         }
         return Style.EMPTY.getFont();
@@ -56,7 +55,7 @@ public final class HudGuiStyler {
         graphics.pose().pushMatrix();
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
-        graphics.text(font, value, 0, 0, color, shadow && ClickGuiModule.font().equals(ClickGuiModule.Font.MINECRAFT));
+        graphics.text(font, value, 0, 0, color, shadow && ClickGuiModule.font().equals(Main.main.meow.client.module.modules.client.clickgui.Font.MINECRAFT));
         graphics.pose().popMatrix();
     }
 

@@ -1,6 +1,7 @@
 package Main.main.meow.client.module.modules.hud;
 
 import Main.main.meow.client.module.HudDisplayModule;
+import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.util.RenderUtil;
 import net.minecraft.client.Minecraft;
@@ -13,11 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InventoryViewer extends HudDisplayModule {
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the color of the background", RenderUtil.getGuiColorPanel());
     public InventoryViewer() {
         super("Inventory Viewer", Category.HUD, false, "Shows the content of your inventory updating in real time");
+        addSetting(BACKGROUND_COLOR);
     }
 
-    public static void drawInventory(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
+    @Override
+    public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         Map<ItemStack, Integer> playerInventoryStorage = new HashMap<>(); // <ItemStack, SlotPos>
         Inventory playerInventory = player.getInventory();
         for(int i = 9; i < 36; i++) {
@@ -28,7 +32,7 @@ public class InventoryViewer extends HudDisplayModule {
                 playerInventoryStorage.put(itemStack, i);
             }
         }
-        RenderUtil.drawPanel(g, x, y, 162, 54);
+        RenderUtil.drawPanel(g, x, y, 162, 54, BACKGROUND_COLOR.color());
         for(ItemStack item : playerInventoryStorage.keySet()) {
             int column = playerInventoryStorage.get(item) % 9;
             int row = playerInventoryStorage.get(item) / 9 - 1;
