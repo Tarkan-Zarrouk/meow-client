@@ -1,6 +1,6 @@
 package Main.main.meow.client.ui.hud;
 
-import Main.main.meow.client.module.HudDisplayModule;
+import Main.main.meow.client.module.modules.hud.HudDisplayModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 

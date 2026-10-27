@@ -2,8 +2,8 @@ package Main.main.meow.client.manager;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.module.modules.hud.notification.Mode;
-import Main.main.meow.client.module.modules.hud.notification.NotificationsModule;
+import Main.main.meow.client.module.modules.hud.modules.notification.Mode;
+import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;

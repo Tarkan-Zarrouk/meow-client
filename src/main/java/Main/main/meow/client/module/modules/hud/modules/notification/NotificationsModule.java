@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.hud.notification;
+package Main.main.meow.client.module.modules.hud.modules.notification;
 
 import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.Category;

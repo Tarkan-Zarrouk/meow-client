@@ -1,11 +1,12 @@
 package Main.main.meow.client;
 
-import Main.main.meow.client.module.modules.hud.armorstatus.ArmorStatusModule;
-import Main.main.meow.client.module.modules.hud.bps.BpsModule;
-import Main.main.meow.client.module.modules.hud.clock.ClockModule;
-import Main.main.meow.client.module.modules.hud.info.InfoModule;
-import Main.main.meow.client.module.modules.hud.notification.NotificationsModule;
-import Main.main.meow.client.module.modules.hud.position.PositionModule;
+import Main.main.meow.client.module.modules.hud.modules.*;
+import Main.main.meow.client.module.modules.hud.modules.armorstatus.ArmorStatusModule;
+import Main.main.meow.client.module.modules.hud.modules.bps.BpsModule;
+import Main.main.meow.client.module.modules.hud.modules.clock.ClockModule;
+import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
+import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
+import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
 import Main.main.meow.client.ui.hud.hudgui.HudGuiRenderer;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.ui.hud.HudComponentManager;
@@ -15,7 +16,6 @@ import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.module.modules.visuals.ZoomModule;
-import Main.main.meow.client.module.modules.hud.*;
 import Main.main.meow.client.module.modules.misc.WaypointsModule;
 import Main.main.meow.client.module.modules.movement.SprintModule;
 import Main.main.meow.client.setting.MeowConfig;

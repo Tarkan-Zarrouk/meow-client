@@ -1,6 +1,6 @@
-package Main.main.meow.client.module.modules.hud.info;
+package Main.main.meow.client.module.modules.hud.modules.info;
 
-import Main.main.meow.client.module.HudDisplayModule;
+import Main.main.meow.client.module.modules.hud.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;

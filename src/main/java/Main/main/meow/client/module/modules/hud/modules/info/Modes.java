@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.hud.info;
+package Main.main.meow.client.module.modules.hud.modules.info;
 
 public enum Modes {
     SHOW_FPS,
