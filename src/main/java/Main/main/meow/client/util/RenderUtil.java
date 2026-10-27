@@ -50,6 +50,13 @@ public class RenderUtil {
     public static void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color) {
         graphics.fill(x, y, x + width, y + height, color);
     }
+    public static void drawBorder(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color) {
+        graphics.outline(x, y, x + width, y + height, color);
+    }
+
+    public static void drawRoundedOutline(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {
+        roundedFill(graphics, x, y, width, height, color, true, true, true, true, radius);
+    }
 
     /**
      * Draw a quadrilateral on the screen

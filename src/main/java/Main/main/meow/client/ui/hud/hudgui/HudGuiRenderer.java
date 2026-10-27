@@ -234,9 +234,9 @@ public final class HudGuiRenderer extends Screen {
         tooltipX = Math.max(4, tooltipX);
         tooltipY = Math.max(4, tooltipY);
         if(ClickGuiModule.showOutline()) {
-            graphics.outline(tooltipX - 1, tooltipY - 1, tooltipWidth + 2, tooltipHeight + 2, ClickGuiModule.tooltipBorderColor());
+            RenderUtil.drawRoundedOutline(graphics, tooltipX - 1, tooltipY - 1, tooltipWidth + 2, tooltipHeight + 2, ClickGuiModule.tooltipBorderColor(), ClickGuiModule.getToolTipBorderRadius());
         }
-        RenderUtil.drawPanel(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, ClickGuiModule.getToolTipBackgroundColor());
+        RenderUtil.roundedFill(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, ClickGuiModule.getToolTipBackgroundColor(), true, true, true, true, ClickGuiModule.getToolTipBorderRadius());
         for (int line = 0; line < lines.size(); line++) {
             Component text = styler.styled(lines.get(line));
             int x = tooltipX + 6;
