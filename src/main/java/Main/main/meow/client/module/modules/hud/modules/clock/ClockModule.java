@@ -35,7 +35,7 @@ public final class ClockModule extends HudDisplayModule {
         panelWidth = TextUtil.getTextWidth(client, clock);
         panelHeight = TextUtil.getTextHeight(client);
         if (SHOW_BACKGROUND.value()) {
-            RenderUtil.drawPanel(g, x, y, panelWidth + 4, panelHeight + 4, BACKGROUND_COLOR.color());
+            RenderUtil.drawPanel(g, x -2, y - 2, panelWidth + 4, panelHeight + 4, BACKGROUND_COLOR.color());
         }
         RenderUtil.drawText(g, client, clock, x, y, BACKGROUND_COLOR.color());
     }

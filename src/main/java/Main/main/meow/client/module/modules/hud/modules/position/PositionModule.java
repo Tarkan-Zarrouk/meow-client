@@ -61,6 +61,6 @@ public final class PositionModule extends HudDisplayModule {
         if (SHOW_BACKGROUND.value()) {
             RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, text) + 4, TextUtil.getTextHeight(client) + 4, BACKGROUND_COLOR.color());
         }
-        RenderUtil.drawText(g, client, text, x + 2, y + 2, TEXT_COLOR.color());
+        RenderUtil.drawText(g, client, text, x + 3, y + 3, TEXT_COLOR.color());
     }
 }

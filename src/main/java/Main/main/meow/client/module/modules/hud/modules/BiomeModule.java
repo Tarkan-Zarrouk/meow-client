@@ -32,7 +32,7 @@ public final class BiomeModule extends HudDisplayModule {
             biome = "Unknown?";
         }
         if (SHOW_BACKGROUND.value()) {
-            RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, biome) + 4, TextUtil.getTextHeight(client) + 4, BACKGROUND_COLOR.color());
+            RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, biome) + TextUtil.getTextWidth(client, "Biome :") + 4, TextUtil.getTextHeight(client) + 4, BACKGROUND_COLOR.color());
         }
         RenderUtil.drawText(g, client, "Biome: " + biome, x + 2, y + 2, TEXT_COLOR.color());
     }
@@ -47,7 +47,7 @@ public final class BiomeModule extends HudDisplayModule {
     public int panelWidth(Minecraft client) {
         if(client.player == null)
             return 0;
-        return TextUtil.getTextWidth(client, getBiome(client, client.player));
+        return TextUtil.getTextWidth(client, getBiome(client, client.player)) + TextUtil.getTextWidth(client, "Biome :") + 4;
     }
 
     @Override

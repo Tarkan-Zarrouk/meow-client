@@ -33,6 +33,7 @@ public final class HudGuiRenderer extends Screen {
         this.modules = modules;
     }
 
+
     @Override
     protected void init() {
         settings = new HudGuiSettingsHandler(modules);
@@ -43,6 +44,7 @@ public final class HudGuiRenderer extends Screen {
         layout.init(width, height);
     }
 
+
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         if(ClickGuiModule.getBlurBackgroundValue()) {
@@ -50,11 +52,11 @@ public final class HudGuiRenderer extends Screen {
         }
     }
 
+
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         return input.mouseClicked(event) || super.mouseClicked(event, doubleClick);
     }
-
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
         return input.mouseDragged(event, width, height) || super.mouseDragged(event, deltaX, deltaY);
