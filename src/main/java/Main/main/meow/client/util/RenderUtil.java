@@ -2,6 +2,13 @@ package Main.main.meow.client.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class RenderUtil {
     private static final int GUI_PANEL_COLOR = 0xb9161d2a;
@@ -50,13 +57,6 @@ public class RenderUtil {
     public static void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color) {
         graphics.fill(x, y, x + width, y + height, color);
     }
-    public static void drawBorder(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color) {
-        graphics.outline(x, y, x + width, y + height, color);
-    }
-
-    public static void drawRoundedOutline(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {
-        roundedFill(graphics, x, y, width, height, color, true, true, true, true, radius);
-    }
 
     /**
      * Draw a quadrilateral on the screen
@@ -69,6 +69,21 @@ public class RenderUtil {
     public static void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height) {
         graphics.fill(x, y, x + width, y + height, getGuiColorPanel());
     }
+
+    /**
+     * Draws a random object to the screen
+     * @param graphics graphics library
+     * @param x x axis position
+     * @param y y axis position
+     * @param width thickness of rounded object
+     * @param height tallness of rounded object
+     * @param color color of rounded object
+     * @param topLeft round corner left-top
+     * @param topRight round corner right-top
+     * @param bottomLeft round corner left-bottom
+     * @param bottomRight round corner right-bottom
+     * @param radius the 'circleness'
+     */
     public static void roundedFill(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight, int radius) {
         int borderRadius = Math.min(radius, width / 2);
         for (int row = 0; row < height; row++) {
@@ -93,44 +108,62 @@ public class RenderUtil {
             }
         }
     }
+    // see method above
+    public static void drawRoundedOutline(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {
+        roundedFill(graphics, x, y, width, height, color, true, true, true, true, radius);
+    }
 
     private static int roundedInset(int radius, int distance) {
         double circle = radius - 0.5;
         double offset = distance - circle;
         return Math.max(0, (int) Math.ceil(circle - Math.sqrt(Math.max(0, circle * circle - offset * offset)))); // read a minecraft clients code for this, i have no idea how this works but it does and it looks good so im not complaining
     }
-//    /**
-//     * Calculates the amount of pixels to insert for a rounded corner based on the radius and distance from the corner
-//     * @param radius Radius of the rounded corner
-//     * @param distance Distance from the corner
-//     * @return The amount of pixels to inset for the rounded corner
-//     */
-//    public static int roundedInset(int radius, int distance) {
-//        double circle = radius - 0.5;
-//        double offset = distance - circle;
-//        return Math.max(0, (int) Math.ceil(circle - Math.sqrt(Math.max(0, circle * circle - offset * offset)))); // read a minecraft clients code for this, i have no idea how this works but it does and it looks good so im not complaining
-//    }
-//
-//    /**
-//     * Draws a rounded shape
-//     * @param graphics Graphics renderer class
-//     * @param x The x position
-//     * @param y The y position
-//     * @param width The width
-//     * @param height The height
-//     * @param color The color
-//     * @param radius Distance to the midpoint of the shape
-//     */
-//    public static void roundedFill(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {
-//        radius = Math.min(radius, Math.min(width / 2, height / 2));
-//        for (int row = 0; row < height; row++) {
-//            int inset = 0;
-//            if (row < radius) {
-//                inset = roundedInset(radius, row);
-//            } else if (row >= height - radius) {
-//                inset = roundedInset(radius, height - row - 1); // bottom corner
-//            }
-//            graphics.fill(x + inset, y + row, x + width - inset, y + row + 1, color); // horizontal line current riow
-//        }
-//    }
+
+    /**
+     * draws a 3D model of a living entity on the screen
+     * @param graphics graphics library
+     * @param client instance
+     * @param entity the entity to render
+     * @param x x position
+     * @param y y position
+     * @param modelSize size of the model being drawn
+     */
+    public static void drawModel(GuiGraphicsExtractor graphics, Minecraft client, LivingEntity entity, int x, int y, int modelSize) {
+        // the type is all wonky looking, java's ambiguous var makes it easier to understand, thanks stack overflow.
+        // had to view skyblocker for this rendering bs, lord have mercy this took hours.
+        var renderer = client.getEntityRenderDispatcher().getRenderer(entity);
+        EntityRenderState entityRenderState = renderer.createRenderState(entity, 1.0f);
+        entityRenderState.shadowPieces.clear();
+
+        float spinAngle = (System.currentTimeMillis() % 4000L) / 4000.0f * (float) (Math.PI * 2.0);
+        if (entityRenderState instanceof LivingEntityRenderState living) {
+            living.bodyRot = 180.0f;
+            living.yRot = 0.0f;
+            living.xRot = 0.0f;
+            living.boundingBoxWidth = living.boundingBoxWidth / living.scale;
+            living.boundingBoxHeight = living.boundingBoxHeight / living.scale;
+            living.scale = 1.0f; // some weird issue with the scale being applied twice, so we set it to 1.0f to avoid that
+        }
+        // had to lookup a minecraft mod to figure out how to get it to work, quaternion math is a pain in the ass
+        float largest = Math.max(1.0f, Math.max(entityRenderState.boundingBoxHeight, entityRenderState.boundingBoxWidth)); // whatever bigger: height or width, we want to scale it down to fit in the box
+        float scale = (modelSize * 0.8f) / largest;
+        Vector3f translation = new Vector3f(0.0f, entityRenderState.boundingBoxHeight / 2.0f, 0.0f);
+        Quaternionf rotation = new Quaternionf().rotateZ((float) Math.PI).rotateY(spinAngle);
+        // this is the actual rendering call, it takes in the render state, scale, translation, rotation, and the x/y coordinates of the box to render in
+        //and it rendwrs the entity in that box, with the scale and rotation applied
+        graphics.entity(entityRenderState, scale, translation, rotation, null, x, y, x + modelSize, y + modelSize);
+    }
+
+    /**
+     * Draw out a texture (sprite)
+     * @param graphics graphics library
+     * @param texture the texture to draw
+     * @param x the x position of the texture
+     * @param y the y position of the texture
+     * @param width the width surrounding the texture (typically, if it's not humungous or is a mc default texture, assume 9 pixels)
+     * @param height the height surrounding the texture (typically, if it's not humungous or is a mc default texture, assume 9 pixels)
+     */
+    public static void drawSprite(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height) {
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x, y, width, height);
+    }
 }

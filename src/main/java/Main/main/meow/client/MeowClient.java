@@ -65,6 +65,7 @@ public class MeowClient implements ClientModInitializer {
         TotemCounterModule totem = (TotemCounterModule) MODULE_MANAGER.byName("Totem Counter");
         ArrowCounterModule arrow = (ArrowCounterModule) MODULE_MANAGER.byName("Arrow Counter");
         BpsModule bps = (BpsModule) MODULE_MANAGER.byName("BPS");
+        EntityInfoViewer entityInfoViewer = (EntityInfoViewer) MODULE_MANAGER.byName("Entity Viewer");
 
         HUD_COMPONENTS.add(new HudComponent("BPS", 8, 8, bps) {
             protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
@@ -148,6 +149,13 @@ public class MeowClient implements ClientModInitializer {
                 }
             }
         });
+        HUD_COMPONENTS.add(new HudComponent("entityInfoViewer", 50,50, entityInfoViewer) {
+            protected void renderComponent(GuiGraphicsExtractor g, Minecraft c, boolean editor) {
+                if(c.player != null && (editor || entityInfoViewer.isEnabled())) {
+                    entityInfoViewer.drawInfo(g,c,c.player, x(), y());
+                }
+            }
+        });
     }
 
     private static void registerModules() {
@@ -167,6 +175,7 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.register(new ArrowCounterModule());
         MODULE_MANAGER.register(new InventoryViewer());
         MODULE_MANAGER.register(new InfoModule());
+        MODULE_MANAGER.register(new EntityInfoViewer());
     }
 
     private static void handleHudEditorKey(Minecraft client) {

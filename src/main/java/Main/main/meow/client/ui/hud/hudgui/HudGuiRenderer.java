@@ -45,7 +45,9 @@ public final class HudGuiRenderer extends Screen {
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-        extractBlurredBackground(graphics);
+        if(ClickGuiModule.getBlurBackgroundValue()) {
+            extractBlurredBackground(graphics);
+        }
     }
 
     @Override
@@ -156,7 +158,7 @@ public final class HudGuiRenderer extends Screen {
         RenderUtil.roundedFill(graphics, x, y, columnWidth, ROW_HEIGHT, withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
         String label = styler.truncate(module.name(), columnWidth - 24);
         styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, ROW_HEIGHT), withAlpha(HudGuiStyler.TEXT, alpha), true);
-        styler.drawText(graphics, styler.styled("..."), x + columnWidth - 14, y + 10, withAlpha(HudGuiStyler.MUTED, alpha), false);
+        styler.drawText(graphics, styler.styled("⋮"), x + columnWidth - 14, y + 10, withAlpha(HudGuiStyler.MUTED, alpha), false);
     }
 
     /**

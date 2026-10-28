@@ -23,6 +23,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting CLICK_GUI_HEADER_RADIUS = new NumberSetting("Header Radius","Change the header radius", 16, 5, 20);
     private static final BooleanSetting SHOW_TOOL_TIP = new BooleanSetting("Draw Tooltips", "Show the tooltips for each module and their respective setting", true);
     private static final NumberSetting TOOLTIP_BORDER_RADIUS = new NumberSetting("Tool tip border radius", "Change the roundedness of the border radisu", 5, 5, 20);
+    private static final BooleanSetting BLUR_BACKGROUND = new BooleanSetting("Blur Background", "Blur the background", true);
     public ClickGuiModule() {
         super("ClickGUI", Category.CLIENT, true, "Opens this ClickGUI and lets you customize its colors and keybind.");
         super.addSetting(
@@ -30,9 +31,13 @@ public final class ClickGuiModule extends ClientModule {
                 FONT, SHOW_SHADOW, FONT_SIZE,
                 SHOW_OUTLINE,
                 SHOW_TOOL_TIP,
-                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS
+                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS,
+                BLUR_BACKGROUND
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static boolean getBlurBackgroundValue() {
+        return BLUR_BACKGROUND.value();
     }
     public static int getToolTipBorderRadius() {
         return TOOLTIP_BORDER_RADIUS.value();
