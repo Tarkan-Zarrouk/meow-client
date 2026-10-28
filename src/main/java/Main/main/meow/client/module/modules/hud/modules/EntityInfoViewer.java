@@ -17,9 +17,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.EntityHitResult;
 
 import java.util.Locale;
-import java.util.Objects;
 
-public class EntityInfoViewer extends HudDisplayModule {
+public final class EntityInfoViewer extends HudDisplayModule {
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Panel Color", "Change the panel color", RenderUtil.getGuiColorPanel());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
     private static final NumberSetting BORDER_RADIUS = new NumberSetting("Border Radius", "Border roundedness", 8, 1, 20);

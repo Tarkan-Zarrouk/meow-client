@@ -14,7 +14,7 @@ import net.minecraft.client.player.LocalPlayer;
 import java.util.Objects;
 
 
-public class InfoModule extends HudDisplayModule {
+public final class InfoModule extends HudDisplayModule {
     private static double tps = 20.0;
     private static final EnumSetting<Modes> INFO_CYCLE = new EnumSetting<>("Info Cycle", "Toggle between Showing fps and tps and ping, showing fps and ping, showing fps and showing", Modes.SHOW_FPS_PING_TPS);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
