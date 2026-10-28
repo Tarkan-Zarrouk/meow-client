@@ -20,10 +20,15 @@ public final class HudGuiInputHandler {
     private boolean dragging;
     private NumberSetting draggingSlider;
     private double dragOffsetX, dragOffsetY;
+    private int scrollOffset;
 
     public HudGuiInputHandler(HudGuiLayout layout, HudGuiSettingsHandler settings) {
         this.layout = layout;
         this.settings = settings;
+    }
+
+    public void setScrollOffset(int scrollOffset) {
+        this.scrollOffset = scrollOffset;
     }
 
     public boolean mouseClicked(MouseButtonEvent event) {
@@ -38,9 +43,10 @@ public final class HudGuiInputHandler {
                 return true;
             }
         }
+        double mouseY = event.y() - scrollOffset;
         if (event.button() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-            int column = layout.columnAt(event.x(), event.y());
-            Module module = layout.moduleAt(column, event.x(), event.y());
+            int column = layout.columnAt(event.x(), mouseY);
+            Module module = layout.moduleAt(column, event.x(), mouseY);
             if (module != null) {
                 settings.toggleExpanded(module);
             }
@@ -49,22 +55,22 @@ public final class HudGuiInputHandler {
         if (event.button() != GLFW.GLFW_MOUSE_BUTTON_LEFT) {
             return false;
         }
-        int column = layout.columnAt(event.x(), event.y());
-        if (column >= 0 && event.y() >= layout.columnY(column) && event.y() < layout.columnY(column) + HEADER_HEIGHT) {
+        int column = layout.columnAt(event.x(), mouseY);
+        if (column >= 0 && mouseY >= layout.columnY(column) && mouseY < layout.columnY(column) + HEADER_HEIGHT) {
             dragging = true;
             draggingColumn = column;
             dragOffsetX = event.x() - layout.columnX(column);
-            dragOffsetY = event.y() - layout.columnY(column);
+            dragOffsetY = mouseY - layout.columnY(column);
             return true;
         }
-        Module module = layout.moduleAt(column, event.x(), event.y());
+        Module module = layout.moduleAt(column, event.x(), mouseY);
         if (module == null) {
             return false;
         }
         int rowY = layout.moduleY(column, layout.modulesIn(column).indexOf(module));
         // if the module is expanded and the click is within the settings area, handle setting clicks
-        if (settings.isExpanded(module) && event.y() >= rowY + ROW_HEIGHT && event.y() < rowY + ROW_HEIGHT + settings.settingsFor(module).size() * SUBCATEGORY_HEIGHT) {
-            int setting = (int) ((event.y() - rowY - ROW_HEIGHT) / SUBCATEGORY_HEIGHT);
+        if (settings.isExpanded(module) && mouseY >= rowY + ROW_HEIGHT && mouseY < rowY + ROW_HEIGHT + settings.settingsFor(module).size() * SUBCATEGORY_HEIGHT) {
+            int setting = (int) ((mouseY - rowY - ROW_HEIGHT) / SUBCATEGORY_HEIGHT);
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null) {
                 settings.setSliderFromMouse(slider, event.x(), layout.columnX(column), layout.columnWidth());
@@ -93,8 +99,7 @@ public final class HudGuiInputHandler {
         }
         if (layout.transitionProgress() >= 1f && dragging) {
             // if the layout is fully transitioned and we are dragging a column, move it
-            layout.moveColumn(draggingColumn, (int) (event.x() - dragOffsetX),
-                    (int) (event.y() - dragOffsetY), screenWidth, screenHeight);
+            layout.moveColumn(draggingColumn, (int) (event.x() - dragOffsetX), (int) (event.y() - scrollOffset - dragOffsetY), screenWidth, screenHeight);
             return true;
         }
         return false;

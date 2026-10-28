@@ -23,7 +23,7 @@ public final class EntityInfoViewer extends HudDisplayModule {
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
     private static final NumberSetting BORDER_RADIUS = new NumberSetting("Border Radius", "Border roundedness", 8, 1, 20);
     private static final NumberSetting HEARTS_PER_ROW = new NumberSetting("Hearts Per Row", "Change the number of hearts per row", 10, 5, 20);
-    private static final NumberSetting MODEL_SIZE = new NumberSetting("Model Size", "Change the Size of the model", 50, 25, 100);
+    private static final NumberSetting MODEL_SIZE = new NumberSetting("Model Size", "Change the Size of the model", 50, 40, 100);
     private static final BooleanSetting ROUNDED_CORNER_TOP_LEFT = new BooleanSetting("Top LEFT Round", "Round Top Right?", true);
     private static final BooleanSetting ROUNDED_CORNER_TOP_RIGHT = new BooleanSetting("Top Right Round", "Round Top Right?", true);
     private static final BooleanSetting ROUNDED_CORNER_BOTTOM_LEFT = new BooleanSetting("Bottom LEFT Round", "Round Top Right?", true);

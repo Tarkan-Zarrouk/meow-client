@@ -129,8 +129,6 @@ public class RenderUtil {
      * @param modelSize size of the model being drawn
      */
     public static void drawModel(GuiGraphicsExtractor graphics, Minecraft client, LivingEntity entity, int x, int y, int modelSize) {
-        // the type is all wonky looking, java's ambiguous var makes it easier to understand, thanks stack overflow.
-        // had to view skyblocker for this rendering bs, lord have mercy this took hours.
         var renderer = client.getEntityRenderDispatcher().getRenderer(entity);
         EntityRenderState entityRenderState = renderer.createRenderState(entity, 1.0f);
         entityRenderState.shadowPieces.clear();
@@ -140,17 +138,11 @@ public class RenderUtil {
             living.bodyRot = 180.0f;
             living.yRot = 0.0f;
             living.xRot = 0.0f;
-            living.boundingBoxWidth = living.boundingBoxWidth / living.scale;
-            living.boundingBoxHeight = living.boundingBoxHeight / living.scale;
-            living.scale = 1.0f; // some weird issue with the scale being applied twice, so we set it to 1.0f to avoid that
         }
-        // had to lookup a minecraft mod to figure out how to get it to work, quaternion math is a pain in the ass
         float largest = Math.max(1.0f, Math.max(entityRenderState.boundingBoxHeight, entityRenderState.boundingBoxWidth)); // whatever bigger: height or width, we want to scale it down to fit in the box
         float scale = (modelSize * 0.8f) / largest;
         Vector3f translation = new Vector3f(0.0f, entityRenderState.boundingBoxHeight / 2.0f, 0.0f);
         Quaternionf rotation = new Quaternionf().rotateZ((float) Math.PI).rotateY(spinAngle);
-        // this is the actual rendering call, it takes in the render state, scale, translation, rotation, and the x/y coordinates of the box to render in
-        //and it rendwrs the entity in that box, with the scale and rotation applied
         graphics.entity(entityRenderState, scale, translation, rotation, null, x, y, x + modelSize, y + modelSize);
     }
 

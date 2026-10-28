@@ -7,6 +7,7 @@ import Main.main.meow.client.setting.NumberSetting;
 import Main.main.meow.client.ui.clickgui.Category;
 import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.util.RenderUtil;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -27,12 +28,12 @@ public final class HudGuiRenderer extends Screen {
     private HudGuiLayout layout;
     private HudGuiStyler styler;
     private HudGuiInputHandler input;
+    private double scrolledAmount = 0;
 
     public HudGuiRenderer(ModuleManager modules) {
         super(Component.literal("HUD Modules")); // screen reader purpose
         this.modules = modules;
     }
-
 
     @Override
     protected void init() {
@@ -42,6 +43,13 @@ public final class HudGuiRenderer extends Screen {
         input = new HudGuiInputHandler(layout, settings);
         settings.loadExpanded();
         layout.init(width, height);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        this.scrolledAmount += verticalAmount;
+        input.setScrollOffset((int) scrolledAmount);
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
 
@@ -93,20 +101,20 @@ public final class HudGuiRenderer extends Screen {
         String tooltipDescription = null;
         for (int column = 0; column < layout.columnCount(); column++) {
             int x = layout.columnX(column);
-            renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset, columnWidth, alpha);
+            renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset + (int) scrolledAmount, columnWidth, alpha);
 
             List<Module> entries = layout.modulesIn(column);
             for (int row = 0; row < entries.size(); row++) {
                 Module module = entries.get(row);
                 int y = layout.moduleY(column, row);
-                boolean hovered = isHovered(mouseX, mouseY, x, y, columnWidth, ROW_HEIGHT);
+                boolean hovered = isHovered(mouseX, mouseY, x, y + (int) scrolledAmount, columnWidth, ROW_HEIGHT);
                 if (hovered && ClickGuiModule.getToolTipShowVal()) {
                     tooltipDescription = module.description();
                 }
                 boolean lastModule = row == entries.size() - 1;
-                renderModuleRow(graphics, module, x, y, columnWidth, hovered, lastModule, alpha);
+                renderModuleRow(graphics, module, x, y + animationOffset + (int) scrolledAmount, columnWidth, hovered, lastModule, alpha);
                 if (settings.isExpanded(module)) {
-                    String settingTooltip = renderSettings(graphics, module, x, y + ROW_HEIGHT, columnWidth, mouseX, mouseY, lastModule, alpha);
+                    String settingTooltip = renderSettings(graphics, module, x, y + ROW_HEIGHT, columnWidth, mouseX, mouseY, lastModule, alpha, scrolledAmount);
                     if (settingTooltip != null && ClickGuiModule.getToolTipShowVal()) tooltipDescription = settingTooltip;
                 }
             }
@@ -181,11 +189,11 @@ public final class HudGuiRenderer extends Screen {
      * @param alpha transparency value
      * @return tooltip description if any setting is hovered, null otherwise
      */
-    private String renderSettings(GuiGraphicsExtractor graphics, Module module, int x, int dropdownY, int columnWidth, int mouseX, int mouseY, boolean lastModule, int alpha) {
+    private String renderSettings(GuiGraphicsExtractor graphics, Module module, int x, int dropdownY, int columnWidth, int mouseX, int mouseY, boolean lastModule, int alpha, double scrolledAmount) {
         String tooltip = null;
         List<String> entries = settings.settingsFor(module);
         for (int setting = 0; setting < entries.size(); setting++) {
-            int settingY = dropdownY + setting * SUBCATEGORY_HEIGHT; // math to calculate the y position of the setting row
+            int settingY = dropdownY + setting * SUBCATEGORY_HEIGHT + (int) scrolledAmount; // math to calculate the y position of the setting row
             String text = entries.get(setting);
             if (isHovered(mouseX, mouseY, x, settingY, columnWidth, SUBCATEGORY_HEIGHT)) {
                 tooltip = settings.settingDescription(module, setting);
