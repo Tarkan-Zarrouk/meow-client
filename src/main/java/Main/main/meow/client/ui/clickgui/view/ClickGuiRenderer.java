@@ -142,7 +142,7 @@ public final class ClickGuiRenderer extends Screen {
         RenderUtil.roundedFill(graphics, x, y, columnWidth, headerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false, ClickGuiModule.getClickGuiHeaderBorderRadius());
         graphics.fill(x + ClickGuiStyler.CORNER_RADIUS, y + headerHeight - 1, x + columnWidth - ClickGuiStyler.CORNER_RADIUS, y + headerHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.BORDER, alpha));
         String label = styler.truncate(category.title(), columnWidth - 10);
-        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiStyler.withAlpha(ClickGuiStyler.CATEGORY_TEXT, alpha), false);
+        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getCategoryTextColor(), alpha), false);
     }
 
     /**

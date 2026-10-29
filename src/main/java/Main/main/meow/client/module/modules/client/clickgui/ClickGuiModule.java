@@ -8,6 +8,7 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
 import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.TextUtil;
 import org.lwjgl.glfw.GLFW;
 
 public final class ClickGuiModule extends ClientModule {
@@ -15,6 +16,7 @@ public final class ClickGuiModule extends ClientModule {
     private static Category CATEGORY = Category.CLIENT;
     private static boolean ENABLED = true;
     private static String DESCRIPTION = "Opens this ClickGUI and lets you customize its colors and keybind.";
+    private static final ColorSetting CATEGORY_TEXT_COLOR = new ColorSetting("Category text color", "Opens a picker that changes the text color", RenderUtil.getGuiTextColor());
     private static final ColorSetting CATEGORY_COLOR = new ColorSetting("Category colour", "Opens a picker that changes the color of every category header in real time.", 0xffc52dbd);
     private static final ColorSetting MODULE_COLOR = new ColorSetting("Module colour", "Opens a picker that changes the color of every module row in real time.", 0xffc52dbd);
     private static final ColorSetting TOOL_TIP_BACKGROUND_COLOR = new ColorSetting("Tooltip Color", "Change the background color of the tooltip", RenderUtil.getGuiColorPanel());
@@ -37,7 +39,7 @@ public final class ClickGuiModule extends ClientModule {
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR,
                 FONT, SHOW_SHADOW, FONT_SIZE,
                 SHOW_OUTLINE,
                 SHOW_TOOL_TIP,
@@ -47,6 +49,11 @@ public final class ClickGuiModule extends ClientModule {
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+
+    public static int getCategoryTextColor() {
+        return CATEGORY_TEXT_COLOR.color();
+    }
+
     public static int getColumnGap() {
         return COLUMN_GAP.value();
     }
