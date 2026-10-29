@@ -1,6 +1,7 @@
 package Main.main.meow.client.module.modules.client.clickgui;
 
 import Main.main.meow.client.module.modules.ClientModule;
+import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
@@ -16,6 +17,7 @@ public final class ClickGuiModule extends ClientModule {
     private static Category CATEGORY = Category.CLIENT;
     private static boolean ENABLED = true;
     private static String DESCRIPTION = "Opens this ClickGUI and lets you customize its colors and keybind.";
+    private static final ColorSetting SETTINGS_TEXT_COLOR = new ColorSetting("Setting Color", "Opens a picker that changes the text color", ClickGuiStyler.MUTED);
     private static final ColorSetting MODULE_TEXT_COLOR = new ColorSetting("Module text color", "Opens a picker that changes the text color", RenderUtil.getGuiTextColor());
     private static final ColorSetting CATEGORY_TEXT_COLOR = new ColorSetting("Category text color", "Opens a picker that changes the text color", RenderUtil.getGuiTextColor());
     private static final ColorSetting CATEGORY_COLOR = new ColorSetting("Category colour", "Opens a picker that changes the color of every category header in real time.", 0xffc52dbd);
@@ -40,7 +42,7 @@ public final class ClickGuiModule extends ClientModule {
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR,
                 FONT, SHOW_SHADOW, FONT_SIZE,
                 SHOW_OUTLINE,
                 SHOW_TOOL_TIP,
@@ -49,6 +51,10 @@ public final class ClickGuiModule extends ClientModule {
                 MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+
+    public static int getSettingTextColor() {
+        return SETTINGS_TEXT_COLOR.color();
     }
 
     public static int getModuleTextColor() {

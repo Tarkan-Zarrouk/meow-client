@@ -201,7 +201,7 @@ public final class ClickGuiRenderer extends Screen {
             }
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
             RenderUtil.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
-            styler.drawText(graphics, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false);
+            styler.drawText(graphics, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getSettingTextColor(), alpha), false);
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)
                 renderSlider(graphics, slider, x, settingY, columnWidth);
