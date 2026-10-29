@@ -1,4 +1,4 @@
-package Main.main.meow.client.ui.clickgui.settings;
+package Main.main.meow.client.ui.clickgui.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +15,10 @@ public final class ClickGuiLayoutSettings {
 
     public static void setPosition(String category, int x, int y) {
         positions.put(category, new Position(x, y));
+    }
+
+    public static void clearPositions() {
+        positions.clear();
     }
 
     public static Map<String, Position> allPositions() {

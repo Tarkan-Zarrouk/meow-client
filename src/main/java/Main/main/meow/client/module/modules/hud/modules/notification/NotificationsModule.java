@@ -1,11 +1,11 @@
 package Main.main.meow.client.module.modules.hud.modules.notification;
 
 import Main.main.meow.client.module.modules.ClientModule;
-import Main.main.meow.client.setting.NumberSetting;
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.client.setting.modulesettings.BooleanSetting;
-import Main.main.meow.client.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.ui.clickgui.model.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.util.RenderUtil;
 
 public final class NotificationsModule extends ClientModule {

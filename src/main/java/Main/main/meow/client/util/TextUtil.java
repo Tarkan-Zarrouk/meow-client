@@ -1,6 +1,6 @@
 package Main.main.meow.client.util;
 
-import Main.main.meow.client.ui.hud.hudgui.HudGuiStyler;
+import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
@@ -36,6 +36,6 @@ public class TextUtil {
      * @return MutableComponent custom font
      */
     public static Component setFont(String value) {
-        return Component.literal(value).withStyle(style -> style.withFont(HudGuiStyler.getFont()));
+        return Component.literal(value).withStyle(style -> style.withFont(ClickGuiStyler.getFont()));
     }
 }

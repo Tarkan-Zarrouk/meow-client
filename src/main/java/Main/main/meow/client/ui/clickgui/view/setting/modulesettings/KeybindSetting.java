@@ -1,6 +1,6 @@
-package Main.main.meow.client.setting.modulesettings;
+package Main.main.meow.client.ui.clickgui.view.setting.modulesettings;
 
-import Main.main.meow.client.setting.Setting;
+import Main.main.meow.client.ui.clickgui.view.setting.Setting;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import org.lwjgl.glfw.GLFW;

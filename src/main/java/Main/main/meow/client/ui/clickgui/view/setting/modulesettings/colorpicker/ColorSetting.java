@@ -1,7 +1,6 @@
-package Main.main.meow.client.setting.modulesettings.colorpicker;
+package Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker;
 
-import Main.main.meow.client.module.Module;
-import Main.main.meow.client.setting.Setting;
+import Main.main.meow.client.ui.clickgui.view.setting.Setting;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 

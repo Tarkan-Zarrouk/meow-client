@@ -1,4 +1,4 @@
-package Main.main.meow.client.ui.clickgui;
+package Main.main.meow.client.ui.clickgui.model;
 
 public enum Category {
     VISUALS("Visuals"),

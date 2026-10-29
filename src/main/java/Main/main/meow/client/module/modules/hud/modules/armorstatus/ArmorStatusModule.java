@@ -1,10 +1,10 @@
 package Main.main.meow.client.module.modules.hud.modules.armorstatus;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.setting.modulesettings.BooleanSetting;
-import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.ui.clickgui.model.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -16,13 +16,17 @@ import java.util.*;
 
 
 public final class ArmorStatusModule extends HudDisplayModule {
+    private static String name = "Armor Status";
+    private static Category category = Category.HUD;
+    private static boolean enabled = false;
+    private static String description = "Shows your equipped armor and its remaining durability on the HUD";
     private static final EnumSetting<Modes> ORIENTATION = new EnumSetting<>("Orientation", "Change the orientation from horizontal to vertical", Modes.HORIZONTAL);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background of your panel", RenderUtil.getGuiColorPanel());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
 
     public ArmorStatusModule() {
-        super("Armor Status", Category.HUD, true, "Shows your equipped armor and its remaining durability on the HUD.");
+        super(name, category,enabled, description);
         super.addSetting(SHOW_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR, ORIENTATION);
     }
 
@@ -41,6 +45,46 @@ public final class ArmorStatusModule extends HudDisplayModule {
     // slot width is item (16px) + gap + text + padding, so horizontal slots never overlap
     private static int slotWidth(Minecraft client, ItemStack piece) {
         return 18 + TextUtil.getTextWidth(client, (piece + "%") + 4);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Category getCategory() {
+        return category;
+    }
+
+    @Override
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    @Override
+    public void setCategory(Category newCategory) {
+        category = newCategory;
+    }
+
+    @Override
+    public void setEnabledVal(boolean newEnabled) {
+        enabled = newEnabled;
+    }
+
+    @Override
+    public void setDescription(String newDescription) {
+        description = newDescription;
     }
 
     @Override

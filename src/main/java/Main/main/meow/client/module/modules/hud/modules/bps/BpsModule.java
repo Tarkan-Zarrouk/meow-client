@@ -1,10 +1,10 @@
 package Main.main.meow.client.module.modules.hud.modules.bps;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.setting.modulesettings.BooleanSetting;
-import Main.main.meow.client.setting.modulesettings.EnumSetting;
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -14,6 +14,10 @@ import net.minecraft.world.phys.Vec3;
 
 
 public final class BpsModule extends HudDisplayModule {
+    private static String name = "BPS";
+    private static Category category = Category.HUD;
+    private static boolean enabled = false;
+    private static String description ="Displays your horizontal movement speed in blocks per second";
     private static int panelWidthValue = 0;
     private static int panelHeightValue = 0;
     private static Vec3 lastPosition = null;
@@ -24,9 +28,50 @@ public final class BpsModule extends HudDisplayModule {
     private static final EnumSetting<Mode> UNITS_OF_MEASUREMENT = new EnumSetting<>("Units", "Swap between MPH, KMH, BPS", Mode.BPS);
 
     public BpsModule() {
-        super("BPS", Category.HUD, false, "Displays your horizontal movement speed in blocks per second.");
+        super(name, category, enabled, description);
         super.addSetting(SHOW_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR, UNITS_OF_MEASUREMENT);
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Category getCategory() {
+        return category;
+    }
+
+    @Override
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    @Override
+    public void setCategory(Category newCategory) {
+        category = newCategory;
+    }
+
+    @Override
+    public void setEnabledVal(boolean newEnabled) {
+        enabled = newEnabled;
+    }
+
+    @Override
+    public void setDescription(String newDescription) {
+        description = newDescription;
+    }
+
     @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         double speed = switch(UNITS_OF_MEASUREMENT.value()) {

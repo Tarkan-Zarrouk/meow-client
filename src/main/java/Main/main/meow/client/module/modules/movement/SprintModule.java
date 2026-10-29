@@ -1,7 +1,7 @@
 package Main.main.meow.client.module.modules.movement;
 
 import Main.main.meow.client.module.modules.ClientModule;
-import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.ui.clickgui.model.Category;
 import net.minecraft.client.Minecraft;
 
 /**
@@ -14,7 +14,7 @@ public final class SprintModule extends ClientModule {
     }
 
     public void tick(Minecraft client) {
-        if (!isEnabled() || client.player == null || client.screen != null) {
+        if (!super.getEnabled() || client.player == null || client.screen != null) {
             return;
         }
         if (client.options.keyUp.isDown() && !client.options.keyDown.isDown() && !client.options.keyShift.isDown() && !client.player.isPassenger()) {

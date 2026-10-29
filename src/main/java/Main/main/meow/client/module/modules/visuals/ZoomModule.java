@@ -1,10 +1,9 @@
 package Main.main.meow.client.module.modules.visuals;
 
 import Main.main.meow.client.MeowClient;
-import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.module.modules.ClientModule;
-import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.client.setting.modulesettings.KeybindSetting;
+import Main.main.meow.client.ui.clickgui.model.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.KeybindSetting;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
@@ -46,7 +45,7 @@ public final class ZoomModule extends ClientModule {
     }
 
     public boolean isZooming(long window) {
-        return isEnabled() && zoomKey.isBound() && GLFW.glfwGetKey(window, zoomKey.key()) == GLFW.GLFW_PRESS;
+        return super.getEnabled() && zoomKey.isBound() && GLFW.glfwGetKey(window, zoomKey.key()) == GLFW.GLFW_PRESS;
     }
 
 

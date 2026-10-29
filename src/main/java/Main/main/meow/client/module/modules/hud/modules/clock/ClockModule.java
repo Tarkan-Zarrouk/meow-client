@@ -1,10 +1,10 @@
 package Main.main.meow.client.module.modules.hud.modules.clock;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.setting.modulesettings.BooleanSetting;
-import Main.main.meow.client.setting.modulesettings.EnumSetting;
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -16,15 +16,60 @@ import java.time.format.DateTimeFormatter;
 
 
 public final class ClockModule extends HudDisplayModule {
+    private static String name = "Clock";
+    private static Category category = Category.HUD;
+    private static boolean enabled = false;
+    private static String description = "Displays the current local and world time on the HUD.";
     private static int panelWidth, panelHeight;
     private static final EnumSetting<Modes> CLOCK_FORMAT = new EnumSetting<>("Standard", "Switches between 24h clock and 12 hour clock", Modes.MILITARY);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Colour", "Colour of background", RenderUtil.getGuiColorPanel());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Colour of text", RenderUtil.getGuiTextColor());
     public ClockModule() {
-        super("Clock", Category.HUD, false, "Displays the current local and world time on the HUD.");
+        super(name, category, enabled, description);
         super.addSetting(SHOW_BACKGROUND, CLOCK_FORMAT, BACKGROUND_COLOR, TEXT_COLOR);
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Category getCategory() {
+        return category;
+    }
+
+    @Override
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    @Override
+    public void setCategory(Category newCategory) {
+        category = newCategory;
+    }
+
+    @Override
+    public void setEnabledVal(boolean newEnabled) {
+        enabled = newEnabled;
+    }
+
+    @Override
+    public void setDescription(String newDescription) {
+        description = newDescription;
+    }
+
     @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         LocalTime time = LocalTime.now();

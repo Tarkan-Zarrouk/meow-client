@@ -1,10 +1,9 @@
-package Main.main.meow.client.setting;
+package Main.main.meow.client.manager;
 
-import Main.main.meow.client.ui.clickgui.settings.ClickGuiLayoutSettings;
-import Main.main.meow.client.ui.hud.HudComponent;
-import Main.main.meow.client.ui.hud.HudComponentManager;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.manager.ModuleManager;
+import Main.main.meow.client.ui.clickgui.model.ClickGuiLayoutSettings;
+import Main.main.meow.client.ui.clickgui.view.setting.Setting;
+import Main.main.meow.client.ui.hud.HudComponent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -22,7 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public final class MeowConfig {
+public final class ConfigManager {
     // lowkenuienly ai is used here, i have no idea how to do this without it, i tried for a few hours across multiple different test projects and gave up, this is the only way i could figure out how to do it
     private static final Logger LOGGER = LoggerFactory.getLogger("meow-config");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -59,18 +58,18 @@ public final class MeowConfig {
                 }
             }
             ClickGuiLayoutSettings.setExpandedModules(expandedModules);
-            for (Module module : modules.all()) {
-                JsonElement value = enabled.get(module.name());
-                if (!module.name().equalsIgnoreCase("ClickGUI")
+            for (Main.main.meow.client.module.Module module : modules.all()) {
+                JsonElement value = enabled.get(module.getName());
+                if (!module.getName().equalsIgnoreCase("ClickGUI")
                         && value != null && value.isJsonPrimitive()
                         && value.getAsJsonPrimitive().isBoolean()) {
                     module.setEnabled(value.getAsBoolean());
                 }
-                JsonElement keybind = keybinds.get(module.name());
+                JsonElement keybind = keybinds.get(module.getName());
                 if (keybind != null && keybind.isJsonPrimitive() && keybind.getAsJsonPrimitive().isNumber()) {
                     module.setKeybind(keybind.getAsInt());
                 }
-                JsonObject saved = object(object(root, "moduleSettings"), module.name());
+                JsonObject saved = object(object(root, "moduleSettings"), module.getName());
                 for (Setting<?> setting : module.settings()) {
                     JsonElement stored = saved.get(setting.name());
                     setting.fromJson(stored);
@@ -93,13 +92,13 @@ public final class MeowConfig {
         Path path = path(client);
         JsonObject root = new JsonObject();
         JsonObject enabled = new JsonObject();
-        for (Module module : modules.all()) {
-            enabled.addProperty(module.name(), module.isEnabled());
+        for (Main.main.meow.client.module.Module module : modules.all()) {
+            enabled.addProperty(module.getName(), module.getName());
         }
         root.add("enabledModules", enabled);
         JsonObject keybinds = new JsonObject();
-        for (Module module : modules.all()) {
-            keybinds.addProperty(module.name(), module.keybind());
+        for (Main.main.meow.client.module.Module module : modules.all()) {
+            keybinds.addProperty(module.getName(), module.keybind());
         }
         root.add("keybinds", keybinds);
         JsonObject moduleSettings = new JsonObject();
@@ -109,7 +108,7 @@ public final class MeowConfig {
             for (Setting<?> setting : module.settings()) {
                 saved.add(setting.name(), setting.toJson());
             }
-            moduleSettings.add(module.name(), saved);
+            moduleSettings.add(module.getName(), saved);
         }
         root.add("moduleSettings", moduleSettings);
         JsonObject guiPositions = new JsonObject();

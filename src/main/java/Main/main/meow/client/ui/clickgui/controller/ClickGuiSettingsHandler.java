@@ -1,15 +1,15 @@
-package Main.main.meow.client.ui.hud.hudgui;
+package Main.main.meow.client.ui.clickgui.controller;
 
 import Main.main.meow.client.MeowClient;
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorPicker;
-import Main.main.meow.client.ui.clickgui.settings.ClickGuiLayoutSettings;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.ModuleManager;
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.setting.modulesettings.KeybindSetting;
-import Main.main.meow.client.setting.NumberSetting;
-import Main.main.meow.client.setting.Setting;
-import Main.main.meow.client.setting.MeowConfig;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.KeybindSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.Setting;
+import Main.main.meow.client.manager.ConfigManager;
+import Main.main.meow.client.ui.clickgui.model.ClickGuiLayoutSettings;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
@@ -18,21 +18,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class HudGuiSettingsHandler {
+public final class ClickGuiSettingsHandler {
     private final ModuleManager modules;
     private final Set<Module> expanded = new HashSet<>();
     private Module awaitingKeybind;
     private KeybindSetting awaitingSetting;
     private ColorPicker colorPicker;
 
-    public HudGuiSettingsHandler(ModuleManager modules) {
+    public ClickGuiSettingsHandler(ModuleManager modules) {
         this.modules = modules;
     }
 
     public void loadExpanded() { // to be called after modules are loaded, since the expanded list is stored by module name
         expanded.clear();
         for (Module module : modules.all()) {
-            if (ClickGuiLayoutSettings.isExpanded(module.name())) {
+            if (ClickGuiLayoutSettings.isExpanded(module.getName())) {
                 expanded.add(module);
             }
         }
@@ -53,9 +53,9 @@ public final class HudGuiSettingsHandler {
     public void save() {
         Set<String> expandedNames = new HashSet<>();
         for (Module module : expanded)
-            expandedNames.add(module.name());
+            expandedNames.add(module.getName());
         ClickGuiLayoutSettings.setExpandedModules(expandedNames);
-        MeowConfig.save(Minecraft.getInstance(), modules, MeowClient.HUD_COMPONENTS);
+        ConfigManager.save(Minecraft.getInstance(), modules, MeowClient.HUD_COMPONENTS);
     }
 
     public ColorPicker colorPicker() {

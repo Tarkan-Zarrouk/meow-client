@@ -1,4 +1,4 @@
-package Main.main.meow.client.setting.modulesettings.colorpicker;
+package Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 

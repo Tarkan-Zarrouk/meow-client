@@ -1,8 +1,6 @@
-package Main.main.meow.client.ui.hud;
+package Main.main.meow.client.manager;
 
-import Main.main.meow.client.setting.MeowConfig;
-import Main.main.meow.client.manager.ModuleManager;
-
+import Main.main.meow.client.ui.hud.HudComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
@@ -30,7 +28,7 @@ public final class HudComponentManager {
     }
 
     public void save(Minecraft client, ModuleManager modules) {
-        MeowConfig.save(client, modules, this);
+        ConfigManager.save(client, modules, this);
     }
 
     public void render(GuiGraphicsExtractor graphics, Minecraft client, boolean editor) {

@@ -1,28 +1,27 @@
-package Main.main.meow.client.ui.hud.hudgui;
+package Main.main.meow.client.ui.clickgui.controller;
 
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorPicker;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.setting.NumberSetting;
+import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
+import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import org.lwjgl.glfw.GLFW;
 
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.HEADER_HEIGHT;
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.ROW_HEIGHT;
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.SUBCATEGORY_HEIGHT;
-
 // every handler returns true when the event was consumed, false lets the screen fall through to vanilla
-public final class HudGuiInputHandler {
-    private final HudGuiLayout layout;
-    private final HudGuiSettingsHandler settings;
+public final class ClickGuiInputHandler {
+    private final ClickGuiLayout layout;
+    private final ClickGuiSettingsHandler settings;
     private int draggingColumn = -1, sliderColumn = -1;
     private boolean dragging;
     private NumberSetting draggingSlider;
     private double dragOffsetX, dragOffsetY;
     private int scrollOffset;
+    private final int subcategoryHeight = ClickGuiLayout.getSubcategoryHeight();
 
-    public HudGuiInputHandler(HudGuiLayout layout, HudGuiSettingsHandler settings) {
+    public ClickGuiInputHandler(ClickGuiLayout layout, ClickGuiSettingsHandler settings) {
         this.layout = layout;
         this.settings = settings;
     }
@@ -56,7 +55,7 @@ public final class HudGuiInputHandler {
             return false;
         }
         int column = layout.columnAt(event.x(), mouseY);
-        if (column >= 0 && mouseY >= layout.columnY(column) && mouseY < layout.columnY(column) + HEADER_HEIGHT) {
+        if (column >= 0 && mouseY >= layout.columnY(column) && mouseY < layout.columnY(column) + ClickGuiLayout.getHeaderHeight()) {
             dragging = true;
             draggingColumn = column;
             dragOffsetX = event.x() - layout.columnX(column);
@@ -68,9 +67,10 @@ public final class HudGuiInputHandler {
             return false;
         }
         int rowY = layout.moduleY(column, layout.modulesIn(column).indexOf(module));
+        int rowHeight = ClickGuiModule.getModuleHeight();
         // if the module is expanded and the click is within the settings area, handle setting clicks
-        if (settings.isExpanded(module) && mouseY >= rowY + ROW_HEIGHT && mouseY < rowY + ROW_HEIGHT + settings.settingsFor(module).size() * SUBCATEGORY_HEIGHT) {
-            int setting = (int) ((mouseY - rowY - ROW_HEIGHT) / SUBCATEGORY_HEIGHT);
+        if (settings.isExpanded(module) && mouseY >= rowY + rowHeight && mouseY < rowY + rowHeight + settings.settingsFor(module).size() * subcategoryHeight) {
+            int setting = (int) ((mouseY - rowY - rowHeight) / subcategoryHeight);
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null) {
                 settings.setSliderFromMouse(slider, event.x(), layout.columnX(column), layout.columnWidth());
@@ -80,7 +80,7 @@ public final class HudGuiInputHandler {
             } else {
                 settings.clickSetting(module, setting);
             }
-        } else if (!module.name().equalsIgnoreCase("ClickGUI")) {
+        } else if (!module.getName().equalsIgnoreCase("ClickGUI")) {
             module.toggle();
         }
         return true;
@@ -98,7 +98,7 @@ public final class HudGuiInputHandler {
             return true;
         }
         if (layout.transitionProgress() >= 1f && dragging) {
-            // if the layout is fully transitioned and we are dragging a column, move it
+            // if the layout is fully transitioned, and we are dragging a column, move it
             layout.moveColumn(draggingColumn, (int) (event.x() - dragOffsetX), (int) (event.y() - scrollOffset - dragOffsetY), screenWidth, screenHeight);
             return true;
         }

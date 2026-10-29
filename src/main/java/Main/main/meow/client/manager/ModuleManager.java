@@ -1,7 +1,7 @@
 package Main.main.meow.client.manager;
 
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.ui.clickgui.model.Category;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,14 +16,16 @@ public final class ModuleManager {
     private Consumer<Module> enabledChangeListener = module -> {};
     private final Set<Integer> pressedKeybinds = new HashSet<>();
 
-    public void register(Module module) {
-        if (modules.stream().anyMatch(existing -> existing.name().equalsIgnoreCase(module.name()))) {
-            throw new IllegalArgumentException("A module named " + module.name() + " is already registered");
-        }
+    public void register(Module... module) {
+        for(Module registeredModule : module) {
+            if (modules.stream().anyMatch(existing -> existing.getName().equalsIgnoreCase(registeredModule.getName()))) {
+                throw new IllegalArgumentException("A module named " + registeredModule.getName() + " is already registered");
+            }
 
-        module.onChange(changeListener);
-        module.onEnabledChange(enabledChangeListener);
-        modules.add(module);
+            registeredModule.onChange(changeListener);
+            registeredModule.onEnabledChange(enabledChangeListener);
+            modules.add(registeredModule);
+        }
     }
 
     public void setChangeListener(Runnable listener) {
@@ -41,16 +43,17 @@ public final class ModuleManager {
     }
 
     public List<Module> inCategory(Category category) {
-        return modules.stream().filter(module -> module.category() == category).toList();
+        return modules.stream().filter(module -> module.getCategory() == category).toList();
     }
 
     public Module byName(String name) {
-        return modules.stream().filter(module -> module.name().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElseThrow(() -> new IllegalArgumentException("MODULE_MANAGER.byName(" + name + ") not found"));
+
     }
 
     public void handleKeybinds(long windowHandle) {
         for (Module module : modules) {
-            if (module.name().equalsIgnoreCase("ClickGUI")) continue;
+            if (module.getName().equalsIgnoreCase("ClickGUI")) continue;
             int key = module.keybind();
             if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN) continue;
             boolean down = org.lwjgl.glfw.GLFW.glfwGetKey(windowHandle, key) == org.lwjgl.glfw.GLFW.GLFW_PRESS;

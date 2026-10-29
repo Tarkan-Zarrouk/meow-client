@@ -1,10 +1,10 @@
 package Main.main.meow.client.module.modules.hud.modules.info;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
-import Main.main.meow.client.setting.modulesettings.BooleanSetting;
-import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
+import Main.main.meow.client.ui.clickgui.model.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -15,14 +15,58 @@ import java.util.Objects;
 
 
 public final class InfoModule extends HudDisplayModule {
+    private static String name = "Info";
+    private static Category category = Category.HUD;
+    private static boolean enabled = false;
+    private static String description = "Displays the information about the client on the hud.";
     private static double tps = 20.0;
     private static final EnumSetting<Modes> INFO_CYCLE = new EnumSetting<>("Info Cycle", "Toggle between Showing fps and tps and ping, showing fps and ping, showing fps and showing", Modes.SHOW_FPS_PING_TPS);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Colour", "Change the colour of the background", RenderUtil.getGuiTextColor());
     private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Colour", "Change the colour of your text", RenderUtil.getGuiTextColor());
     public InfoModule() {
-        super("Info", Category.HUD, false, "Displays information about the client on the HUD.");
+        super(name, category, enabled, description);
         super.addSetting(SHOW_BACKGROUND, INFO_CYCLE, TEXT_COLOR, BACKGROUND_COLOR);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public Category getCategory() {
+        return category;
+    }
+
+    @Override
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    @Override
+    public void setCategory(Category newCategory) {
+        category = newCategory;
+    }
+
+    @Override
+    public void setEnabledVal(boolean newEnabled) {
+        enabled = newEnabled;
+    }
+
+    @Override
+    public void setDescription(String newDescription) {
+        description = newDescription;
     }
 
     @Override

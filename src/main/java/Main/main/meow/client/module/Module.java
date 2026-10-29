@@ -1,7 +1,7 @@
 package Main.main.meow.client.module;
 
-import Main.main.meow.client.ui.clickgui.Category;
-import Main.main.meow.client.setting.Setting;
+import Main.main.meow.client.ui.clickgui.model.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.Setting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,44 +14,52 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
  * Base type for client features. Modules can be registered in ModuleManager when they are ready.
  */
 public abstract class Module {
-    private final String name;
-    private final String description;
-    private final Category category;
+    private String name;
+    private String description;
+    private Category category;
     private boolean enabled;
     private int keybind = GLFW_KEY_UNKNOWN;
     private final List<Setting<?>> settings = new ArrayList<>();
     private Runnable changeListener = () -> {};
     private Consumer<Module> enabledChangeListener = module -> {};
 
-    protected Module(String name, Category category) {
-        this(name, category, "");
-    }
-
-    protected Module(String name, Category category, String description) {
+    public Module(String name, Category category, boolean enabled, String description) {
         this.name = name;
         this.category = category;
+        this.enabled = enabled;
         this.description = description;
     }
 
-    public final String name() {
-        // use the exceedsClickGuiWidth method to truncate the name if it exceeds the clickgui width
-        return exceedsClickGuiWidth(name);
+    public String getName() {
+        return name;
     }
 
-    public static String exceedsClickGuiWidth(String text) {
-        return text;
-    }
-
-    public final Category category() {
+    public Category getCategory() {
         return category;
     }
 
-    public final String description() {
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public String getDescription() {
         return description;
     }
 
-    public final boolean isEnabled() {
-        return enabled;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setEnabledVal(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public final List<Setting<?>> settings() {
@@ -77,14 +85,14 @@ public abstract class Module {
     }
 
     public final void toggle() {
-        setEnabled(!enabled);
+        setEnabled(!getEnabled());
     }
 
     public final void setEnabled(boolean enabled) {
-        if (this.enabled == enabled) {
+        if (getEnabled() == enabled) {
             return;
         }
-        this.enabled = enabled;
+        setEnabledVal(enabled);
         if (enabled) {
             onEnable();
         } else {

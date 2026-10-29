@@ -1,8 +1,9 @@
-package Main.main.meow.client.module.modules.hud.modules.notification;
+package Main.main.meow.client.manager;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.ui.hud.hudgui.HudGuiStyler;
+import Main.main.meow.client.module.modules.hud.modules.notification.Mode;
+import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -25,9 +26,9 @@ public final class NotificationManager {
     public static void moduleChanged(Module module) {
         NotificationsModule notifications = (NotificationsModule) MeowClient.MODULE_MANAGER.byName("Notifications");
         // the module itself can still announce being turned off
-        if (notifications == null || (!notifications.isEnabled() && module != notifications)) return;
+        if (notifications == null || (!notifications.getEnabled() && module != notifications)) return;
         String status;
-        if(module.isEnabled()) {
+        if(module.getEnabled()) {
             status = "enabled";
         } else {
             status = "disabled";
@@ -36,7 +37,7 @@ public final class NotificationManager {
             Minecraft client = Minecraft.getInstance();
             if (client.player != null) {
                 MutableComponent prefix = Component.literal("[MeowMod] ").withStyle(ChatFormatting.LIGHT_PURPLE);
-                client.gui.getChat().addClientSystemMessage(prefix.append(Component.literal(module.name() + " " + status).withStyle(ChatFormatting.WHITE)));
+                client.gui.getChat().addClientSystemMessage(prefix.append(Component.literal(module.getName() + " " + status).withStyle(ChatFormatting.WHITE)));
             }
             return;
         }
@@ -47,7 +48,7 @@ public final class NotificationManager {
         if (message != null) {
             visible = visibility(elapsed);
         }
-        message = module.name() + " " + status;
+        message = module.getName() + " " + status;
         if (visible >= 1f) {
             shownAt = now - ENTER_MS;
         } else {

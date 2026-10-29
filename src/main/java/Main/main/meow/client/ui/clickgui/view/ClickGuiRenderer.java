@@ -1,13 +1,15 @@
-package Main.main.meow.client.ui.hud.hudgui;
+package Main.main.meow.client.ui.clickgui.view;
 
-import Main.main.meow.client.setting.modulesettings.colorpicker.ColorPicker;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
-import Main.main.meow.client.setting.NumberSetting;
-import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.manager.ModuleManager;
+import Main.main.meow.client.ui.clickgui.controller.ClickGuiInputHandler;
+import Main.main.meow.client.ui.clickgui.controller.ClickGuiSettingsHandler;
+import Main.main.meow.client.ui.clickgui.model.Category;
+import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
 import Main.main.meow.client.util.RenderUtil;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -16,31 +18,28 @@ import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.HEADER_HEIGHT;
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.ROW_HEIGHT;
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiLayout.SUBCATEGORY_HEIGHT;
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiStyler.CORNER_RADIUS;
-import static Main.main.meow.client.ui.hud.hudgui.HudGuiStyler.withAlpha;
 
-public final class HudGuiRenderer extends Screen {
+public final class ClickGuiRenderer extends Screen {
     private final ModuleManager modules;
-    private HudGuiSettingsHandler settings;
-    private HudGuiLayout layout;
-    private HudGuiStyler styler;
-    private HudGuiInputHandler input;
+    private ClickGuiSettingsHandler settings;
+    private ClickGuiLayout layout;
+    private final int headerHeight = ClickGuiLayout.getHeaderHeight();
+    private final int subcategoryHeight = ClickGuiLayout.getSubcategoryHeight();
+    private ClickGuiStyler styler;
+    private ClickGuiInputHandler input;
     private double scrolledAmount = 0;
 
-    public HudGuiRenderer(ModuleManager modules) {
+    public ClickGuiRenderer(ModuleManager modules) {
         super(Component.literal("HUD Modules")); // screen reader purpose
         this.modules = modules;
     }
 
     @Override
     protected void init() {
-        settings = new HudGuiSettingsHandler(modules);
-        styler = new HudGuiStyler(font);
-        layout = new HudGuiLayout(modules, settings);
-        input = new HudGuiInputHandler(layout, settings);
+        settings = new ClickGuiSettingsHandler(modules);
+        styler = new ClickGuiStyler(font);
+        layout = new ClickGuiLayout(modules, settings);
+        input = new ClickGuiInputHandler(layout, settings);
         settings.loadExpanded();
         layout.init(width, height);
     }
@@ -95,9 +94,11 @@ public final class HudGuiRenderer extends Screen {
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         int screenWidth = super.width;
         int screenHeight = super.height;
+        layout.syncWithSettings(screenWidth, screenHeight);
         int alpha = layout.transitionAlpha();
-        int animationOffset = (int) ((1f - HudGuiStyler.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
+        int animationOffset = (int) ((1f - ClickGuiStyler.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
         int columnWidth = layout.columnWidth();
+        int rowHeight = ClickGuiModule.getModuleHeight();
         String tooltipDescription = null;
         for (int column = 0; column < layout.columnCount(); column++) {
             int x = layout.columnX(column);
@@ -107,14 +108,14 @@ public final class HudGuiRenderer extends Screen {
             for (int row = 0; row < entries.size(); row++) {
                 Module module = entries.get(row);
                 int y = layout.moduleY(column, row);
-                boolean hovered = isHovered(mouseX, mouseY, x, y + (int) scrolledAmount, columnWidth, ROW_HEIGHT);
+                boolean hovered = isHovered(mouseX, mouseY, x, y + (int) scrolledAmount, columnWidth, rowHeight);
                 if (hovered && ClickGuiModule.getToolTipShowVal()) {
-                    tooltipDescription = module.description();
+                    tooltipDescription = module.getDescription();
                 }
                 boolean lastModule = row == entries.size() - 1;
-                renderModuleRow(graphics, module, x, y + animationOffset + (int) scrolledAmount, columnWidth, hovered, lastModule, alpha);
+                renderModuleRow(graphics, module, x, y + animationOffset + (int) scrolledAmount, columnWidth, rowHeight, hovered, lastModule, alpha);
                 if (settings.isExpanded(module)) {
-                    String settingTooltip = renderSettings(graphics, module, x, y + ROW_HEIGHT, columnWidth, mouseX, mouseY, lastModule, alpha, scrolledAmount);
+                    String settingTooltip = renderSettings(graphics, module, x, y + rowHeight, columnWidth, mouseX, mouseY, lastModule, alpha, scrolledAmount);
                     if (settingTooltip != null && ClickGuiModule.getToolTipShowVal()) tooltipDescription = settingTooltip;
                 }
             }
@@ -138,10 +139,10 @@ public final class HudGuiRenderer extends Screen {
      * @param alpha alpha value for transparency
      */
     private void renderCategories(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
-        RenderUtil.roundedFill(graphics, x, y, columnWidth, HEADER_HEIGHT, withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false, ClickGuiModule.getClickGuiHeaderBorderRadius());
-        graphics.fill(x + HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT - 1, x + columnWidth - HudGuiStyler.CORNER_RADIUS, y + HEADER_HEIGHT, withAlpha(HudGuiStyler.BORDER, alpha));
+        RenderUtil.roundedFill(graphics, x, y, columnWidth, headerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false, ClickGuiModule.getClickGuiHeaderBorderRadius());
+        graphics.fill(x + ClickGuiStyler.CORNER_RADIUS, y + headerHeight - 1, x + columnWidth - ClickGuiStyler.CORNER_RADIUS, y + headerHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.BORDER, alpha));
         String label = styler.truncate(category.title(), columnWidth - 10);
-        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, HEADER_HEIGHT), withAlpha(HudGuiStyler.CATEGORY_TEXT, alpha), false);
+        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiStyler.withAlpha(ClickGuiStyler.CATEGORY_TEXT, alpha), false);
     }
 
     /**
@@ -155,24 +156,24 @@ public final class HudGuiRenderer extends Screen {
      * @param lastModule last in the list
      * @param alpha transparency value
      */
-    private void renderModuleRow(GuiGraphicsExtractor graphics, Module module, int x, int y, int columnWidth, boolean hovered, boolean lastModule, int alpha) {
+    private void renderModuleRow(GuiGraphicsExtractor graphics, Module module, int x, int y, int columnWidth, int rowHeight, boolean hovered, boolean lastModule, int alpha) {
         boolean roundedBottom = lastModule && !settings.isExpanded(module);
         int background;
-        if(module.isEnabled()) {
+        if(module.getEnabled()) {
             background = ClickGuiModule.moduleColor();
         } else if(hovered) {
-            background = HudGuiStyler.ROW_HOVER;
+            background = ClickGuiStyler.ROW_HOVER;
         } else {
-            background = HudGuiStyler.ROW;
+            background = ClickGuiStyler.ROW;
         }
-        RenderUtil.roundedFill(graphics, x, y, columnWidth, ROW_HEIGHT, withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
-        String label = styler.truncate(module.name(), columnWidth - 24);
-        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, ROW_HEIGHT), withAlpha(HudGuiStyler.TEXT, alpha), true);
+        RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
+        String label = styler.truncate(module.getName(), columnWidth - 24);
+        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiStyler.TEXT, alpha), true);
         if(settings.isExpanded(module)) {
-            styler.drawText(graphics, styler.styled("..."), x + columnWidth - 14, y + 5, withAlpha(HudGuiStyler.MUTED, alpha), false);
+            styler.drawText(graphics, styler.styled("..."), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false);
         } else {
 
-            styler.drawText(graphics, styler.styled("⋮"), x + columnWidth - 14, y + 5, withAlpha(HudGuiStyler.MUTED, alpha), false);
+            styler.drawText(graphics, styler.styled("⋮"), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false);
         }
     }
 
@@ -193,14 +194,14 @@ public final class HudGuiRenderer extends Screen {
         String tooltip = null;
         List<String> entries = settings.settingsFor(module);
         for (int setting = 0; setting < entries.size(); setting++) {
-            int settingY = dropdownY + setting * SUBCATEGORY_HEIGHT + (int) scrolledAmount; // math to calculate the y position of the setting row
+            int settingY = dropdownY + setting * subcategoryHeight + (int) scrolledAmount; // math to calculate the y position of the setting row
             String text = entries.get(setting);
-            if (isHovered(mouseX, mouseY, x, settingY, columnWidth, SUBCATEGORY_HEIGHT)) {
+            if (isHovered(mouseX, mouseY, x, settingY, columnWidth, subcategoryHeight)) {
                 tooltip = settings.settingDescription(module, setting);
             }
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
-            RenderUtil.roundedFill(graphics, x, settingY, columnWidth, SUBCATEGORY_HEIGHT, withAlpha(HudGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
-            styler.drawText(graphics, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, SUBCATEGORY_HEIGHT), withAlpha(HudGuiStyler.MUTED, alpha), false);
+            RenderUtil.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
+            styler.drawText(graphics, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false);
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)
                 renderSlider(graphics, slider, x, settingY, columnWidth);
@@ -218,7 +219,7 @@ public final class HudGuiRenderer extends Screen {
      */
     private void renderSlider(GuiGraphicsExtractor graphics, NumberSetting slider, int x, int settingY, int columnWidth) {
         int sliderX = x + 8; // +8 for padding
-        int sliderY = settingY + SUBCATEGORY_HEIGHT - 4; // -4 for padding
+        int sliderY = settingY + subcategoryHeight - 4; // -4 for padding
         int sliderWidth = columnWidth - 16;
         graphics.fill(sliderX, sliderY, sliderX + sliderWidth, sliderY + 2, 0xff555861);
         int knobX = sliderX + Math.round(slider.progress() * sliderWidth);

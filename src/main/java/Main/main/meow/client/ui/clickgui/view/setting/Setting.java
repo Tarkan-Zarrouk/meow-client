@@ -1,4 +1,4 @@
-package Main.main.meow.client.setting;
+package Main.main.meow.client.ui.clickgui.view.setting;
 
 import com.google.gson.JsonElement;
 

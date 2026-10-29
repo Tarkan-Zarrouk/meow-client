@@ -1,12 +1,12 @@
 package Main.main.meow.client.module.modules.hud;
 
-import Main.main.meow.client.module.modules.ClientModule;
-import Main.main.meow.client.ui.clickgui.Category;
+import Main.main.meow.client.module.Module;
+import Main.main.meow.client.ui.clickgui.model.Category;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 
-public abstract class HudDisplayModule extends ClientModule {
+public abstract class HudDisplayModule extends Module {
     protected HudDisplayModule(String name, Category category, boolean enabled, String description) {
         super(name, category, enabled, description);
     }
