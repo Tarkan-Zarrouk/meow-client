@@ -2,7 +2,7 @@
   "providers": [
     {
       "type": "ttf",
-      "file": "meow:inter.ttf",
+      "file": "meow:mono/space_mono_regular.ttf",
       "shift": [0, 0],
       "size": 11,
       "oversample": 2

@@ -14,9 +14,9 @@ import java.util.List;
 public final class ClickGuiStyler {
     // this is pretty to look at, ai generated again but im not an artist so i cant do better
     public static final int ROW = 0xe62c313b, ROW_HOVER = 0xf03a404b, SETTING_ROW = 0xff171a22, TEXT = 0xfff7f4f7, CATEGORY_TEXT = 0xff000000, MUTED = 0xffc9c8cc, BORDER = 0xffffffff, CORNER_RADIUS = 16;
-    private static final FontDescription INTER_FONT = new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "inter"));
+    private static final FontDescription INTER_FONT = new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "inter/inter"));
     private static final FontDescription BACKUP_FONT = new FontDescription.Resource(Identifier.withDefaultNamespace("uniform"));
-
+    private static final FontDescription MONO_FONT = new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "mono/mono"));
     private final Font font;
 
     public ClickGuiStyler(Font font) {
@@ -30,6 +30,9 @@ public final class ClickGuiStyler {
         }
         if (choice == Main.main.meow.client.module.modules.client.clickgui.Font.BACKUP) {
             return BACKUP_FONT;
+        }
+        if(choice == Main.main.meow.client.module.modules.client.clickgui.Font.MONO) {
+            return MONO_FONT;
         }
         return Style.EMPTY.getFont();
     }

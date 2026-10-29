@@ -4,6 +4,7 @@ import net.minecraft.network.chat.FontDescription;
 
 public enum Font implements FontDescription  {
     INTER,
+    MONO,
     MINECRAFT,
     BACKUP,
 }
