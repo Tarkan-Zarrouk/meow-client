@@ -168,7 +168,7 @@ public final class ClickGuiRenderer extends Screen {
         }
         RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
         String label = styler.truncate(module.getName(), columnWidth - 24);
-        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiStyler.TEXT, alpha), true);
+        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getModuleTextColor(), alpha), true);
         if(settings.isExpanded(module)) {
             styler.drawText(graphics, styler.styled("..."), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false);
         } else {
