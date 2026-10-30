@@ -37,7 +37,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting COLUMN_GAP = new NumberSetting("Column Gap", "Change the gap of the columns", ClickGuiLayout.getColumnGap(), 1, 20);
     private static final NumberSetting MODULE_WIDTH = new NumberSetting("Module Width", "Change the width of the module", 120, 100, 170);
     private static final NumberSetting MODULE_HEIGHT = new NumberSetting("Module height", "Change the height of each module collectively", ClickGuiLayout.getRowHeight(), 10, 30);
-
+    private static final BooleanSetting SHOW_HUD_INFO_TEXT = new BooleanSetting("Show HUD info text", "The text on the bottom left", true);
 
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
@@ -48,9 +48,13 @@ public final class ClickGuiModule extends ClientModule {
                 SHOW_TOOL_TIP,
                 TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS,
                 BLUR_BACKGROUND,
-                MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP
+                MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP,
+                SHOW_HUD_INFO_TEXT
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static boolean getShowHudInfoText() {
+        return SHOW_HUD_INFO_TEXT.value();
     }
 
     public static int getSettingTextColor() {

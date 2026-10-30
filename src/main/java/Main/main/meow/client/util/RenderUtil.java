@@ -33,7 +33,7 @@ public class RenderUtil {
      * @param dropShadow shadow on text
      */
     public static void drawText(GuiGraphicsExtractor graphics, Font font, Component component, int x, int y, int color, boolean dropShadow){
-        graphics.text(font, TextUtil.setFont("HUD EDITOR  •  Drag components  •  ESC to close"), 10, y - 18, 0xffffffff, dropShadow);
+        graphics.text(font, component, 10, y - 18, 0xffffffff, dropShadow);
     }
 
     /**
