@@ -70,6 +70,16 @@ public class RenderUtil {
         graphics.fill(x, y, x + width, y + height, getGuiColorPanel());
     }
 
+    /**
+     * Gradient rect
+     * @param graphics graphics library
+     * @param x x-axis position
+     * @param y y-axis
+     * @param width width of rect
+     * @param height height of rect
+     * @param colorOne initial color
+     * @param colorTwo color to blend to
+     */
     public static void drawGradientPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int colorOne, int colorTwo) {
         graphics.fillGradient(x,y, x + width, y + height, colorOne, colorTwo);
     }
@@ -121,6 +131,21 @@ public class RenderUtil {
         double circle = radius - 0.5;
         double offset = distance - circle;
         return Math.max(0, (int) Math.ceil(circle - Math.sqrt(Math.max(0, circle * circle - offset * offset)))); // read a minecraft clients code for this, i have no idea how this works but it does and it looks good so im not complaining
+    }
+
+    /**
+     * Draws a circle to the screen
+     * @param graphics Graphics library
+     * @param centerX the x position of the center of the circle
+     * @param centerY the y position of the center of the circle
+     * @param radius the radius of the circle
+     * @param color the color of the circle
+     */
+    public static void drawCircle(GuiGraphicsExtractor graphics, int centerX, int centerY, int radius, int color) {
+        for (int row = -radius; row <= radius; row++) {
+            int half = (int) Math.sqrt(radius * radius - row * row);
+            graphics.fill(centerX - half, centerY + row, centerX + half + 1, centerY + row + 1, color);
+        }
     }
 
     /**

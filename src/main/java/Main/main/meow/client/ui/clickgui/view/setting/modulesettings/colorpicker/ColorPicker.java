@@ -63,9 +63,9 @@ public final class ColorPicker {
             int color = Color.HSBtoRGB(segment / (float) hueSegments, 1f, 1f) | 0xff000000;
             graphics.fill(segmentStart, hueY, segmentEnd, hueY + 8, color);
         }
-        circle(graphics,x + Math.round(saturation * width), y + Math.round((1f - value) * squareHeight), 6, 0xffffffff);
-        circle(graphics,x + 8 + Math.round(hue * hueWidth), hueY + 4, 6, 0xffffffff);
-        graphics.fill(x + width - 28, y + height - 16, x + width - 8, y + height - 6, base);
+        RenderUtil.drawCircle(graphics,x + Math.round(saturation * width), y + Math.round((1f - value) * squareHeight), 6, 0xffffffff);
+        RenderUtil.drawCircle(graphics,x + 8 + Math.round(hue * hueWidth), hueY + 4, 6, 0xffffffff);
+        RenderUtil.drawPanel(graphics, x + width - 28, y + height - 16, 20, 10, base);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY) {
@@ -123,10 +123,4 @@ public final class ColorPicker {
         return Math.clamp(value, 0f, 1f);
     }
 
-    private static void circle(GuiGraphicsExtractor graphics, int centerX, int centerY, int radius, int color) {
-        for (int row = -radius; row <= radius; row++) {
-            int half = (int) Math.sqrt(radius * radius - row * row);
-            graphics.fill(centerX - half, centerY + row, centerX + half + 1, centerY + row + 1, color);
-        }
-    }
 }
