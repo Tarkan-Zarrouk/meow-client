@@ -70,6 +70,10 @@ public class RenderUtil {
         graphics.fill(x, y, x + width, y + height, getGuiColorPanel());
     }
 
+    public static void drawGradientPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int colorOne, int colorTwo) {
+        graphics.fillGradient(x,y, x + width, y + height, colorOne, colorTwo);
+    }
+
     /**
      * Draws a random object to the screen
      * @param graphics graphics library

@@ -1,5 +1,6 @@
 package Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker;
 
+import Main.main.meow.client.util.RenderUtil;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.awt.Color;
@@ -52,10 +53,9 @@ public final class ColorPicker {
         int hueY = y + squareHeight + 14;
         int hueWidth = width - 16;
         int base = Color.HSBtoRGB(hue, 1f, 1f) | 0xff000000;
-
-        graphics.fill(x, y, x + width, y + height, 0xee20232a);
-        graphics.fillGradient(x, y, x + width, y + squareHeight, 0xffffffff, base);
-        graphics.fillGradient(x, y, x + width, y + squareHeight, 0x00000000, 0xff000000);
+        RenderUtil.drawPanel(graphics, x, y, width, height, 0xee20232a);
+        RenderUtil.drawGradientPanel(graphics, x, y, width, squareHeight, 0xffffffff, base);
+        RenderUtil.drawGradientPanel(graphics, x, y, width, squareHeight, 0x00000000, 0xff000000);
         int hueSegments = 32;
         for (int segment = 0; segment < hueSegments; segment++) {
             int segmentStart = x + 8 + segment * hueWidth / hueSegments;
