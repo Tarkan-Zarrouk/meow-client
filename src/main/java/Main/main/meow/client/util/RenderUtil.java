@@ -1,10 +1,12 @@
 package Main.main.meow.client.util;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import org.joml.Quaternionf;
@@ -18,6 +20,10 @@ public class RenderUtil {
     }
     public static int getGuiTextColor() {
         return GUI_TEXT_COLOR;
+    }
+
+    public static void drawText(GuiGraphicsExtractor graphics, Font font, Component component, int x, int y, int color, boolean dropShadow){
+        graphics.text(font, TextUtil.setFont("HUD EDITOR  •  Drag components  •  ESC to close"), 10, y - 18, 0xffffffff, dropShadow);
     }
 
     /**

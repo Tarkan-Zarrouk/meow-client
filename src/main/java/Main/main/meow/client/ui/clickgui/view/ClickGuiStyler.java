@@ -105,37 +105,6 @@ public final class ClickGuiStyler {
     public int centeredY(int y, int containerHeight) {
         return y + Math.max(0, (containerHeight - textLineHeight()) / 2);
     }
-//    // wouldn't you know! circles are hard to draw in minecraft, so we have to do this instead, thanks random minecraft clients code i read on github
-//    public static void roundedFill(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight, int radius) {
-//        int borderRadius = Math.min(radius, width / 2);
-//        for (int row = 0; row < height; row++) {
-//            int leftInset = 0;
-//            int rightInset = 0;
-//            if (topLeft && row < borderRadius) {
-//                leftInset = roundedInset(borderRadius, row);
-//            }
-//            if (topRight && row < borderRadius) {
-//                rightInset = roundedInset(borderRadius, row);
-//            }
-//            if (bottomLeft && row >= height - borderRadius) {
-//                leftInset = roundedInset(borderRadius, height - row - 1);
-//            }
-//            if (bottomRight && row >= height - borderRadius) {
-//                rightInset = roundedInset(borderRadius, height - row - 1);
-//            }
-//            if (leftInset > 0 || rightInset > 0) {
-//                graphics.fill(x + leftInset, y + row, x + width - rightInset, y + row + 1, color);
-//            } else {
-//                graphics.fill(x, y + row, x + width, y + row + 1, color);
-//            }
-//        }
-//    }
-//
-//    private static int roundedInset(int radius, int distance) {
-//        double circle = radius - 0.5;
-//        double offset = distance - circle;
-//        return Math.max(0, (int) Math.ceil(circle - Math.sqrt(Math.max(0, circle * circle - offset * offset)))); // read a minecraft clients code for this, i have no idea how this works but it does and it looks good so im not complaining
-//    }
     // thanks to the internet for this function, i have no idea how it works but it does
     public static float easeIn(float value) {
         return (float) Math.pow(value, 2);
