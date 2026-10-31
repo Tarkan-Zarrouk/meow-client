@@ -5,6 +5,7 @@ import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.KeybindSetting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ChatScreen;
 import org.lwjgl.glfw.GLFW;
 
 
@@ -45,7 +46,7 @@ public final class ZoomModule extends ClientModule {
     }
 
     public boolean isZooming(long window) {
-        return super.getEnabled() && zoomKey.isBound() && GLFW.glfwGetKey(window, zoomKey.key()) == GLFW.GLFW_PRESS;
+        return super.getEnabled() && zoomKey.isBound() && GLFW.glfwGetKey(window, zoomKey.key()) == GLFW.GLFW_PRESS && Minecraft.getInstance().screen == null;
     }
 
 
