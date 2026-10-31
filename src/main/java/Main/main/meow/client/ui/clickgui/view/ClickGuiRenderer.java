@@ -115,7 +115,7 @@ public final class ClickGuiRenderer extends Screen {
                 boolean lastModule = row == entries.size() - 1;
                 renderModuleRow(graphics, module, x, y + animationOffset + (int) scrolledAmount, columnWidth, rowHeight, hovered, lastModule, alpha);
                 if (settings.isExpanded(module)) {
-                    String settingTooltip = renderSettings(graphics, module, x, y + rowHeight, columnWidth, mouseX, mouseY, lastModule, alpha, scrolledAmount);
+                    String settingTooltip = renderSettings(graphics, module, x, y + animationOffset + rowHeight, columnWidth, mouseX, mouseY, lastModule, alpha, scrolledAmount);
                     if (settingTooltip != null && ClickGuiModule.getToolTipShowVal()) tooltipDescription = settingTooltip;
                 }
             }
