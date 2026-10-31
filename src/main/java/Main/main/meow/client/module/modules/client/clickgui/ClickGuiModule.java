@@ -41,7 +41,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting KNOB_WIDTH = new NumberSetting("Knob Width", "Knob width changer", 5, 5, 10);
     private static final NumberSetting KNOB_HEIGHT = new NumberSetting("Knob Height", "Knob height changer", 4, 4, 6);
     private static final NumberSetting SCROLL_SPEED = new NumberSetting("Scroll Speed", "Change the scroll speed of the clickgui", 10, 1, 20);
-
+    private static final NumberSetting ANIMATION_SPEED = new NumberSetting("Animation Speed", "Speed of the entry", 180, 1, 1000);
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
@@ -54,13 +54,18 @@ public final class ClickGuiModule extends ClientModule {
                 MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP,
                 SHOW_HUD_INFO_TEXT,
                 KNOB_WIDTH, KNOB_HEIGHT,
-                SCROLL_SPEED
+                SCROLL_SPEED, ANIMATION_SPEED
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    public static float getAnimationSpeed() {
+        return (float) ANIMATION_SPEED.value();
+    }
+
     public static int getScrollSpeed() {
         return SCROLL_SPEED.value();
     }
+
     public static int getKnobHeight() {
         return KNOB_HEIGHT.value();
     }

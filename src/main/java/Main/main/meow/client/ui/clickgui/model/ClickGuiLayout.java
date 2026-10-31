@@ -154,7 +154,7 @@ public final class ClickGuiLayout {
     }
 
     public float transitionProgress() {
-        return Math.min(1f, (System.currentTimeMillis() - transitionStarted) / (float) TRANSITION_MS);
+        return Math.min(1f, (System.currentTimeMillis() - transitionStarted) / ClickGuiModule.getAnimationSpeed());
     }
 
     public int transitionAlpha() {
