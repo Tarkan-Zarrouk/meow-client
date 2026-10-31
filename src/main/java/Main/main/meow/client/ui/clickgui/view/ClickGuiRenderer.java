@@ -46,7 +46,7 @@ public final class ClickGuiRenderer extends Screen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        this.scrolledAmount += verticalAmount;
+        this.scrolledAmount += verticalAmount * ClickGuiModule.getScrollSpeed();
         input.setScrollOffset((int) scrolledAmount);
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
@@ -140,9 +140,9 @@ public final class ClickGuiRenderer extends Screen {
      */
     private void renderCategories(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
         RenderUtil.roundedFill(graphics, x, y, columnWidth, headerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false, ClickGuiModule.getClickGuiHeaderBorderRadius());
-        graphics.fill(x + ClickGuiStyler.CORNER_RADIUS, y + headerHeight - 1, x + columnWidth - ClickGuiStyler.CORNER_RADIUS, y + headerHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.BORDER, alpha));
+        RenderUtil.drawPanel(graphics, x, y + headerHeight - 1, columnWidth, 1, ClickGuiStyler.withAlpha(ClickGuiStyler.BORDER, alpha));
         String label = styler.truncate(category.title(), columnWidth - 10);
-        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getCategoryTextColor(), alpha), false);
+        RenderUtil.drawText(graphics, font, Component.literal(label).withStyle(style -> style.withFont(ClickGuiStyler.getFont())), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getCategoryTextColor(), alpha), ClickGuiModule.getShadowBoolean(), styler.textScale());
     }
 
     /**
@@ -168,12 +168,11 @@ public final class ClickGuiRenderer extends Screen {
         }
         RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
         String label = styler.truncate(module.getName(), columnWidth - 24);
-        styler.drawText(graphics, styler.styled(label), styler.centeredX(x, columnWidth, label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getModuleTextColor(), alpha), true);
+        RenderUtil.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getModuleTextColor(), alpha), ClickGuiModule.getShadowBoolean(), styler.textScale());
         if(settings.isExpanded(module)) {
-            styler.drawText(graphics, styler.styled("..."), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false);
+            RenderUtil.drawText(graphics, font, styler.styled("..."), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false, styler.textScale());
         } else {
-
-            styler.drawText(graphics, styler.styled("⋮"), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false);
+            RenderUtil.drawText(graphics, font, styler.styled("⋮"), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false, styler.textScale());
         }
     }
 
@@ -201,7 +200,7 @@ public final class ClickGuiRenderer extends Screen {
             }
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
             RenderUtil.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
-            styler.drawText(graphics, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getSettingTextColor(), alpha), false);
+            RenderUtil.drawText(graphics, font, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getSettingTextColor(), alpha), false, styler.textScale());
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)
                 renderSlider(graphics, slider, x, settingY, columnWidth);
@@ -221,9 +220,11 @@ public final class ClickGuiRenderer extends Screen {
         int sliderX = x + 8; // +8 for padding
         int sliderY = settingY + subcategoryHeight - 4; // -4 for padding
         int sliderWidth = columnWidth - 16;
-        graphics.fill(sliderX, sliderY, sliderX + sliderWidth, sliderY + 2, 0xff555861);
+        RenderUtil.drawPanel(graphics, sliderX, sliderY, sliderWidth, 2, 0xff555861);
         int knobX = sliderX + Math.round(slider.progress() * sliderWidth);
-        graphics.fill(knobX - 2, sliderY - 2, knobX + 3, sliderY + 4, ClickGuiModule.moduleColor()); // +3 for width of knob
+        RenderUtil.roundedFill(graphics, knobX - 2, sliderY - 2, ClickGuiModule.getKnobWidth(), ClickGuiModule.getKnobHeight(), ClickGuiModule.moduleColor(), true, true, true, true, ClickGuiModule.getKnobBorderRadius());
+//        RenderUtil.drawPanel(graphics, knobX - 2, sliderY - 1, 5, 4, ClickGuiModule.moduleColor());
+//        graphics.fill(knobX - 2, sliderY - 2, knobX + 3, sliderY + 4, ClickGuiModule.moduleColor()); // +3 for width of knob
     }
 
     /**
@@ -259,7 +260,7 @@ public final class ClickGuiRenderer extends Screen {
             Component text = styler.styled(lines.get(line));
             int x = tooltipX + 6;
             int y = tooltipY + 4 + line * styler.textLineHeight();
-            styler.drawText(graphics, text, x, y, ClickGuiModule.getToolTipTextColor(), ClickGuiModule.getShadowBoolean());
+            RenderUtil.drawText(graphics, font, text, x, y, ClickGuiModule.getToolTipTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
         }
     }
 

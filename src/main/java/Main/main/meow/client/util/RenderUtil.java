@@ -33,7 +33,26 @@ public class RenderUtil {
      * @param dropShadow shadow on text
      */
     public static void drawText(GuiGraphicsExtractor graphics, Font font, Component component, int x, int y, int color, boolean dropShadow){
-        graphics.text(font, component, 10, y - 18, 0xffffffff, dropShadow);
+        drawText(graphics, font, component, x, y, color, dropShadow, 1.0f);
+    }
+
+    /**
+     * Component custom font text drawer with scaling
+     * @param graphics graphics library
+     * @param font font
+     * @param component Component to draw
+     * @param x x-axis position
+     * @param y y-axis position
+     * @param color color of text
+     * @param dropShadow shadow on text
+     * @param scale text scale, 1.0 is normal size
+     */
+    public static void drawText(GuiGraphicsExtractor graphics, Font font, Component component, int x, int y, int color, boolean dropShadow, float scale) {
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(x, y);
+        graphics.pose().scale(scale, scale);
+        graphics.text(font, component, 0, 0, color, dropShadow);
+        graphics.pose().popMatrix();
     }
 
     /**

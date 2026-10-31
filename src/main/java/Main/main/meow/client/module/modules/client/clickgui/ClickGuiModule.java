@@ -37,6 +37,10 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting MODULE_WIDTH = new NumberSetting("Module Width", "Change the width of the module", 120, 100, 170);
     private static final NumberSetting MODULE_HEIGHT = new NumberSetting("Module height", "Change the height of each module collectively", ClickGuiLayout.getRowHeight(), 10, 30);
     private static final BooleanSetting SHOW_HUD_INFO_TEXT = new BooleanSetting("Show HUD info text", "The text on the bottom left", true);
+    private static final NumberSetting KNOB_BORDER_RADIUS = new NumberSetting("Knob Border Radius", "How round the knob slider is", 3, 0, 3);
+    private static final NumberSetting KNOB_WIDTH = new NumberSetting("Knob Width", "Knob width changer", 5, 5, 10);
+    private static final NumberSetting KNOB_HEIGHT = new NumberSetting("Knob Height", "Knob height changer", 4, 4, 6);
+    private static final NumberSetting SCROLL_SPEED = new NumberSetting("Scroll Speed", "Change the scroll speed of the clickgui", 10, 1, 20);
 
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
@@ -45,13 +49,30 @@ public final class ClickGuiModule extends ClientModule {
                 FONT, SHOW_SHADOW, FONT_SIZE,
                 SHOW_OUTLINE,
                 SHOW_TOOL_TIP,
-                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS,
+                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS,
                 BLUR_BACKGROUND,
                 MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP,
-                SHOW_HUD_INFO_TEXT
+                SHOW_HUD_INFO_TEXT,
+                KNOB_WIDTH, KNOB_HEIGHT,
+                SCROLL_SPEED
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    public static int getScrollSpeed() {
+        return SCROLL_SPEED.value();
+    }
+    public static int getKnobHeight() {
+        return KNOB_HEIGHT.value();
+    }
+
+    public static int getKnobWidth() {
+        return KNOB_WIDTH.value();
+    }
+
+    public static int getKnobBorderRadius() {
+        return KNOB_BORDER_RADIUS.value();
+    }
+
     public static boolean getShowHudInfoText() {
         return SHOW_HUD_INFO_TEXT.value();
     }

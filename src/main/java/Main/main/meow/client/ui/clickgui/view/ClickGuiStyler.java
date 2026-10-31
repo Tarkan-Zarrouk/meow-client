@@ -53,15 +53,6 @@ public final class ClickGuiStyler {
         return Math.round(font.lineHeight * textScale());
     }
 
-    public void drawText(GuiGraphicsExtractor graphics, Component value, int x, int y, int color, boolean shadow) {
-        float scale = textScale();
-        graphics.pose().pushMatrix();
-        graphics.pose().translate(x, y);
-        graphics.pose().scale(scale, scale);
-        graphics.text(font, value, 0, 0, color, shadow && ClickGuiModule.font().equals(Main.main.meow.client.module.modules.client.clickgui.Font.MINECRAFT));
-        graphics.pose().popMatrix();
-    }
-
     public String truncate(String value, int maxWidth) {
         if (textWidth(styled(value)) <= maxWidth) return value;
         String suffix = "..";
