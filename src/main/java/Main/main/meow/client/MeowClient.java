@@ -28,6 +28,7 @@ public class MeowClient implements ClientModInitializer {
     public static final ModuleManager MODULE_MANAGER = new ModuleManager();
     public static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
 
+
     @Override
     public void onInitializeClient() {
         registerModules();
@@ -63,6 +64,7 @@ public class MeowClient implements ClientModInitializer {
         ArrowCounterModule arrow = (ArrowCounterModule) MODULE_MANAGER.byName(new ArrowCounterModule().getName());
         BpsModule bps = (BpsModule) MODULE_MANAGER.byName(new BpsModule().getName());
         EntityInfoViewer entityInfoViewer = (EntityInfoViewer) MODULE_MANAGER.byName(new EntityInfoViewer().getName());
+        WhatAmILookingAt whatAmILookingAt = (WhatAmILookingAt) MODULE_MANAGER.byName(new WhatAmILookingAt().getName());
 
         registerHudComponent(bps.getName(), 8, 8, bps);
         registerHudComponent(positionModule.getName(), 8, 24, positionModule);
@@ -76,6 +78,7 @@ public class MeowClient implements ClientModInitializer {
         registerHudComponent(totem.getName(), 8, 152, totem);
         registerHudComponent(arrow.getName(), 8, 168, arrow);
         registerHudComponent(entityInfoViewer.getName(), 8, 184, entityInfoViewer);
+        registerHudComponent(whatAmILookingAt.getName(), 8, 200, whatAmILookingAt);
     }
 
     private static void registerHudComponent(String id, int x, int y, HudDisplayModule module) {
@@ -106,7 +109,8 @@ public class MeowClient implements ClientModInitializer {
                 new ArrowCounterModule(),
                 new InventoryViewer(),
                 new InfoModule(),
-                new EntityInfoViewer()
+                new EntityInfoViewer(),
+                new WhatAmILookingAt()
         );
     }
 }

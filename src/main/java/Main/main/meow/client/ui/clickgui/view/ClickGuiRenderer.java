@@ -252,7 +252,7 @@ public final class ClickGuiRenderer extends Screen {
         tooltipX = Math.max(4, tooltipX);
         tooltipY = Math.max(4, tooltipY);
         if(ClickGuiModule.showOutline()) {
-            RenderUtil.drawRoundedOutline(graphics, tooltipX - 1, tooltipY - 1, tooltipWidth + 2, tooltipHeight + 2, ClickGuiModule.tooltipBorderColor(), ClickGuiModule.getToolTipBorderRadius());
+            RenderUtil.drawRoundedOutline(graphics, tooltipX - 1, tooltipY - 1, tooltipWidth + 2, tooltipHeight + 2, ClickGuiModule.tooltipBorderColor(), true, true, true, true, ClickGuiModule.getToolTipBorderRadius());
         }
         RenderUtil.roundedFill(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, ClickGuiModule.getToolTipBackgroundColor(), true, true, true, true, ClickGuiModule.getToolTipBorderRadius());
         for (int line = 0; line < lines.size(); line++) {

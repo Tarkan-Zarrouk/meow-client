@@ -26,7 +26,7 @@ public final class KeystrokesModule extends HudDisplayModule {
     private static final ColorSetting COLOR_OF_KEY_SEVEN = new ColorSetting("Key 7 Color", "Background color of Key 7", RenderUtil.getGuiColorPanel());
     private static final float[] KEY_LEVELS = new float[7];
     public KeystrokesModule() {
-        super("Keystrokes", Category.HUD, true, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
+        super("Keystrokes", Category.HUD, false, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
         super.addSetting(SHOW_BACKGROUND, COLOR_OF_KEYS, BACKGROUND_COLOR, COLOR_OF_KEY_ONE, COLOR_OF_KEY_TWO, COLOR_OF_KEY_THREE, COLOR_OF_KEY_FOUR, COLOR_OF_KEY_FIVE, COLOR_OF_KEY_SIX, COLOR_OF_KEY_SEVEN);
     }
     @Override

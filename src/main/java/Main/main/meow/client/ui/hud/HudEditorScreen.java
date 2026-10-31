@@ -6,7 +6,6 @@ import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.ui.clickgui.view.ClickGuiRenderer;
-import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;

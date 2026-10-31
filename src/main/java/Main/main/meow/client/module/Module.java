@@ -65,7 +65,6 @@ public abstract class Module {
     public final List<Setting<?>> settings() {
         return Collections.unmodifiableList(settings);
     }
-    @SafeVarargs // supresses the warning about generic array creation (i.e., generic array creation happens when you use varargs with generics, which is not type-safe (StackOverflow lol))
     public final <S extends Setting<?>> S addSetting(S... setting) {
         settings.addAll(Arrays.asList(setting));
         return setting[0];

@@ -138,9 +138,37 @@ public class RenderUtil {
             }
         }
     }
-    // see method above
-    public static void drawRoundedOutline(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, int radius) {
-        roundedFill(graphics, x, y, width, height, color, true, true, true, true, radius);
+    public static void drawRoundedOutline(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight, int radius) {
+        int outerRadius = Math.min(radius, Math.min(width, height) / 2);
+        int innerRadius = Math.max(0, outerRadius - 1);
+        int innerWidth = width - 2;
+        int innerHeight = height - 2;
+        // each row is 1px ring,
+        for (int row = 0; row < height; row++) {
+            int outerLeft = cornerInset(row, height, outerRadius, topLeft, bottomLeft);
+            int outerRight = width - cornerInset(row, height, outerRadius, topRight, bottomRight);
+            int innerRow = row - 1;
+            if (innerRow < 0 || innerRow >= innerHeight || innerWidth <= 0) {
+                RenderUtil.drawPanel(graphics, x + outerLeft, y + row, outerRight - outerLeft, 1, color);
+                continue;
+            }
+            // bounds calc
+            int innerLeft = 1 + cornerInset(innerRow, innerHeight, innerRadius, topLeft, bottomLeft);
+            int innerRight = 1 + innerWidth - cornerInset(innerRow, innerHeight, innerRadius, topRight, bottomRight);
+            RenderUtil.drawPanel(graphics, x + outerLeft, y + row, innerLeft - outerLeft, 1, color);
+            RenderUtil.drawPanel(graphics, x + innerRight, y + row, outerRight - innerRight, 1, color);
+        }
+    }
+
+    private static int cornerInset(int row, int height, int radius, boolean top, boolean bottom) {
+        int inset = 0;
+        if (top && row < radius) {
+            inset = roundedInset(radius, row);
+        }
+        if (bottom && row >= height - radius) {
+            inset = roundedInset(radius, height - row - 1);
+        }
+        return inset;
     }
 
     private static int roundedInset(int radius, int distance) {

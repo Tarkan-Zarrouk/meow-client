@@ -48,46 +48,6 @@ public final class ArmorStatusModule extends HudDisplayModule {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Category getCategory() {
-        return category;
-    }
-
-    @Override
-    public boolean getEnabled() {
-        return enabled;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public void setName(String newName) {
-        name = newName;
-    }
-
-    @Override
-    public void setCategory(Category newCategory) {
-        category = newCategory;
-    }
-
-    @Override
-    public void setEnabledVal(boolean newEnabled) {
-        enabled = newEnabled;
-    }
-
-    @Override
-    public void setDescription(String newDescription) {
-        description = newDescription;
-    }
-
-    @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
         int offset = 0;
         for (ItemStack piece : equippedPieces(player)) {

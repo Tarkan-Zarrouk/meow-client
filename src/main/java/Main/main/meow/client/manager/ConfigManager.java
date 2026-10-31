@@ -93,7 +93,7 @@ public final class ConfigManager {
         JsonObject root = new JsonObject();
         JsonObject enabled = new JsonObject();
         for (Main.main.meow.client.module.Module module : modules.all()) {
-            enabled.addProperty(module.getName(), module.getName());
+            enabled.addProperty(module.getName(), module.getEnabled());
         }
         root.add("enabledModules", enabled);
         JsonObject keybinds = new JsonObject();

@@ -9,14 +9,13 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
 import Main.main.meow.client.util.RenderUtil;
-import Main.main.meow.client.util.TextUtil;
 import org.lwjgl.glfw.GLFW;
 
 public final class ClickGuiModule extends ClientModule {
-    private static String NAME = "ClickGui";
-    private static Category CATEGORY = Category.CLIENT;
-    private static boolean ENABLED = true;
-    private static String DESCRIPTION = "Opens this ClickGUI and lets you customize its colors and keybind.";
+    private static final String NAME = "ClickGui";
+    private static final Category CATEGORY = Category.CLIENT;
+    private static final boolean ENABLED = true;
+    private static final String DESCRIPTION = "Opens this ClickGUI and lets you customize its colors and keybind.";
     private static final ColorSetting SETTINGS_TEXT_COLOR = new ColorSetting("Setting Color", "Opens a picker that changes the text color", ClickGuiStyler.MUTED);
     private static final ColorSetting MODULE_TEXT_COLOR = new ColorSetting("Module text color", "Opens a picker that changes the text color", RenderUtil.getGuiTextColor());
     private static final ColorSetting CATEGORY_TEXT_COLOR = new ColorSetting("Category text color", "Opens a picker that changes the text color", RenderUtil.getGuiTextColor());
@@ -131,44 +130,4 @@ public final class ClickGuiModule extends ClientModule {
         return FONT_SIZE.number();
     }
 
-
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
-    @Override
-    public Category getCategory() {
-        return CATEGORY;
-    }
-
-    @Override
-    public boolean getEnabled() {
-        return ENABLED;
-    }
-
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
-
-    @Override
-    public void setName(String name) {
-        NAME = name;
-    }
-
-    @Override
-    public void setCategory(Category category) {
-        CATEGORY = category;
-    }
-
-    @Override
-    public void setEnabledVal(boolean enabled) {
-        ENABLED = enabled;
-    }
-
-    @Override
-    public void setDescription(String description) {
-        DESCRIPTION = description;
-    }
 }
