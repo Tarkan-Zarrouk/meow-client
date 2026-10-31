@@ -53,7 +53,7 @@ public class WhatAmILookingAt extends HudDisplayModule {
                 String blockName = block.getName().getString();
                 String blockId = block.getDescriptionId();
                 int yPosObj = (HEIGHT_OF_PANEL.value() / 2 )- 4;
-                panelWidth = blockId.length() * 7;
+                panelWidth = (int) Math.ceil(blockId.length() * 6.5);
                 panelHeight = HEIGHT_OF_PANEL.value();
                 RenderUtil.roundedFill(graphics, x, y, panelWidth, panelHeight, COLOR_OF_PANEL.color() ,true, true, true, true, RADIUS_OF_PANEL.value());
                 if(SHOW_BLOCK_OUTLINE.value()) {
