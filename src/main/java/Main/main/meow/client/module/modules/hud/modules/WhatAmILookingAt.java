@@ -18,6 +18,8 @@ public class WhatAmILookingAt extends HudDisplayModule {
     private static final String NAME = "WhatAmILookingAt";
     private static final Category CATEGORY = Category.HUD;
     private static final boolean ENABLED = false;
+    private int panelWidth;
+    private int panelHeight;
     private static final String DESCRIPTION = "Identifies information about the non-living object you're looking at";
     private static final NumberSetting HEIGHT_OF_PANEL = new NumberSetting("Panel Height", "Change the height of the panel", 40, 40, 55);
     private static final NumberSetting RADIUS_OF_PANEL = new NumberSetting("Panel Radius", "Change the roundedness of the borders", 0, 0, 4);
@@ -51,7 +53,9 @@ public class WhatAmILookingAt extends HudDisplayModule {
                 String blockName = block.getName().getString();
                 String blockId = block.getDescriptionId();
                 int yPosObj = (HEIGHT_OF_PANEL.value() / 2 )- 4;
-                RenderUtil.roundedFill(graphics, x, y, (int) Math.ceil(blockId.length() * 6.5), HEIGHT_OF_PANEL.value(), COLOR_OF_PANEL.color() ,true, true, true, true, RADIUS_OF_PANEL.value());
+                panelWidth = blockId.length() * 7;
+                panelHeight = HEIGHT_OF_PANEL.value();
+                RenderUtil.roundedFill(graphics, x, y, panelWidth, panelHeight, COLOR_OF_PANEL.color() ,true, true, true, true, RADIUS_OF_PANEL.value());
                 if(SHOW_BLOCK_OUTLINE.value()) {
                     RenderUtil.drawRoundedOutline(graphics, x + 4, y + yPosObj - 5, 18, 18, COLOR_OF_BLOCK_OUTLINE.color(), true, true, true, true, RADIUS_OF_OUTLINE.value());
                 }
@@ -67,11 +71,11 @@ public class WhatAmILookingAt extends HudDisplayModule {
 
     @Override
     public int panelWidth(Minecraft client) {
-        return 0;
+        return this.panelWidth;
     }
 
     @Override
     public int panelHeight(Minecraft client) {
-        return 0;
+        return this.panelHeight;
     }
 }
