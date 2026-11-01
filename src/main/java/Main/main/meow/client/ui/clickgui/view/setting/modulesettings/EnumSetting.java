@@ -14,7 +14,7 @@ public final class EnumSetting<E extends Enum<E>> extends Setting<E> {
 
     @Override
     public String label() {
-        String text = value().name();
+        String text = value().name().replace("_", " ");
         return name() + ": " + text.charAt(0) + text.substring(1).toLowerCase();
     }
 
