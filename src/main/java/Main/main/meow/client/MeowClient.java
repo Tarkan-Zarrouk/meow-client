@@ -8,7 +8,7 @@ import Main.main.meow.client.module.modules.hud.modules.clock.ClockModule;
 import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
-import Main.main.meow.client.module.modules.visuals.RayCastBlockCustomizer.RayCastBlockCustomizer;
+import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.manager.HudComponentManager;
 import Main.main.meow.client.ui.hud.HudEditorScreen;

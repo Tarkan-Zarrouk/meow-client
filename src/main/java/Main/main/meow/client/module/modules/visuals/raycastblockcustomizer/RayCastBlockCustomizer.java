@@ -1,4 +1,4 @@
-package Main.main.meow.client.module.modules.visuals.RayCastBlockCustomizer;
+package Main.main.meow.client.module.modules.visuals.raycastblockcustomizer;
 
 import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.model.Category;

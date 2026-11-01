@@ -2,8 +2,8 @@ package Main.main.meow.mixin;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.Module;
-import Main.main.meow.client.module.modules.visuals.RayCastBlockCustomizer.Modes;
-import Main.main.meow.client.module.modules.visuals.RayCastBlockCustomizer.RayCastBlockCustomizer;
+import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.Modes;
+import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
 import net.minecraft.client.renderer.LevelRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
