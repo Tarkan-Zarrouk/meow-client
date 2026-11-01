@@ -7,7 +7,8 @@
   ],
   "client": [
     "GuiMixin",
-    "CameraMixin"
+    "CameraMixin",
+    "LevelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

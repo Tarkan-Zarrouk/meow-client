@@ -8,6 +8,7 @@ import Main.main.meow.client.module.modules.hud.modules.clock.ClockModule;
 import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
+import Main.main.meow.client.module.modules.visuals.RayCastBlockCustomizer.RayCastBlockCustomizer;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.manager.HudComponentManager;
 import Main.main.meow.client.ui.hud.HudEditorScreen;
@@ -21,6 +22,7 @@ import Main.main.meow.client.manager.ConfigManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
@@ -48,7 +50,25 @@ public class MeowClient implements ClientModInitializer {
                 sprint.tick(client);
             }
         });
+        LevelRenderEvents.BEFORE_GIZMOS.register(_-> {
+            if(MODULE_MANAGER.byName("RaycastBlockCustomizer") instanceof RayCastBlockCustomizer rayCastBlockCustomizer) {
+                rayCastBlockCustomizer.rayCastBlockRenderer();
+            }
+        });
+//        LevelRenderEvents.BEFORE_GIZMOS.register(RayCastBlockCustomizer::rayCastBlockRenderer);
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
+//        LevelRenderEvents.BEFORE_GIZMOS.register(context -> {
+//            AABB cube = new AABB(0, 80, 0, 1, 81, 1);
+//            Gizmos.cuboid(cube, GizmoStyle.stroke(0xFFFF00FF, 2f));
+//
+//            // draw circle now
+//            Vec3 pos = new Vec3(0.5, 80.5, 0.5);
+//            Gizmos.circle(pos, 1, GizmoStyle.stroke(0xFF00FFFF, 2f));
+//        });
+    }
+
+    public static ModuleManager getModuleManager() {
+        return MODULE_MANAGER;
     }
 
     private static void registerHudComponents() {
@@ -110,7 +130,8 @@ public class MeowClient implements ClientModInitializer {
                 new InventoryViewer(),
                 new InfoModule(),
                 new EntityInfoViewer(),
-                new WhatAmILookingAt()
+                new WhatAmILookingAt(),
+                new RayCastBlockCustomizer()
         );
     }
 }
