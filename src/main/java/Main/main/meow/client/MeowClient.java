@@ -27,8 +27,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class MeowClient implements ClientModInitializer {
-    public static final ModuleManager MODULE_MANAGER = new ModuleManager();
-    public static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
+    private static final ModuleManager MODULE_MANAGER = new ModuleManager();
+    private static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
+
+    public static ModuleManager getModuleManager() {
+        return MODULE_MANAGER;
+    }
+
+    public static HudComponentManager getHudComponentManager() {
+        return HUD_COMPONENTS;
+    }
 
 
     @Override
@@ -55,20 +63,7 @@ public class MeowClient implements ClientModInitializer {
                 rayCastBlockCustomizer.rayCastBlockRenderer();
             }
         });
-//        LevelRenderEvents.BEFORE_GIZMOS.register(RayCastBlockCustomizer::rayCastBlockRenderer);
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
-//        LevelRenderEvents.BEFORE_GIZMOS.register(context -> {
-//            AABB cube = new AABB(0, 80, 0, 1, 81, 1);
-//            Gizmos.cuboid(cube, GizmoStyle.stroke(0xFFFF00FF, 2f));
-//
-//            // draw circle now
-//            Vec3 pos = new Vec3(0.5, 80.5, 0.5);
-//            Gizmos.circle(pos, 1, GizmoStyle.stroke(0xFF00FFFF, 2f));
-//        });
-    }
-
-    public static ModuleManager getModuleManager() {
-        return MODULE_MANAGER;
     }
 
     private static void registerHudComponents() {
@@ -85,20 +80,20 @@ public class MeowClient implements ClientModInitializer {
         BpsModule bps = (BpsModule) MODULE_MANAGER.byName(new BpsModule().getName());
         EntityInfoViewer entityInfoViewer = (EntityInfoViewer) MODULE_MANAGER.byName(new EntityInfoViewer().getName());
         WhatAmILookingAt whatAmILookingAt = (WhatAmILookingAt) MODULE_MANAGER.byName(new WhatAmILookingAt().getName());
-
-        registerHudComponent(bps.getName(), 8, 8, bps);
-        registerHudComponent(positionModule.getName(), 8, 24, positionModule);
-        registerHudComponent(armor.getName(), 8, 40, armor);
-        registerHudComponent(effects.getName(), 8, 56, effects);
-        registerHudComponent(keystrokes.getName(), 8, 72, keystrokes);
-        registerHudComponent(inventory.getName(), 8, 88, inventory);
-        registerHudComponent(biome.getName(), 8, 104, biome);
-        registerHudComponent(info.getName(), 8, 120, info);
-        registerHudComponent(clock.getName(), 8, 136, clock);
-        registerHudComponent(totem.getName(), 8, 152, totem);
-        registerHudComponent(arrow.getName(), 8, 168, arrow);
-        registerHudComponent(entityInfoViewer.getName(), 8, 184, entityInfoViewer);
-        registerHudComponent(whatAmILookingAt.getName(), 8, 200, whatAmILookingAt);
+        int initialXPos = 8; // not doing allat to just have the user move it lol
+        registerHudComponent(bps.getName(), initialXPos, 8, bps);
+        registerHudComponent(positionModule.getName(), initialXPos, 24, positionModule);
+        registerHudComponent(armor.getName(), initialXPos, 40, armor);
+        registerHudComponent(effects.getName(), initialXPos, 56, effects);
+        registerHudComponent(keystrokes.getName(), initialXPos, 72, keystrokes);
+        registerHudComponent(inventory.getName(), initialXPos, 88, inventory);
+        registerHudComponent(biome.getName(), initialXPos, 104, biome);
+        registerHudComponent(info.getName(), initialXPos, 120, info);
+        registerHudComponent(clock.getName(), initialXPos, 136, clock);
+        registerHudComponent(totem.getName(), initialXPos, 152, totem);
+        registerHudComponent(arrow.getName(), initialXPos, 168, arrow);
+        registerHudComponent(entityInfoViewer.getName(), initialXPos, 184, entityInfoViewer);
+        registerHudComponent(whatAmILookingAt.getName(), initialXPos, 200, whatAmILookingAt);
     }
 
     private static void registerHudComponent(String id, int x, int y, HudDisplayModule module) {

@@ -24,7 +24,7 @@ public final class NotificationManager {
     }
 
     public static void moduleChanged(Module module) {
-        NotificationsModule notifications = (NotificationsModule) MeowClient.MODULE_MANAGER.byName("Notifications");
+        NotificationsModule notifications = (NotificationsModule) MeowClient.getModuleManager().byName("Notifications");
         // the module itself can still announce being turned off
         if (notifications == null || (!notifications.getEnabled() && module != notifications)) return;
         String status;
@@ -69,7 +69,7 @@ public final class NotificationManager {
 
     public static void render(GuiGraphicsExtractor graphics, Minecraft client) {
         if (message == null) return;
-        NotificationsModule notifications = (NotificationsModule) MeowClient.MODULE_MANAGER.byName("Notifications");
+        NotificationsModule notifications = (NotificationsModule) MeowClient.getModuleManager().byName("Notifications");
         if (notifications == null || notifications.mode() != Mode.ALERT) {
             message = null;
             return;

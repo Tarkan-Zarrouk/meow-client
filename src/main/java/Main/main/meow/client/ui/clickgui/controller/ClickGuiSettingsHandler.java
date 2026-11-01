@@ -55,7 +55,7 @@ public final class ClickGuiSettingsHandler {
         for (Module module : expanded)
             expandedNames.add(module.getName());
         ClickGuiLayoutSettings.setExpandedModules(expandedNames);
-        ConfigManager.save(Minecraft.getInstance(), modules, MeowClient.HUD_COMPONENTS);
+        ConfigManager.save(Minecraft.getInstance(), modules, MeowClient.getHudComponentManager());
     }
 
     public ColorPicker colorPicker() {

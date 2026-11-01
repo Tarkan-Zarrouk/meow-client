@@ -42,22 +42,37 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting KNOB_HEIGHT = new NumberSetting("Knob Height", "Knob height changer", 4, 4, 6);
     private static final NumberSetting SCROLL_SPEED = new NumberSetting("Scroll Speed", "Change the scroll speed of the clickgui", 10, 1, 20);
     private static final NumberSetting ANIMATION_SPEED = new NumberSetting("Animation Speed", "Speed of the entry", 180, 1, 1000);
+    private static final BooleanSetting TOGGLE_CATEGORY_LINE = new BooleanSetting("Toggle Category White Line", "Toggle the white line on the category header", true);
+    private static final NumberSetting CATEGORY_LINE_WIDTH = new NumberSetting("Category Line Width", "Change the length of the white line on the category header", 170, 10, 170);
+    private static final ColorSetting CATEGORY_LINE_COLOR = new ColorSetting("Category Line Color", "Change the color of the line on the category header", RenderUtil.getGuiTextColor());
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR,
                 FONT, SHOW_SHADOW, FONT_SIZE,
-                SHOW_OUTLINE,
-                SHOW_TOOL_TIP,
+                SHOW_OUTLINE, SHOW_TOOL_TIP,
                 TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS,
                 BLUR_BACKGROUND,
                 MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP,
                 SHOW_HUD_INFO_TEXT,
                 KNOB_WIDTH, KNOB_HEIGHT,
-                SCROLL_SPEED, ANIMATION_SPEED
+                SCROLL_SPEED, ANIMATION_SPEED,
+                TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    public static int getCategoryLineColor() {
+        return CATEGORY_LINE_COLOR.color();
+    }
+
+    public static int getCategoryLineWidth() {
+        return CATEGORY_LINE_WIDTH.value();
+    }
+
+    public static boolean getToggleCategoryLine() {
+        return TOGGLE_CATEGORY_LINE.value();
+    }
+
     public static float getAnimationSpeed() {
         return (float) ANIMATION_SPEED.value();
     }

@@ -77,7 +77,7 @@ public final class HudEditorScreen extends Screen {
     public boolean mouseReleased(MouseButtonEvent event) {
         if (event.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
             dragging = null;
-            components.save(net.minecraft.client.Minecraft.getInstance(), MeowClient.MODULE_MANAGER);
+            components.save(net.minecraft.client.Minecraft.getInstance(), MeowClient.getModuleManager());
             return true;
         }
         return super.mouseReleased(event);
@@ -97,14 +97,14 @@ public final class HudEditorScreen extends Screen {
         if (player == null || client.level == null) {
             return;
         }
-        MeowClient.HUD_COMPONENTS.render(graphics, client, false);
+        MeowClient.getHudComponentManager().render(graphics, client, false);
         NotificationManager.render(graphics, client);
     }
 
 
     public static void handleHudEditorKey(Minecraft client) {
 
-        Module clickGui = MeowClient.MODULE_MANAGER.byName("ClickGUI");
+        Module clickGui = MeowClient.getModuleManager().byName("ClickGUI");
         int key;
         if(clickGui == null) {
             key = GLFW.GLFW_KEY_RIGHT_SHIFT;
@@ -118,16 +118,16 @@ public final class HudEditorScreen extends Screen {
             rightShift = GLFW.glfwGetKey(client.getWindow().handle(), key) == GLFW.GLFW_PRESS;
         }
         if (rightShift && !rightShiftDown && client.screen == null) {
-            client.setScreen(new ClickGuiRenderer(MeowClient.MODULE_MANAGER));
+            client.setScreen(new ClickGuiRenderer(MeowClient.getModuleManager()));
         }
         if (GLFW.glfwGetKey(client.getWindow().handle(), GLFW.GLFW_KEY_F8) == GLFW.GLFW_PRESS && client.screen == null) {
-            client.setScreen(new HudEditorScreen(MeowClient.HUD_COMPONENTS));
+            client.setScreen(new HudEditorScreen(MeowClient.getHudComponentManager()));
         }
         rightShiftDown = rightShift;
     }
 
     public static boolean enabled(String name) {
-        Module module = MeowClient.MODULE_MANAGER.byName(name);
+        Module module = MeowClient.getModuleManager().byName(name);
         return module != null && module.getEnabled();
     }
 
