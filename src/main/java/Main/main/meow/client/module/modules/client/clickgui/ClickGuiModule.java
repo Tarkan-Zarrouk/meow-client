@@ -31,7 +31,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting CLICK_GUI_BORDER_RADIUS = new NumberSetting("Border Radius", "Change the roundedness of the borders", 16, 0,16);
     private static final NumberSetting CLICK_GUI_HEADER_RADIUS = new NumberSetting("Header Radius","Change the header radius", 16, 0, 16);
     private static final BooleanSetting SHOW_TOOL_TIP = new BooleanSetting("Draw Tooltips", "Show the tooltips for each module and their respective setting", true);
-    private static final NumberSetting TOOLTIP_BORDER_RADIUS = new NumberSetting("Tool tip border radius", "Change the roundedness of the border radisu", 5, 0, 15);
+    private static final NumberSetting TOOLTIP_BORDER_RADIUS = new NumberSetting("Tool tip border radius", "Change the roundedness of the border radius", 5, 0, 15);
     private static final BooleanSetting BLUR_BACKGROUND = new BooleanSetting("Blur Background", "Blur the background", true);
     private static final NumberSetting COLUMN_GAP = new NumberSetting("Column Gap", "Change the gap of the columns", ClickGuiLayout.getColumnGap(), 1, 20);
     private static final NumberSetting MODULE_WIDTH = new NumberSetting("Module Width", "Change the width of the module", 120, 100, 170);
