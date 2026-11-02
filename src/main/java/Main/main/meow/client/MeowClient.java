@@ -5,6 +5,7 @@ import Main.main.meow.client.module.modules.hud.modules.*;
 import Main.main.meow.client.module.modules.hud.modules.armorstatus.ArmorStatusModule;
 import Main.main.meow.client.module.modules.hud.modules.bps.BpsModule;
 import Main.main.meow.client.module.modules.hud.modules.clock.ClockModule;
+import Main.main.meow.client.module.modules.hud.modules.enabledmodules.EnabledModules;
 import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
@@ -80,6 +81,7 @@ public class MeowClient implements ClientModInitializer {
         BpsModule bps = (BpsModule) MODULE_MANAGER.byName(new BpsModule().getName());
         EntityInfoViewer entityInfoViewer = (EntityInfoViewer) MODULE_MANAGER.byName(new EntityInfoViewer().getName());
         WhatAmILookingAt whatAmILookingAt = (WhatAmILookingAt) MODULE_MANAGER.byName(new WhatAmILookingAt().getName());
+        EnabledModules enabledModules = (EnabledModules) MODULE_MANAGER.byName(new EnabledModules().getName());
         int initialXPos = 8; // not doing allat to just have the user move it lol
         registerHudComponent(bps.getName(), initialXPos, 8, bps);
         registerHudComponent(positionModule.getName(), initialXPos, 24, positionModule);
@@ -94,6 +96,7 @@ public class MeowClient implements ClientModInitializer {
         registerHudComponent(arrow.getName(), initialXPos, 168, arrow);
         registerHudComponent(entityInfoViewer.getName(), initialXPos, 184, entityInfoViewer);
         registerHudComponent(whatAmILookingAt.getName(), initialXPos, 200, whatAmILookingAt);
+        registerHudComponent(enabledModules.getName(), initialXPos, 216, enabledModules);
     }
 
     private static void registerHudComponent(String id, int x, int y, HudDisplayModule module) {
@@ -126,7 +129,8 @@ public class MeowClient implements ClientModInitializer {
                 new InfoModule(),
                 new EntityInfoViewer(),
                 new WhatAmILookingAt(),
-                new RayCastBlockCustomizer()
+                new RayCastBlockCustomizer(),
+                new EnabledModules()
         );
     }
 }

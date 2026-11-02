@@ -2,12 +2,9 @@ package Main.main.meow.client.manager;
 
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.ui.clickgui.model.Category;
+import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 public final class ModuleManager {
@@ -26,6 +23,14 @@ public final class ModuleManager {
             registeredModule.onEnabledChange(enabledChangeListener);
             modules.add(registeredModule);
         }
+    }
+
+    public Map<String, Boolean> getModuleListString() {
+        Map<String, Boolean> moduleList = new HashMap<>();
+        for(Module module : modules) {
+            moduleList.put(module.getName(), module.getEnabled());
+        }
+        return moduleList;
     }
 
     public void setChangeListener(Runnable listener) {
