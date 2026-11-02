@@ -1,7 +1,11 @@
 package Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker;
 
+import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.TextUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.network.chat.Component;
 
 import java.awt.Color;
 
@@ -66,6 +70,12 @@ public final class ColorPicker {
         RenderUtil.drawCircle(graphics,x + Math.round(saturation * width), y + Math.round((1f - value) * squareHeight), 6, 0xffffffff);
         RenderUtil.drawCircle(graphics,x + 8 + Math.round(hue * hueWidth), hueY + 4, 6, 0xffffffff);
         RenderUtil.drawPanel(graphics, x + width - 28, y + height - 16, 20, 10, base);
+        // create a button that does an action
+        Component copyText = Component.literal("Copy");
+        int xPos = width / 2 - 5;
+        int yPos = height + 12;
+        RenderUtil.drawPanel(graphics, x +xPos, y + yPos, TextUtil.getTextWidth(Minecraft.getInstance(), copyText.getString()) + 5, TextUtil.getTextHeight(Minecraft.getInstance()) + 5, ClickGuiModule.getCopyButtonColorSetting());
+        RenderUtil.drawText(graphics, Minecraft.getInstance().font, Component.literal("Copy"), x + xPos + 2, y + yPos + 3, ClickGuiModule.getCopyTextColorSetting(), ClickGuiModule.getCopyButtonDropShadow());
     }
 
     public boolean mouseClicked(double mouseX, double mouseY) {
@@ -77,6 +87,10 @@ public final class ColorPicker {
         if (inHue(mouseX, mouseY)) {
             draggingHue = true;
             updateHue(mouseX);
+            return true;
+        }
+        if(inCopy(mouseX, mouseY)) {
+            Minecraft.getInstance().keyboardHandler.setClipboard(String.format("#%08X", color()));
             return true;
         }
         return false;
@@ -117,6 +131,13 @@ public final class ColorPicker {
     private boolean inHue(double mouseX, double mouseY) {
         return mouseX >= x + 8 && mouseX <= x + width - 8
                 && mouseY >= y + height - 24 && mouseY <= y + height - 14;
+    }
+
+    private boolean inCopy(double mouseX, double mouseY) {
+        int xPos = width / 2 - 5;
+        int yPos = height + 12;
+        return mouseX >= x + xPos && mouseX <= x + xPos + TextUtil.getTextWidth(Minecraft.getInstance(), "Copy") + 5
+                && mouseY >= y + yPos && mouseY <= y + yPos + TextUtil.getTextHeight(Minecraft.getInstance()) + 5;
     }
 
     private static float clamp(float value) {

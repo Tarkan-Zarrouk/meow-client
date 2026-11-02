@@ -45,11 +45,14 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting TOGGLE_CATEGORY_LINE = new BooleanSetting("Toggle Category White Line", "Toggle the white line on the category header", true);
     private static final NumberSetting CATEGORY_LINE_WIDTH = new NumberSetting("Category Line Width", "Change the length of the white line on the category header", 170, 10, 170);
     private static final ColorSetting CATEGORY_LINE_COLOR = new ColorSetting("Category Line Color", "Change the color of the line on the category header", RenderUtil.getGuiTextColor());
+    private static final ColorSetting COLOR_SETTING_BUTTON_COLOR = new ColorSetting("Color Copy Button Color", "Change the color of the copy button", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting COLOR_SETTING_TEXT_COLOR = new ColorSetting("Color Copy Text Color", "Change the color of the copy text", RenderUtil.getGuiTextColor());
+    private static final BooleanSetting COLOR_SETTING_TEXT_DROP_SHADOW = new BooleanSetting("Copy Text Drop Shadow", "Add / Remove drop shadow to copy text button", false);
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR,
-                FONT, SHOW_SHADOW, FONT_SIZE,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR,
+                FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW,
                 SHOW_OUTLINE, SHOW_TOOL_TIP,
                 TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS,
                 BLUR_BACKGROUND,
@@ -61,6 +64,17 @@ public final class ClickGuiModule extends ClientModule {
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    public static boolean getCopyButtonDropShadow() {
+        return COLOR_SETTING_TEXT_DROP_SHADOW.value();
+    }
+
+    public static int getCopyButtonColorSetting() {
+        return COLOR_SETTING_BUTTON_COLOR.color();
+    }
+    public static int getCopyTextColorSetting() {
+        return COLOR_SETTING_TEXT_COLOR.color();
+    }
+
     public static int getCategoryLineColor() {
         return CATEGORY_LINE_COLOR.color();
     }
