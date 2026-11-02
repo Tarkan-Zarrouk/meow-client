@@ -15,7 +15,7 @@ public class LevelRendererMixin {
     @Inject(method = "Lnet/minecraft/client/renderer/LevelRenderer;renderBlockOutline(Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lcom/mojang/blaze3d/vertex/PoseStack;ZLnet/minecraft/client/renderer/state/level/LevelRenderState;)V", at = @At("HEAD"), cancellable = true)
     private void meow$renderBlockOutline(CallbackInfo ci) {
         Module rayCastBlockCustomizer = MeowClient.getModuleManager().byName("RaycastBlockCustomizer");
-        if (rayCastBlockCustomizer instanceof RayCastBlockCustomizer && (rayCastBlockCustomizer.getEnabled() || RayCastBlockCustomizer.getRayCastRenderMode() == Modes.NONE)) {
+        if (rayCastBlockCustomizer instanceof RayCastBlockCustomizer && (rayCastBlockCustomizer.getEnabled()) && RayCastBlockCustomizer.getRayCastRenderMode() != null && RayCastBlockCustomizer.getRayCastRenderMode() != Modes.NONE) {
             ci.cancel();
             ((RayCastBlockCustomizer) rayCastBlockCustomizer).rayCastBlockRenderer();
         }
