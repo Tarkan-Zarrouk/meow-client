@@ -9,6 +9,7 @@ import Main.main.meow.client.module.modules.hud.modules.enabledmodules.EnabledMo
 import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
+import Main.main.meow.client.module.modules.visuals.raycastentityhitboxrenderer.RayCastEntityHitBoxRenderer;
 import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
 import Main.main.meow.client.ui.hud.HudComponent;
 import Main.main.meow.client.manager.HudComponentManager;
@@ -62,6 +63,14 @@ public class MeowClient implements ClientModInitializer {
         LevelRenderEvents.BEFORE_GIZMOS.register(_-> {
             if(MODULE_MANAGER.byName("RaycastBlockCustomizer") instanceof RayCastBlockCustomizer rayCastBlockCustomizer) {
                 rayCastBlockCustomizer.rayCastBlockRenderer();
+
+            }
+            if(MODULE_MANAGER.byName("RayCastEntityHitBoxRenderer") instanceof RayCastEntityHitBoxRenderer rayCastEntityHitboxRenderer) {
+                try {
+                    rayCastEntityHitboxRenderer.rayCastEntityHitBoxRenderer();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
@@ -130,7 +139,8 @@ public class MeowClient implements ClientModInitializer {
                 new EntityInfoViewer(),
                 new WhatAmILookingAt(),
                 new RayCastBlockCustomizer(),
-                new EnabledModules()
+                new EnabledModules(),
+                new RayCastEntityHitBoxRenderer()
         );
     }
 }

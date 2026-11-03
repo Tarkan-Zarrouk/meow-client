@@ -5,21 +5,22 @@ import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.gizmos.GizmoStyle;
 import net.minecraft.gizmos.Gizmos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class RayCastBlockCustomizer extends ClientModule {
+public final class RayCastBlockCustomizer extends ClientModule {
     private static final String NAME = "RaycastBlockCustomizer";
     private static final Category CATEGORY = Category.VISUALS;
     private static final boolean ENABLED = false;
     private static final String DESCRIPTION = "Swap between filled, outline, and more whenever you look at an object!";
     private static final EnumSetting<Modes> RAYCAST_RENDER_MODES = new EnumSetting<>("Mode", "Change between outline, stroke and outline, stroke, or none!", Modes.OUTLINE);
     private static final NumberSetting OUTLINE_RENDER_WIDTH = new NumberSetting("Outline Width", "Change the thickness", 4, 1,10);
-    private static final ColorSetting RENDER_COLOR = new ColorSetting("Outline Color", "Customize how it looks", 0xFF00FFFF);
-    private static final ColorSetting FILL_COLOR = new ColorSetting("Fill Color", "Customize how it looks", 0xFF00FFFF);
+    private static final ColorSetting RENDER_COLOR = new ColorSetting("Outline Color", "Customize how it looks", RenderUtil.getVisualDefaultColor());
+    private static final ColorSetting FILL_COLOR = new ColorSetting("Fill Color", "Customize how it looks", RenderUtil.getVisualDefaultColor());
     public RayCastBlockCustomizer() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(

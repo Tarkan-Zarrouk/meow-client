@@ -250,4 +250,8 @@ public class RenderUtil {
     public static void drawSprite(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x, y, width, height);
     }
+
+    public static int getVisualDefaultColor() {
+        return 0xFF00FFFF;
+    }
 }
