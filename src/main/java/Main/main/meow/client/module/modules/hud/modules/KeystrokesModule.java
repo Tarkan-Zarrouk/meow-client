@@ -31,7 +31,6 @@ public final class KeystrokesModule extends HudDisplayModule {
     }
     @Override
     public void drawInfo(GuiGraphicsExtractor g, Minecraft client, LocalPlayer player, int x, int y) {
-        // this entire method is ai, i lowkey have no idea how i could do this without it being buggy lol
         long now = System.nanoTime();
         float delta = Math.min(0.05f, (now - lastKeyTime) / 1000000000f);
         lastKeyTime = now;

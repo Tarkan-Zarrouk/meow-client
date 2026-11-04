@@ -9,9 +9,6 @@ import net.minecraft.network.chat.Component;
 
 import java.awt.Color;
 
-/**
- * ai generated, ts was not possible for me to think of :wilted_rose:
- */
 public final class ColorPicker {
     @FunctionalInterface
     public interface ColorConsumer {
@@ -70,11 +67,15 @@ public final class ColorPicker {
         RenderUtil.drawCircle(graphics,x + Math.round(saturation * width), y + Math.round((1f - value) * squareHeight), 6, 0xffffffff);
         RenderUtil.drawCircle(graphics,x + 8 + Math.round(hue * hueWidth), hueY + 4, 6, 0xffffffff);
         RenderUtil.drawPanel(graphics, x + width - 28, y + height - 16, 20, 10, base);
+        // copy text component
         Component copyText = Component.literal("Copy");
         int xPos = width / 2 - 5;
         int yPos = height + 12;
         RenderUtil.drawPanel(graphics, x +xPos, y + yPos, TextUtil.getTextWidth(Minecraft.getInstance(), copyText.getString()) + 5, TextUtil.getTextHeight(Minecraft.getInstance()) + 5, ClickGuiModule.getCopyButtonColorSetting());
         RenderUtil.drawText(graphics, Minecraft.getInstance().font, Component.literal("Copy"), x + xPos + 2, y + yPos + 3, ClickGuiModule.getCopyTextColorSetting(), ClickGuiModule.getCopyButtonDropShadow());
+        RenderUtil.drawText(graphics, Minecraft.getInstance(), Component.literal("Color: ").append(Component.literal(String.format("#%08X", color())).withStyle(style -> style.withColor(color()))), x, y - 9, RenderUtil.getGuiTextColor());
+        RenderUtil.drawPanel(graphics, x + 90, y - 10, 10, 10, color());
+
     }
 
     public boolean mouseClicked(double mouseX, double mouseY) {

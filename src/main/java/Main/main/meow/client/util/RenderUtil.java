@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import org.joml.Quaternionf;
@@ -66,6 +67,9 @@ public class RenderUtil {
      */
     public static void drawText(GuiGraphicsExtractor graphics, Minecraft client, String value, int x, int y, int color) {
         graphics.text(client.font, TextUtil.setFont(value), x, y, color);
+    }
+    public static void drawText(GuiGraphicsExtractor graphics, Minecraft client, MutableComponent value, int x, int y, int color) {
+        graphics.text(client.font, value, x, y, color);
     }
 
     /**
