@@ -21,7 +21,6 @@ public final class ZoomModule extends ClientModule {
     }
 
     private static void update(long window) {
-        // had to use ai for this method, i literally have no idea how to do this without it, i tried for 2 hours and gave up
         ZoomModule zoom = (ZoomModule) MeowClient.getModuleManager().byName("Zoom");
         boolean active = zoom != null && zoom.isZooming(window);
         long now = System.nanoTime();

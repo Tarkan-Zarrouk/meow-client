@@ -16,10 +16,10 @@ import java.util.*;
 
 
 public final class ArmorStatusModule extends HudDisplayModule {
-    private static String name = "Armor Status";
-    private static Category category = Category.HUD;
-    private static boolean enabled = false;
-    private static String description = "Shows your equipped armor and its remaining durability on the HUD";
+    private static final String name = "Armor Status";
+    private static final Category category = Category.HUD;
+    private static final boolean enabled = false;
+    private static final String description = "Shows your equipped armor and its remaining durability on the HUD";
     private static final EnumSetting<Modes> ORIENTATION = new EnumSetting<>("Orientation", "Change the orientation from horizontal to vertical", Modes.HORIZONTAL);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background of your panel", RenderUtil.getGuiColorPanel());

@@ -11,17 +11,12 @@ public final class ColorSetting extends Setting<Integer> {
     private final int defaultColor;
 
     public ColorSetting(String name, String description, int defaultColor) {
-        super(name, description, defaultColor | 0xff000000);
-        this.defaultColor = defaultColor | 0xff000000;
+        super(name, description, defaultColor);
+        this.defaultColor = defaultColor;
     }
 
     public int color() {
         return value();
-    }
-
-    @Override
-    public void setValue(Integer value) {
-        super.setValue(value | 0xff000000);
     }
 
     // picker that writes every change straight back into this setting, onChange runs after each update
@@ -34,7 +29,7 @@ public final class ColorSetting extends Setting<Integer> {
 
     @Override
     public String label() {
-        return name() +  ": " + String.format("#%06X", value() & 0xffffff);
+        return name() +  ": " + String.format("#%08X", value());
     }
 
     @Override

@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.ChatFormatting;
 
-// not entirely ai but code completions helped fix roadblocks lol
 public final class NotificationManager {
     private static String message;
     private static long shownAt;
