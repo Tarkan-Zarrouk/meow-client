@@ -55,13 +55,15 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting TOP_RIGHT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Top Right Alpha Channel Round", "Toggle the top right corner of the alpha channel", true);
     private static final BooleanSetting BOTTOM_LEFT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Bottom Left Alpha Channel Round", "Toggle the bottom left corner of the alpha channel", true);
     private static final BooleanSetting BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Bottom Right Alpha Channel Round", "Toggle the bottom right corner of the alpha channel", true);
+    private static final ColorSetting ALPHA_CHANNEL_SLIDER_BUTTON_COLOR = new ColorSetting("Alpha Channel Button Color", "Color of alpha channel slider button", 0xffffffff);
+    private static final NumberSetting ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS = new NumberSetting("Alpha Button Radius", "Roundedness of alpha button", 6, 1, 10);
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR,
                 FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW,
                 SHOW_OUTLINE, SHOW_TOOL_TIP,
-                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS,
+                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS,
                 BLUR_BACKGROUND,
                 MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP,
                 SHOW_HUD_INFO_TEXT,
@@ -73,7 +75,12 @@ public final class ClickGuiModule extends ClientModule {
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
-
+    public static int getAlphaChannelButtonRadius() {
+        return ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS.value();
+    }
+    public static int getAlphaChannelButtonColor() {
+        return ALPHA_CHANNEL_SLIDER_BUTTON_COLOR.color();
+    }
     public static boolean getTopLeftAlphaChannelRound() {
         return TOP_LEFT_ALPHA_CHANNEL_ROUND.value();
     }
