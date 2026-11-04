@@ -77,8 +77,8 @@ public final class ColorPicker implements ColorConsumer {
     private void drawAlphaSlider(GuiGraphicsExtractor graphics, int sliderWidth, int sliderY) {
         int left = x + 8;
         int right = x + sliderWidth - 50;
-        RenderUtil.drawCircle(graphics, left + Math.round((1f - alpha / 255f) * sliderWidth), sliderY + 4, 6, 0xffffffff);
         RenderUtil.roundedFill(graphics,  left, sliderY + 4, width - 17, ClickGuiModule.getAlphaChannelHeight(),  ClickGuiModule.getAlphaChannelBackgroundColor(), ClickGuiModule.getTopLeftAlphaChannelRound(), ClickGuiModule.getTopRightAlphaChannelRound(), ClickGuiModule.getBottomLeftAlphaChannelRound(), ClickGuiModule.getBottomRightAlphaChannelRound(), ClickGuiModule.getAlphaChannelBorderRadius());
+        RenderUtil.drawCircle(graphics, left + Math.round((1f - alpha / 255f) * sliderWidth), sliderY + 4, 6, 0xffffffff);
         RenderUtil.drawText(graphics, Minecraft.getInstance().font, Component.literal("Opaque"), left - 4, sliderY + 12, ClickGuiModule.getCopyTextColorSetting(), false);
         RenderUtil.drawText(graphics, Minecraft.getInstance().font, Component.literal("Transparent"), right, sliderY + 12, ClickGuiModule.getCopyTextColorSetting(), false);
         RenderUtil.drawText(graphics, Minecraft.getInstance().font, Component.literal(String.format("%d%%", Math.round(alpha / 255f * 100))), x + (sliderWidth / 2), sliderY + 12, ClickGuiModule.getCopyTextColorSetting(), false);

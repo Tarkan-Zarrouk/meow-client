@@ -49,7 +49,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final ColorSetting COLOR_SETTING_TEXT_COLOR = new ColorSetting("Color Copy Text Color", "Change the color of the copy text", RenderUtil.getGuiTextColor());
     private static final BooleanSetting COLOR_SETTING_TEXT_DROP_SHADOW = new BooleanSetting("Copy Text Drop Shadow", "Add / Remove drop shadow to copy text button", false);
     private static final ColorSetting ALPHA_CHANNEL_BACKGROUND_COLOR = new ColorSetting("Alpha Channel Background Color", "Alpha slider background changer", RenderUtil.getGuiTextColor());
-    private static final NumberSetting ALPHA_CHANNEL_BORDER_RADIUS = new NumberSetting("Alpha Channel Radius", "Roundedness of borders on alpha channel", 1, 1, 4);
+    private static final NumberSetting ALPHA_CHANNEL_BORDER_RADIUS = new NumberSetting("Alpha Channel Radius", "Roundedness of borders on alpha channel", 1, 1, 3);
     private static final NumberSetting ALPHA_CHANNEL_HEIGHT = new NumberSetting("Alpha Channel Height", "Height changer", 2, 1, 10);
     private static final BooleanSetting TOP_LEFT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Top Left Alpha Channel Round", "Toggle the top left corner of the alpha channel", true);
     private static final BooleanSetting TOP_RIGHT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Top Right Alpha Channel Round", "Toggle the top right corner of the alpha channel", true);
