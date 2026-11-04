@@ -113,11 +113,17 @@ public final class ClickGuiRenderer extends Screen {
                     tooltipDescription = module.getDescription();
                 }
                 boolean lastModule = row == entries.size() - 1;
+                boolean footerDrawn = drawsFooter(entries); // the footer takes over the bottom rounding
                 renderModuleRow(graphics, module, x, y + animationOffset + (int) scrolledAmount, columnWidth, rowHeight, hovered, lastModule, alpha);
                 if (settings.isExpanded(module)) {
-                    String settingTooltip = renderSettings(graphics, module, x, y + animationOffset + rowHeight, columnWidth, mouseX, mouseY, lastModule, alpha, scrolledAmount);
+                    String settingTooltip = renderSettings(graphics, module, x, y + animationOffset + rowHeight, columnWidth, mouseX, mouseY, lastModule && !footerDrawn, alpha, scrolledAmount);
                     if (settingTooltip != null && ClickGuiModule.getToolTipShowVal()) tooltipDescription = settingTooltip;
                 }
+            }
+            if (drawsFooter(entries)) {
+                int footerHeight = ClickGuiLayout.getFooterHeight();
+                int footerY = layout.columnY(column) + animationOffset + (int) scrolledAmount + layout.columnHeight(column) - footerHeight;
+                RenderUtil.roundedFill(graphics, x - 1, footerY, columnWidth + 2, footerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.getColorBottomRoundedRect(), alpha), false, false, true, true, Math.min(ClickGuiModule.getClickGuiBorderRadius(), footerHeight));
             }
         }
         ColorPicker colorPicker = settings.colorPicker();
@@ -139,7 +145,7 @@ public final class ClickGuiRenderer extends Screen {
      * @param alpha alpha value for transparency
      */
     private void renderCategories(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
-        RenderUtil.roundedFill(graphics, x, y, columnWidth, headerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.categoryColor(), alpha), true, true, false, false, ClickGuiModule.getClickGuiHeaderBorderRadius());
+        RenderUtil.roundedFill(graphics, x, y, columnWidth, headerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.categoryColor(), alpha), ClickGuiModule.getCategoryTopRightRound(), ClickGuiModule.getCategoryTopLeftRound(), ClickGuiModule.getCategoryBottomLeftRound(), ClickGuiModule.getCategoryBottomRightRound(), ClickGuiModule.getClickGuiHeaderBorderRadius());
         if(ClickGuiModule.getToggleCategoryLine()) {
             RenderUtil.drawPanel(graphics, x + (columnWidth - ClickGuiModule.getCategoryLineWidth()) / 2, y + headerHeight - 1, ClickGuiModule.getCategoryLineWidth(), 1, ClickGuiStyler.withAlpha(ClickGuiModule.getCategoryLineColor(), alpha));
         }
@@ -168,7 +174,11 @@ public final class ClickGuiRenderer extends Screen {
         } else {
             background = ClickGuiStyler.ROW;
         }
-        RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
+        if(ClickGuiModule.getToggleBottomRoundedRect()) {
+            RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
+        } else {
+            RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
+        }
         String label = styler.truncate(module.getName(), columnWidth - 24);
         RenderUtil.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getModuleTextColor(), alpha), ClickGuiModule.getShadowBoolean(), styler.textScale());
         if(settings.isExpanded(module)) {
@@ -178,6 +188,10 @@ public final class ClickGuiRenderer extends Screen {
         }
     }
 
+    // the footer shows whenever the toggle is on (even if the last module is expanded), or when a lone module is expanded
+    private boolean drawsFooter(List<Module> entries) {
+        return !entries.isEmpty() && ClickGuiModule.getToggleBottomRoundedRect();
+    }
     /**
      * Renders the settings for a given module at the specified position and size, and returns a tooltip description if any setting is hovered.
      * @param graphics graphics library
@@ -201,7 +215,11 @@ public final class ClickGuiRenderer extends Screen {
                 tooltip = settings.settingDescription(module, setting);
             }
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
-            RenderUtil.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
+            if(lastSetting && ClickGuiModule.getToggleBottomRoundedRect()) {
+                RenderUtil.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
+            } else {
+                RenderUtil.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
+            }
             RenderUtil.drawText(graphics, font, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getSettingTextColor(), alpha), false, styler.textScale());
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)

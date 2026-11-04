@@ -28,8 +28,8 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting SHOW_OUTLINE = new BooleanSetting("Toggle ToolTip Border", "Toggle ToolTip border", false);
     private static final ColorSetting TOOLTIP_BORDER_COLOR = new ColorSetting("Tooltip Border Color", "Change the color of the tooltip border", 0xffffffff);
     private static final NumberSetting FONT_SIZE = new NumberSetting("Font size", "Drag across this slider to change the active font size in real time.", 11, 5, 20);
-    private static final NumberSetting CLICK_GUI_BORDER_RADIUS = new NumberSetting("Border Radius", "Change the roundedness of the borders", 16, 0,16);
-    private static final NumberSetting CLICK_GUI_HEADER_RADIUS = new NumberSetting("Header Radius","Change the header radius", 16, 0, 16);
+    private static final NumberSetting CLICK_GUI_BORDER_RADIUS = new NumberSetting("Border Radius", "Change the roundedness of the borders", 13, 1,13);
+    private static final NumberSetting CLICK_GUI_HEADER_RADIUS = new NumberSetting("Header Radius","Change the header radius", 13, 1, 13);
     private static final BooleanSetting SHOW_TOOL_TIP = new BooleanSetting("Draw Tooltips", "Show the tooltips for each module and their respective setting", true);
     private static final NumberSetting TOOLTIP_BORDER_RADIUS = new NumberSetting("Tool tip border radius", "Change the roundedness of the border radius", 5, 0, 15);
     private static final BooleanSetting BLUR_BACKGROUND = new BooleanSetting("Blur Background", "Blur the background", true);
@@ -57,24 +57,55 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Bottom Right Alpha Channel Round", "Toggle the bottom right corner of the alpha channel", true);
     private static final ColorSetting ALPHA_CHANNEL_SLIDER_BUTTON_COLOR = new ColorSetting("Alpha Channel Button Color", "Color of alpha channel slider button", 0xffffffff);
     private static final NumberSetting ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS = new NumberSetting("Alpha Button Radius", "Roundedness of alpha button", 6, 1, 10);
+    private static final BooleanSetting CATEGORY_TOP_LEFT_ROUND = new BooleanSetting("Category Top Left Round", "Toggle the top left corner of the category header", true);
+    private static final BooleanSetting CATEGORY_TOP_RIGHT_ROUND = new BooleanSetting("Category Top Right Round", "Toggle the top right corner of the category header", true);
+    private static final BooleanSetting CATEGORY_BOTTOM_LEFT_ROUND = new BooleanSetting("Category Bottom Left Round", "Toggle the bottom left corner of the category header", true);
+    private static final BooleanSetting CATEGORY_BOTTOM_RIGHT_ROUND = new BooleanSetting("Category Bottom Right Round", "Toggle the bottom right corner of the category header", true);
+    private static final NumberSetting MODULE_GAP_HEIGHT = new NumberSetting("Module Gap Height", "Change the gap between each module row", 1, 0, 10);
+    private static final BooleanSetting TOGGLE_BOTTOM_ROUNDED_RECT = new BooleanSetting("Rounded Rect Bottom", "The semi-ellipse on the bottom of each column", true);
+    private static final ColorSetting COLOR_BOTTOM_ROUNDED_RECT = new ColorSetting("Color Bottom", "Bottom rect color", RenderUtil.getGuiColorPanel());
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT,
                 FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW,
                 SHOW_OUTLINE, SHOW_TOOL_TIP,
                 TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS,
                 BLUR_BACKGROUND,
-                MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP,
+                MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP, MODULE_GAP_HEIGHT,
                 SHOW_HUD_INFO_TEXT,
                 KNOB_WIDTH, KNOB_HEIGHT,
                 SCROLL_SPEED, ANIMATION_SPEED,
                 TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH,
                 ALPHA_CHANNEL_HEIGHT,
-                TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND
+                TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND, CATEGORY_TOP_LEFT_ROUND, CATEGORY_TOP_RIGHT_ROUND, CATEGORY_BOTTOM_LEFT_ROUND, CATEGORY_BOTTOM_RIGHT_ROUND,
+                TOGGLE_BOTTOM_ROUNDED_RECT
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    public static int getColorBottomRoundedRect() {
+        return COLOR_BOTTOM_ROUNDED_RECT.color();
+    }
+
+    public static boolean getToggleBottomRoundedRect() {
+        return TOGGLE_BOTTOM_ROUNDED_RECT.value();
+    }
+    public static int getModuleGapHeight() {
+        return MODULE_GAP_HEIGHT.value();
+    }
+    public static boolean getCategoryTopLeftRound() {
+        return CATEGORY_TOP_LEFT_ROUND.value();
+    }
+    public static boolean getCategoryTopRightRound() {
+        return CATEGORY_TOP_RIGHT_ROUND.value();
+    }
+    public static boolean getCategoryBottomLeftRound() {
+        return CATEGORY_BOTTOM_LEFT_ROUND.value();
+    }
+    public static boolean getCategoryBottomRightRound() {
+        return CATEGORY_BOTTOM_RIGHT_ROUND.value();
+    }
+
     public static int getAlphaChannelButtonRadius() {
         return ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS.value();
     }

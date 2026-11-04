@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ClickGuiLayout {
-    private static final int HEADER_HEIGHT = 30, SUBCATEGORY_HEIGHT = 20;
-    private static final long TRANSITION_MS = 180L;
+    private static final int HEADER_HEIGHT = 30, SUBCATEGORY_HEIGHT = 20, FOOTER_HEIGHT = 8;
 
     private final ModuleManager modules;
     private final ClickGuiSettingsHandler settings;
@@ -35,6 +34,9 @@ public final class ClickGuiLayout {
     }
     public static int getRowHeight() {
         return 20;
+    }
+    public static int getFooterHeight() {
+        return FOOTER_HEIGHT;
     }
     public static int getSubcategoryHeight() {
         return SUBCATEGORY_HEIGHT;
@@ -121,17 +123,18 @@ public final class ClickGuiLayout {
         int y = columnY[column] + HEADER_HEIGHT;
         List<Module> entries = modulesIn(column);
         for (int i = 0; i < row; i++) {
-            y += rowHeight(entries.get(i));
+            y += rowHeight(entries.get(i)) + ClickGuiModule.getModuleGapHeight();
         }
         return y;
     }
 
     public int columnHeight(int column) {
         int height = HEADER_HEIGHT;
-        for (Module module : modulesIn(column)) {
-            height += rowHeight(module);
+        List<Module> entries = modulesIn(column);
+        for (Module module : entries) {
+            height += rowHeight(module) + ClickGuiModule.getModuleGapHeight();
         }
-        return height;
+        return (entries.isEmpty() ? height : height - ClickGuiModule.getModuleGapHeight()) + FOOTER_HEIGHT;
     }
 
     public Module moduleAt(int column, double mouseX, double mouseY) {
