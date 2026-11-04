@@ -48,22 +48,56 @@ public final class ClickGuiModule extends ClientModule {
     private static final ColorSetting COLOR_SETTING_BUTTON_COLOR = new ColorSetting("Color Copy Button Color", "Change the color of the copy button", RenderUtil.getGuiColorPanel());
     private static final ColorSetting COLOR_SETTING_TEXT_COLOR = new ColorSetting("Color Copy Text Color", "Change the color of the copy text", RenderUtil.getGuiTextColor());
     private static final BooleanSetting COLOR_SETTING_TEXT_DROP_SHADOW = new BooleanSetting("Copy Text Drop Shadow", "Add / Remove drop shadow to copy text button", false);
+    private static final ColorSetting ALPHA_CHANNEL_BACKGROUND_COLOR = new ColorSetting("Alpha Channel Background Color", "Alpha slider background changer", RenderUtil.getGuiTextColor());
+    private static final NumberSetting ALPHA_CHANNEL_BORDER_RADIUS = new NumberSetting("Alpha Channel Radius", "Roundedness of borders on alpha channel", 1, 1, 4);
+    private static final NumberSetting ALPHA_CHANNEL_HEIGHT = new NumberSetting("Alpha Channel Height", "Height changer", 2, 1, 10);
+    private static final BooleanSetting TOP_LEFT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Top Left Alpha Channel Round", "Toggle the top left corner of the alpha channel", true);
+    private static final BooleanSetting TOP_RIGHT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Top Right Alpha Channel Round", "Toggle the top right corner of the alpha channel", true);
+    private static final BooleanSetting BOTTOM_LEFT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Bottom Left Alpha Channel Round", "Toggle the bottom left corner of the alpha channel", true);
+    private static final BooleanSetting BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Bottom Right Alpha Channel Round", "Toggle the bottom right corner of the alpha channel", true);
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR,
                 FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW,
                 SHOW_OUTLINE, SHOW_TOOL_TIP,
-                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS,
+                TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS,
                 BLUR_BACKGROUND,
                 MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP,
                 SHOW_HUD_INFO_TEXT,
                 KNOB_WIDTH, KNOB_HEIGHT,
                 SCROLL_SPEED, ANIMATION_SPEED,
-                TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH
+                TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH,
+                ALPHA_CHANNEL_HEIGHT,
+                TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+
+    public static boolean getTopLeftAlphaChannelRound() {
+        return TOP_LEFT_ALPHA_CHANNEL_ROUND.value();
+    }
+    public static boolean getTopRightAlphaChannelRound() {
+        return TOP_RIGHT_ALPHA_CHANNEL_ROUND.value();
+    }
+    public static boolean getBottomLeftAlphaChannelRound() {
+        return BOTTOM_LEFT_ALPHA_CHANNEL_ROUND.value();
+    }
+    public static boolean getBottomRightAlphaChannelRound() {
+        return BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND.value();
+    }
+
+    public static int getAlphaChannelHeight() {
+        return ALPHA_CHANNEL_HEIGHT.value();
+    }
+    public static int getAlphaChannelBackgroundColor() {
+        return ALPHA_CHANNEL_BACKGROUND_COLOR.color();
+    }
+
+    public static int getAlphaChannelBorderRadius() {
+        return ALPHA_CHANNEL_BORDER_RADIUS.value();
+    }
+
     public static boolean getCopyButtonDropShadow() {
         return COLOR_SETTING_TEXT_DROP_SHADOW.value();
     }
