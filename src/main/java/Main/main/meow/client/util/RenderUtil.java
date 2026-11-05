@@ -84,6 +84,14 @@ public class RenderUtil {
         graphics.text(client.font, TextUtil.setFont(value), x, y, getGuiTextColor());
     }
 
+    public static void drawVerticalLine(GuiGraphicsExtractor graphics, int x, int y, int height, int color) {
+        graphics.verticalLine(x, y, height, color);
+    }
+
+    public static void drawHorizontalLine(GuiGraphicsExtractor graphics, int x, int width, int y, int color) {
+        graphics.horizontalLine(x,width, y, color);
+    }
+
     /**
      * Draw a quadrilateral on the screen
      * @param graphics Graphics renderer class

@@ -175,10 +175,18 @@ public final class ClickGuiRenderer extends Screen {
         } else {
             background = ClickGuiStyler.ROW;
         }
+        int pointToStopCurve = y + rowHeight;
         if(ClickGuiModule.getToggleBottomRoundedRect()) {
             RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
         } else {
             RenderUtil.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
+            if (roundedBottom) {
+                pointToStopCurve = y + rowHeight - 1 - Math.min(ClickGuiModule.getClickGuiBorderRadius(), rowHeight / 2);
+            }
+        }
+        if(ClickGuiModule.getOutlineToggle()) {
+            RenderUtil.drawVerticalLine(graphics, x, y - 2, pointToStopCurve, ClickGuiModule.getOutlineColor());
+            RenderUtil.drawVerticalLine(graphics, x + columnWidth - 1, y - 2, pointToStopCurve, ClickGuiModule.getOutlineColor());
         }
         String label = styler.truncate(module.getName(), columnWidth - 24);
         RenderUtil.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getModuleTextColor(), alpha), ClickGuiModule.getShadowBoolean(), styler.textScale());

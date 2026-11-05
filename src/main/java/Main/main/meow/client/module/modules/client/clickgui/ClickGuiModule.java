@@ -65,10 +65,12 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting TOGGLE_BOTTOM_ROUNDED_RECT = new BooleanSetting("Rounded Rect Bottom", "The semi-ellipse on the bottom of each column", true);
     private static final ColorSetting COLOR_BOTTOM_ROUNDED_RECT = new ColorSetting("Color Bottom", "Bottom rect color", RenderUtil.getGuiColorPanel());
     private static final NumberSetting BOTTOM_ROUNDED_RECT_HEIGHT = new NumberSetting("Rounded Bottom Rect Height", "Does this really need an explanation", 25, 1, 50);
+    private static final BooleanSetting OUTLINE_TOGGLE = new BooleanSetting("Toggle Outline", "Outline of the modules on the clickgui", true);
+    private static final ColorSetting OUTLINE_COLOR = new ColorSetting("Outline Color", "Change the color of the outline", 0xFFFFFFFF);
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR,
                 FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW,
                 SHOW_OUTLINE, SHOW_TOOL_TIP,
                 TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS,
@@ -80,9 +82,16 @@ public final class ClickGuiModule extends ClientModule {
                 TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH,
                 ALPHA_CHANNEL_HEIGHT,
                 TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND, CATEGORY_TOP_LEFT_ROUND, CATEGORY_TOP_RIGHT_ROUND, CATEGORY_BOTTOM_LEFT_ROUND, CATEGORY_BOTTOM_RIGHT_ROUND,
-                TOGGLE_BOTTOM_ROUNDED_RECT, BOTTOM_ROUNDED_RECT_HEIGHT
+                TOGGLE_BOTTOM_ROUNDED_RECT, BOTTOM_ROUNDED_RECT_HEIGHT,
+                OUTLINE_TOGGLE
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getOutlineColor() {
+        return OUTLINE_COLOR.color();
+    }
+    public static boolean getOutlineToggle() {
+        return OUTLINE_TOGGLE.value();
     }
     public static int getFooterHeight() {
         return BOTTOM_ROUNDED_RECT_HEIGHT.value();
