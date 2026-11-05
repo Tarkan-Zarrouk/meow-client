@@ -88,9 +88,6 @@ public class RenderUtil {
         graphics.verticalLine(x, y, height, color);
     }
 
-    public static void drawHorizontalLine(GuiGraphicsExtractor graphics, int x, int width, int y, int color) {
-        graphics.horizontalLine(x,width, y, color);
-    }
 
     /**
      * Draw a quadrilateral on the screen
