@@ -79,6 +79,13 @@ public final class ClickGuiSettingsHandler {
         return null;
     }
 
+    public ColorSetting colorAt(Module module, int row) {
+        if (row >= 1 && row <= module.settings().size() && module.settings().get(row - 1) instanceof ColorSetting color) {
+            return color;
+        }
+        return null;
+    }
+
     public void setSliderFromMouse(NumberSetting slider, double mouseX, int columnStart, int columnWidth) {
         double sliderStart = columnStart + 8;
         double sliderWidth = Math.max(1, columnWidth - 16);

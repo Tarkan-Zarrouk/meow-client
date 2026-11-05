@@ -1,5 +1,6 @@
 package Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker;
 
+import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.util.RenderUtil;
 import Main.main.meow.client.util.TextUtil;
@@ -115,6 +116,7 @@ public final class ColorPicker implements ColorConsumer {
         }
         if(inCopy(mouseX, mouseY)) {
             Minecraft.getInstance().keyboardHandler.setClipboard(String.format("#%08X", color()));
+            NotificationManager.notify("Copied color to clipboard: " + String.format("#%08X", color()));
             return true;
         }
         return false;

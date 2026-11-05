@@ -64,6 +64,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting MODULE_GAP_HEIGHT = new NumberSetting("Module Gap Height", "Change the gap between each module row", 1, 0, 10);
     private static final BooleanSetting TOGGLE_BOTTOM_ROUNDED_RECT = new BooleanSetting("Rounded Rect Bottom", "The semi-ellipse on the bottom of each column", true);
     private static final ColorSetting COLOR_BOTTOM_ROUNDED_RECT = new ColorSetting("Color Bottom", "Bottom rect color", RenderUtil.getGuiColorPanel());
+    private static final NumberSetting BOTTOM_ROUNDED_RECT_HEIGHT = new NumberSetting("Rounded Bottom Rect Height", "Does this really need an explanation", 25, 1, 50);
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
@@ -79,9 +80,12 @@ public final class ClickGuiModule extends ClientModule {
                 TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH,
                 ALPHA_CHANNEL_HEIGHT,
                 TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND, CATEGORY_TOP_LEFT_ROUND, CATEGORY_TOP_RIGHT_ROUND, CATEGORY_BOTTOM_LEFT_ROUND, CATEGORY_BOTTOM_RIGHT_ROUND,
-                TOGGLE_BOTTOM_ROUNDED_RECT
+                TOGGLE_BOTTOM_ROUNDED_RECT, BOTTOM_ROUNDED_RECT_HEIGHT
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getFooterHeight() {
+        return BOTTOM_ROUNDED_RECT_HEIGHT.value();
     }
     public static int getColorBottomRoundedRect() {
         return COLOR_BOTTOM_ROUNDED_RECT.color();

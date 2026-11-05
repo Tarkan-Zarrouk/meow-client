@@ -1,6 +1,7 @@
 package Main.main.meow.client.ui.clickgui.view;
 
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorPicker;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
@@ -224,8 +225,19 @@ public final class ClickGuiRenderer extends Screen {
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)
                 renderSlider(graphics, slider, x, settingY, columnWidth);
+            ColorSetting colorSetting = settings.colorAt(module, setting);
+            if (colorSetting != null)
+                colorPreview(graphics, colorSetting.color(), x, settingY, columnWidth);
         }
         return tooltip;
+    }
+
+    private void colorPreview(GuiGraphicsExtractor graphics, int color, int x, int settingY, int columnWidth) {
+        int size = subcategoryHeight - 8;
+        int colorXPos = x + columnWidth - size - 6;
+        int colorYPos = settingY + (subcategoryHeight - size) / 2;
+        RenderUtil.drawText(graphics, font, Component.literal("T"), colorXPos + size / 2 - 3, colorYPos + size / 2 - 4, 0xffffffff, false, styler.textScale());
+        graphics.fill(colorXPos, colorYPos, colorXPos + size, colorYPos + size, color);
     }
 
     /**

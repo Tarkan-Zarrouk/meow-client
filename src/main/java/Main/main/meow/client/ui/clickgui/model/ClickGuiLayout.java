@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ClickGuiLayout {
-    private static final int HEADER_HEIGHT = 30, SUBCATEGORY_HEIGHT = 20, FOOTER_HEIGHT = 8;
+    private static final int HEADER_HEIGHT = 30, SUBCATEGORY_HEIGHT = 20;
 
     private final ModuleManager modules;
     private final ClickGuiSettingsHandler settings;
@@ -36,7 +36,7 @@ public final class ClickGuiLayout {
         return 20;
     }
     public static int getFooterHeight() {
-        return FOOTER_HEIGHT;
+        return ClickGuiModule.getFooterHeight();
     }
     public static int getSubcategoryHeight() {
         return SUBCATEGORY_HEIGHT;
@@ -134,7 +134,7 @@ public final class ClickGuiLayout {
         for (Module module : entries) {
             height += rowHeight(module) + ClickGuiModule.getModuleGapHeight();
         }
-        return (entries.isEmpty() ? height : height - ClickGuiModule.getModuleGapHeight()) + FOOTER_HEIGHT;
+        return (entries.isEmpty() ? height : height - ClickGuiModule.getModuleGapHeight()) + ClickGuiModule.getFooterHeight();
     }
 
     public Module moduleAt(int column, double mouseX, double mouseY) {

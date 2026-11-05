@@ -29,7 +29,7 @@ public final class ColorSetting extends Setting<Integer> {
 
     @Override
     public String label() {
-        return name() +  ": " + String.format("#%08X", value());
+        return name();
     }
 
     @Override
