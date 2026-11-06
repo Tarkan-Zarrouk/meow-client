@@ -9,7 +9,7 @@ import Main.main.meow.client.module.modules.hud.modules.enabledmodules.EnabledMo
 import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
-import Main.main.meow.client.module.modules.visuals.WalkBlockHighlighter;
+import Main.main.meow.client.module.modules.visuals.walkblockhighlighter.WalkBlockHighlighter;
 import Main.main.meow.client.module.modules.visuals.raycastentityhitboxrenderer.RayCastEntityHitBoxRenderer;
 import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
 import Main.main.meow.client.ui.hud.HudComponent;
@@ -22,7 +22,6 @@ import Main.main.meow.client.module.modules.visuals.ZoomModule;
 import Main.main.meow.client.module.modules.misc.WaypointsModule;
 import Main.main.meow.client.module.modules.movement.SprintModule;
 import Main.main.meow.client.manager.ConfigManager;
-import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;

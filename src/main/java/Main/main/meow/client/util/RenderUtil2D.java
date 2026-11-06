@@ -104,18 +104,6 @@ public class RenderUtil2D {
     }
 
     /**
-     * Draw a quadrilateral on the screen
-     * @param graphics Graphics renderer class
-     * @param x The x position
-     * @param y The y position
-     * @param width The width
-     * @param height The height
-     */
-    public static void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int width, int height) {
-        graphics.fill(x, y, x + width, y + height, getGuiColorPanel());
-    }
-
-    /**
      * Gradient rect
      * @param graphics graphics library
      * @param x x-axis position
