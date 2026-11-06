@@ -4,7 +4,7 @@ import Main.main.meow.client.module.modules.hud.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.model.Category;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -15,8 +15,8 @@ import net.minecraft.world.item.Items;
 
 public final class TotemCounterModule extends HudDisplayModule {
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
-    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Color of Background", "Customize the colour of the background", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Customize the colour of the text", RenderUtil.getGuiTextColor());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Color of Background", "Customize the colour of the background", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Customize the colour of the text", RenderUtil2D.getGuiTextColor());
     public TotemCounterModule() {
         super("Totem Counter", Category.HUD, false, "Displays the number of Totems of Undying in your inventory.");
         super.addSetting(SHOW_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR);
@@ -40,10 +40,10 @@ public final class TotemCounterModule extends HudDisplayModule {
         int width = 22 + textWidth;
         int height = 18;
         if (SHOW_BACKGROUND.value()) {
-            RenderUtil.drawPanel(g, x, y, width, height, BACKGROUND_COLOR.color());
+            RenderUtil2D.drawPanel(g, x, y, width, height, BACKGROUND_COLOR.color());
         }
         g.item(new ItemStack(Items.TOTEM_OF_UNDYING), x + 1, y + 1);
-        RenderUtil.drawText(g, client, String.valueOf(count), x + 19, y + 5, TEXT_COLOR.color());
+        RenderUtil2D.drawText(g, client, String.valueOf(count), x + 19, y + 5, TEXT_COLOR.color());
     }
 
     @Override

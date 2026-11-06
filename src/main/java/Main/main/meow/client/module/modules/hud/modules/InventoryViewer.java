@@ -4,7 +4,7 @@ import Main.main.meow.client.module.modules.hud.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.model.Category;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -17,8 +17,8 @@ import java.util.Map;
 
 public final class InventoryViewer extends HudDisplayModule {
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
-    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the color of the background", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil.getGuiTextColor());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the color of the background", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil2D.getGuiTextColor());
     public InventoryViewer() {
         super("Inventory Viewer", Category.HUD, false, "Shows the content of your inventory updating in real time");
         super.addSetting(SHOW_BACKGROUND, BACKGROUND_COLOR, TEXT_COLOR);
@@ -37,14 +37,14 @@ public final class InventoryViewer extends HudDisplayModule {
             }
         }
         if (SHOW_BACKGROUND.value()) {
-            RenderUtil.drawPanel(g, x, y, 162, 54, BACKGROUND_COLOR.color());
+            RenderUtil2D.drawPanel(g, x, y, 162, 54, BACKGROUND_COLOR.color());
         }
         for(ItemStack item : playerInventoryStorage.keySet()) {
             int column = playerInventoryStorage.get(item) % 9;
             int row = playerInventoryStorage.get(item) / 9 - 1;
             if(item != null) {
                 g.item(item, x + (column * 18), y + (row * 18));
-                RenderUtil.drawText(g, client, Integer.toString(playerInventory.getItem(playerInventoryStorage.get(item)).getCount()), x + (column * 18) + 7, y + (row * 18) + 7, TEXT_COLOR.color());
+                RenderUtil2D.drawText(g, client, Integer.toString(playerInventory.getItem(playerInventoryStorage.get(item)).getCount()), x + (column * 18) + 7, y + (row * 18) + 7, TEXT_COLOR.color());
             }
         }
     }

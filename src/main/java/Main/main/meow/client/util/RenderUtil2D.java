@@ -13,7 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class RenderUtil {
+public class RenderUtil2D {
+
     private static final int GUI_PANEL_COLOR = 0xb9161d2a;
     private static final int GUI_TEXT_COLOR = 0xfff2f0f4;
     public static int getGuiColorPanel() {
@@ -177,14 +178,14 @@ public class RenderUtil {
             int outerRight = width - cornerInset(row, height, outerRadius, topRight, bottomRight);
             int innerRow = row - 1;
             if (innerRow < 0 || innerRow >= innerHeight || innerWidth <= 0) {
-                RenderUtil.drawPanel(graphics, x + outerLeft, y + row, outerRight - outerLeft, 1, color);
+                RenderUtil2D.drawPanel(graphics, x + outerLeft, y + row, outerRight - outerLeft, 1, color);
                 continue;
             }
             // bounds calc
             int innerLeft = 1 + cornerInset(innerRow, innerHeight, innerRadius, topLeft, bottomLeft);
             int innerRight = 1 + innerWidth - cornerInset(innerRow, innerHeight, innerRadius, topRight, bottomRight);
-            RenderUtil.drawPanel(graphics, x + outerLeft, y + row, innerLeft - outerLeft, 1, color);
-            RenderUtil.drawPanel(graphics, x + innerRight, y + row, outerRight - innerRight, 1, color);
+            RenderUtil2D.drawPanel(graphics, x + outerLeft, y + row, innerLeft - outerLeft, 1, color);
+            RenderUtil2D.drawPanel(graphics, x + innerRight, y + row, outerRight - innerRight, 1, color);
         }
     }
 

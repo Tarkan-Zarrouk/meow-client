@@ -8,7 +8,7 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSett
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import org.lwjgl.glfw.GLFW;
 
 public final class ClickGuiModule extends ClientModule {
@@ -17,12 +17,12 @@ public final class ClickGuiModule extends ClientModule {
     private static final boolean ENABLED = true;
     private static final String DESCRIPTION = "Opens this ClickGUI and lets you customize its colors and keybind.";
     private static final ColorSetting SETTINGS_TEXT_COLOR = new ColorSetting("Setting Color", "Opens a picker that changes the text color", ClickGuiStyler.MUTED);
-    private static final ColorSetting MODULE_TEXT_COLOR = new ColorSetting("Module text color", "Opens a picker that changes the text color", RenderUtil.getGuiTextColor());
-    private static final ColorSetting CATEGORY_TEXT_COLOR = new ColorSetting("Category text color", "Opens a picker that changes the text color", RenderUtil.getGuiTextColor());
+    private static final ColorSetting MODULE_TEXT_COLOR = new ColorSetting("Module text color", "Opens a picker that changes the text color", RenderUtil2D.getGuiTextColor());
+    private static final ColorSetting CATEGORY_TEXT_COLOR = new ColorSetting("Category text color", "Opens a picker that changes the text color", RenderUtil2D.getGuiTextColor());
     private static final ColorSetting CATEGORY_COLOR = new ColorSetting("Category colour", "Opens a picker that changes the color of every category header in real time.", 0xffc52dbd);
     private static final ColorSetting MODULE_COLOR = new ColorSetting("Module colour", "Opens a picker that changes the color of every module row in real time.", 0xffc52dbd);
-    private static final ColorSetting TOOL_TIP_BACKGROUND_COLOR = new ColorSetting("Tooltip Color", "Change the background color of the tooltip", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting TOOL_TIP_TEXT_BACKGROUND_COLOR = new ColorSetting("Tool Text Color", "Change the color of the tooltip text", RenderUtil.getGuiTextColor());
+    private static final ColorSetting TOOL_TIP_BACKGROUND_COLOR = new ColorSetting("Tooltip Color", "Change the background color of the tooltip", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting TOOL_TIP_TEXT_BACKGROUND_COLOR = new ColorSetting("Tool Text Color", "Change the color of the tooltip text", RenderUtil2D.getGuiTextColor());
     private static final EnumSetting<Font> FONT = new EnumSetting<>("Font", "ClickGui and HUDUI switcher between Inter, built-in, and the backup font", Font.MINECRAFT);
     private static final BooleanSetting SHOW_SHADOW = new BooleanSetting("Font Shadow", "Toggle between shadow on text font", false);
     private static final BooleanSetting SHOW_OUTLINE = new BooleanSetting("Toggle ToolTip Border", "Toggle ToolTip border", false);
@@ -44,11 +44,11 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting ANIMATION_SPEED = new NumberSetting("Animation Speed", "Speed of the entry", 180, 1, 1000);
     private static final BooleanSetting TOGGLE_CATEGORY_LINE = new BooleanSetting("Toggle Category White Line", "Toggle the white line on the category header", true);
     private static final NumberSetting CATEGORY_LINE_WIDTH = new NumberSetting("Category Line Width", "Change the length of the white line on the category header", 170, 10, 170);
-    private static final ColorSetting CATEGORY_LINE_COLOR = new ColorSetting("Category Line Color", "Change the color of the line on the category header", RenderUtil.getGuiTextColor());
-    private static final ColorSetting COLOR_SETTING_BUTTON_COLOR = new ColorSetting("Color Copy Button Color", "Change the color of the copy button", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_SETTING_TEXT_COLOR = new ColorSetting("Color Copy Text Color", "Change the color of the copy text", RenderUtil.getGuiTextColor());
+    private static final ColorSetting CATEGORY_LINE_COLOR = new ColorSetting("Category Line Color", "Change the color of the line on the category header", RenderUtil2D.getGuiTextColor());
+    private static final ColorSetting COLOR_SETTING_BUTTON_COLOR = new ColorSetting("Color Copy Button Color", "Change the color of the copy button", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_SETTING_TEXT_COLOR = new ColorSetting("Color Copy Text Color", "Change the color of the copy text", RenderUtil2D.getGuiTextColor());
     private static final BooleanSetting COLOR_SETTING_TEXT_DROP_SHADOW = new BooleanSetting("Copy Text Drop Shadow", "Add / Remove drop shadow to copy text button", false);
-    private static final ColorSetting ALPHA_CHANNEL_BACKGROUND_COLOR = new ColorSetting("Alpha Channel Background Color", "Alpha slider background changer", RenderUtil.getGuiTextColor());
+    private static final ColorSetting ALPHA_CHANNEL_BACKGROUND_COLOR = new ColorSetting("Alpha Channel Background Color", "Alpha slider background changer", RenderUtil2D.getGuiTextColor());
     private static final NumberSetting ALPHA_CHANNEL_BORDER_RADIUS = new NumberSetting("Alpha Channel Radius", "Roundedness of borders on alpha channel", 1, 1, 3);
     private static final NumberSetting ALPHA_CHANNEL_HEIGHT = new NumberSetting("Alpha Channel Height", "Height changer", 2, 1, 10);
     private static final BooleanSetting TOP_LEFT_ALPHA_CHANNEL_ROUND = new BooleanSetting("Top Left Alpha Channel Round", "Toggle the top left corner of the alpha channel", true);
@@ -63,7 +63,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting CATEGORY_BOTTOM_RIGHT_ROUND = new BooleanSetting("Category Bottom Right Round", "Toggle the bottom right corner of the category header", true);
     private static final NumberSetting MODULE_GAP_HEIGHT = new NumberSetting("Module Gap Height", "Change the gap between each module row", 1, 0, 10);
     private static final BooleanSetting TOGGLE_BOTTOM_ROUNDED_RECT = new BooleanSetting("Rounded Rect Bottom", "The semi-ellipse on the bottom of each column", true);
-    private static final ColorSetting COLOR_BOTTOM_ROUNDED_RECT = new ColorSetting("Color Bottom", "Bottom rect color", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting COLOR_BOTTOM_ROUNDED_RECT = new ColorSetting("Color Bottom", "Bottom rect color", RenderUtil2D.getGuiColorPanel());
     private static final NumberSetting BOTTOM_ROUNDED_RECT_HEIGHT = new NumberSetting("Rounded Bottom Rect Height", "Does this really need an explanation", 25, 1, 50);
     private static final BooleanSetting OUTLINE_TOGGLE = new BooleanSetting("Toggle Outline", "Outline of the modules on the clickgui", true);
     private static final ColorSetting OUTLINE_COLOR = new ColorSetting("Outline Color", "Change the color of the outline", 0xFFFFFFFF);

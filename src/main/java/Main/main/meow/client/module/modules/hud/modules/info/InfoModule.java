@@ -5,7 +5,7 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSett
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -22,8 +22,8 @@ public final class InfoModule extends HudDisplayModule {
     private static double tps = 20.0;
     private static final EnumSetting<Modes> INFO_CYCLE = new EnumSetting<>("Info Cycle", "Toggle between Showing fps and tps and ping, showing fps and ping, showing fps and showing", Modes.SHOW_FPS_PING_TPS);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
-    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Colour", "Change the colour of the background", RenderUtil.getGuiTextColor());
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Colour", "Change the colour of your text", RenderUtil.getGuiTextColor());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Colour", "Change the colour of the background", RenderUtil2D.getGuiTextColor());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Colour", "Change the colour of your text", RenderUtil2D.getGuiTextColor());
     public InfoModule() {
         super(name, category, enabled, description);
         super.addSetting(SHOW_BACKGROUND, INFO_CYCLE, TEXT_COLOR, BACKGROUND_COLOR);
@@ -53,9 +53,9 @@ public final class InfoModule extends HudDisplayModule {
             case SHOW_FPS_PING_TPS -> "FPS: " + fps + " PING: " + ping + " TPS: " + tps;
         };
         if (SHOW_BACKGROUND.value()) {
-            RenderUtil.drawPanel(g, x, y, TextUtil.getTextWidth(client, text) + 4, TextUtil.getTextHeight(client) + 4, BACKGROUND_COLOR.color());
+            RenderUtil2D.drawPanel(g, x, y, TextUtil.getTextWidth(client, text) + 4, TextUtil.getTextHeight(client) + 4, BACKGROUND_COLOR.color());
         }
-        RenderUtil.drawText(g, client, text, x + 2, y + 2, TEXT_COLOR.color());
+        RenderUtil2D.drawText(g, client, text, x + 2, y + 2, TEXT_COLOR.color());
     }
 
     @Override

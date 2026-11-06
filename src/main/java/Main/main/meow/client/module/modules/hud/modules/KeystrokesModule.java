@@ -4,7 +4,7 @@ import Main.main.meow.client.module.modules.hud.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -13,17 +13,17 @@ import net.minecraft.client.player.LocalPlayer;
 
 public final class KeystrokesModule extends HudDisplayModule {
     private static long lastKeyTime = System.nanoTime();
-    private static final ColorSetting COLOR_OF_KEYS = new ColorSetting("Color of Background", "The background of the each key", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
+    private static final ColorSetting COLOR_OF_KEYS = new ColorSetting("Color of Background", "The background of the each key", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil2D.getGuiTextColor());
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
-    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Color of Background", "The background of the keystrokes background", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_OF_KEY_ONE = new ColorSetting("Key 1 Color", "Background color of Key 1", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_OF_KEY_TWO = new ColorSetting("Key 2 Color", "Background color of Key 2", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_OF_KEY_THREE = new ColorSetting("Key 3 Color", "Background color of Key 3", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_OF_KEY_FOUR = new ColorSetting("Key 4 Color", "Background color of Key 4", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_OF_KEY_FIVE = new ColorSetting("Key 5 Color", "Background color of Key 5", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_OF_KEY_SIX = new ColorSetting("Key 6 Color", "Background color of Key 6", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting COLOR_OF_KEY_SEVEN = new ColorSetting("Key 7 Color", "Background color of Key 7", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Color of Background", "The background of the keystrokes background", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_OF_KEY_ONE = new ColorSetting("Key 1 Color", "Background color of Key 1", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_OF_KEY_TWO = new ColorSetting("Key 2 Color", "Background color of Key 2", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_OF_KEY_THREE = new ColorSetting("Key 3 Color", "Background color of Key 3", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_OF_KEY_FOUR = new ColorSetting("Key 4 Color", "Background color of Key 4", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_OF_KEY_FIVE = new ColorSetting("Key 5 Color", "Background color of Key 5", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_OF_KEY_SIX = new ColorSetting("Key 6 Color", "Background color of Key 6", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting COLOR_OF_KEY_SEVEN = new ColorSetting("Key 7 Color", "Background color of Key 7", RenderUtil2D.getGuiColorPanel());
     private static final float[] KEY_LEVELS = new float[7];
     public KeystrokesModule() {
         super("Keystrokes", Category.HUD, false, "Shows keyboard movement inputs and smoothly animates pressed keys on the HUD.");
@@ -46,7 +46,7 @@ public final class KeystrokesModule extends HudDisplayModule {
             KEY_LEVELS[i] += (target - KEY_LEVELS[i]) * (1f - (float) Math.exp(-delta * 18f)); // genuinely what is this :sob:
         }
         if (SHOW_BACKGROUND.value()) {
-            RenderUtil.drawPanel(g, x, y, 122, 122, BACKGROUND_COLOR.color());
+            RenderUtil2D.drawPanel(g, x, y, 122, 122, BACKGROUND_COLOR.color());
         }
         key(g, client, "W", x + 41, y + 8, 40, 28, KEY_LEVELS[0], COLOR_OF_KEY_ONE.color());
         key(g, client, "A", x + 7, y + 40, 40, 28, KEY_LEVELS[1], COLOR_OF_KEY_TWO.color());
@@ -61,7 +61,7 @@ public final class KeystrokesModule extends HudDisplayModule {
     public static void key(GuiGraphicsExtractor g, Minecraft client, String label, int x, int y, int width, int height, float level, int keyColor) {
         int color = blend(keyColor, COLOR_OF_KEYS.color(), level);
         g.fill(x, y, x + width, y + height, color);
-        RenderUtil.drawText(g, client, label, x + width / 2 - TextUtil.getTextWidth(client, label) / 2, y + height / 2 - TextUtil.getTextHeight(client) / 2, keyColor);
+        RenderUtil2D.drawText(g, client, label, x + width / 2 - TextUtil.getTextWidth(client, label) / 2, y + height / 2 - TextUtil.getTextHeight(client) / 2, keyColor);
     }
     public static int blend(int from, int to, float amount) {
         // i had to look up whatever the hell this does, but it basically blends two colors together based on the amount (0-1)

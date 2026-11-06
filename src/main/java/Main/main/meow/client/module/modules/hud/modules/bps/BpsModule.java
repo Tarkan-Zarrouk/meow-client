@@ -5,7 +5,7 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSett
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.model.Category;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -22,9 +22,9 @@ public final class BpsModule extends HudDisplayModule {
     private static int panelHeightValue = 0;
     private static Vec3 lastPosition = null;
     private static double currentBps = 0.0;
-    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background colour", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background colour", RenderUtil2D.getGuiColorPanel());
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text color", "Change the text color", RenderUtil.getGuiTextColor());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text color", "Change the text color", RenderUtil2D.getGuiTextColor());
     private static final EnumSetting<Mode> UNITS_OF_MEASUREMENT = new EnumSetting<>("Units", "Swap between MPH, KMH, BPS", Mode.BPS);
 
     public BpsModule() {
@@ -47,9 +47,9 @@ public final class BpsModule extends HudDisplayModule {
         panelWidthValue = width;
         panelHeightValue = height;
         if (SHOW_BACKGROUND.value()) {
-            RenderUtil.drawPanel(g, x, y, width, height, BACKGROUND_COLOR.color());
+            RenderUtil2D.drawPanel(g, x, y, width, height, BACKGROUND_COLOR.color());
         }
-        RenderUtil.drawText(g, client, text, x + 2, y + 5, TEXT_COLOR.color());
+        RenderUtil2D.drawText(g, client, text, x + 2, y + 5, TEXT_COLOR.color());
     }
 
     public static double getCurrentMph() {

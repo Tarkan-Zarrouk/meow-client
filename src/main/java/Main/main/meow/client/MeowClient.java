@@ -9,6 +9,7 @@ import Main.main.meow.client.module.modules.hud.modules.enabledmodules.EnabledMo
 import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
+import Main.main.meow.client.module.modules.visuals.WalkBlockHighlighter;
 import Main.main.meow.client.module.modules.visuals.raycastentityhitboxrenderer.RayCastEntityHitBoxRenderer;
 import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
 import Main.main.meow.client.ui.hud.HudComponent;
@@ -21,22 +22,17 @@ import Main.main.meow.client.module.modules.visuals.ZoomModule;
 import Main.main.meow.client.module.modules.misc.WaypointsModule;
 import Main.main.meow.client.module.modules.movement.SprintModule;
 import Main.main.meow.client.manager.ConfigManager;
+import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
-import org.joml.Matrix3x2fStack;
 
 public class MeowClient implements ClientModInitializer {
     private static final ModuleManager MODULE_MANAGER = new ModuleManager();
     private static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
-    private float totalTickProgress;
 
     public static ModuleManager getModuleManager() {
         return MODULE_MANAGER;
@@ -66,20 +62,17 @@ public class MeowClient implements ClientModInitializer {
                 sprint.tick(client);
             }
         });
-        LevelRenderEvents.BEFORE_GIZMOS.register(_-> {
-            if(MODULE_MANAGER.byName("RaycastBlockCustomizer") instanceof RayCastBlockCustomizer rayCastBlockCustomizer) {
+        LevelRenderEvents.BEFORE_GIZMOS.register(_ -> {
+            if (MODULE_MANAGER.byName("RaycastBlockCustomizer") instanceof RayCastBlockCustomizer rayCastBlockCustomizer) {
                 rayCastBlockCustomizer.rayCastBlockRenderer();
 
             }
-            if(MODULE_MANAGER.byName("RayCastEntityHitBoxRenderer") instanceof RayCastEntityHitBoxRenderer rayCastEntityHitboxRenderer) {
-                try {
+            if (MODULE_MANAGER.byName("RayCastEntityHitBoxRenderer") instanceof RayCastEntityHitBoxRenderer rayCastEntityHitboxRenderer) {
                     rayCastEntityHitboxRenderer.rayCastEntityHitBoxRenderer();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
             }
         });
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
+        LevelRenderEvents.AFTER_TRANSLUCENT_FEATURES.register(WalkBlockHighlighter::draw);
     }
 
     private static void registerHudComponents() {
@@ -145,6 +138,7 @@ public class MeowClient implements ClientModInitializer {
                 new EntityInfoViewer(),
                 new WhatAmILookingAt(),
                 new RayCastBlockCustomizer(),
+                new WalkBlockHighlighter(),
                 new EnabledModules(),
                 new RayCastEntityHitBoxRenderer()
         );

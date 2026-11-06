@@ -5,7 +5,7 @@ import Main.main.meow.client.module.Module;
 import Main.main.meow.client.module.modules.hud.modules.notification.Mode;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationPosition;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -125,7 +125,7 @@ public final class NotificationManager {
         }
         if (NotificationsModule.getShowBackground()) {
             int background = NotificationsModule.getBackgroundColor();
-            RenderUtil.roundedFill(graphics, xPos, yPos, width, height, background, NotificationsModule.getTopLeftRound(), NotificationsModule.getTopRightRound(), NotificationsModule.getBottomLeftRound(), NotificationsModule.getBottomRightRound(), NotificationsModule.getBorderRadiusValue());
+            RenderUtil2D.roundedFill(graphics, xPos, yPos, width, height, background, NotificationsModule.getTopLeftRound(), NotificationsModule.getTopRightRound(), NotificationsModule.getBottomLeftRound(), NotificationsModule.getBottomRightRound(), NotificationsModule.getBorderRadiusValue());
         }
         // the timer drains from full to empty while the toast is held, so it is already gone when the toast slides away
         float remaining = 1f;
@@ -142,8 +142,8 @@ public final class NotificationManager {
         int timerMaxWidth = width - timerEnclosure * 2;
         int timerWidth = (int) (timerMaxWidth * remaining);
         if (notifications.showTimer() && timerWidth > 0) {
-            RenderUtil.roundedFill(graphics, xPos + timerEnclosure, yPos + height - 2, timerWidth, 2, NotificationsModule.getTimerColor(), NotificationsModule.getTimerTopLeftRound(), NotificationsModule.getTimerTopRightRound(), NotificationsModule.getTimerBottomLeftRound(), NotificationsModule.getTimerBottomRightRound(), 1);
+            RenderUtil2D.roundedFill(graphics, xPos + timerEnclosure, yPos + height - 2, timerWidth, 2, NotificationsModule.getTimerColor(), NotificationsModule.getTimerTopLeftRound(), NotificationsModule.getTimerTopRightRound(), NotificationsModule.getTimerBottomLeftRound(), NotificationsModule.getTimerBottomRightRound(), 1);
         }
-        RenderUtil.drawText(graphics, client, msg, xPos + (NotificationsModule.getNotificationWidth() / 2), yPos + (NotificationsModule.getNotificationHeight() / 2) - 4, NotificationsModule.getTextColor());
+        RenderUtil2D.drawText(graphics, client, msg, xPos + (NotificationsModule.getNotificationWidth() / 2), yPos + (NotificationsModule.getNotificationHeight() / 2) - 4, NotificationsModule.getTextColor());
     }
 }

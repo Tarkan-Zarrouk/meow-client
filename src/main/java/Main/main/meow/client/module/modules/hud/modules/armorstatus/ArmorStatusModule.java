@@ -5,7 +5,7 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSett
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -22,8 +22,8 @@ public final class ArmorStatusModule extends HudDisplayModule {
     private static final String description = "Shows your equipped armor and its remaining durability on the HUD";
     private static final EnumSetting<Modes> ORIENTATION = new EnumSetting<>("Orientation", "Change the orientation from horizontal to vertical", Modes.HORIZONTAL);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
-    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background of your panel", RenderUtil.getGuiColorPanel());
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil.getGuiTextColor());
+    private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the background of your panel", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil2D.getGuiTextColor());
 
     public ArmorStatusModule() {
         super(name, category,enabled, description);
@@ -60,10 +60,10 @@ public final class ArmorStatusModule extends HudDisplayModule {
             }
             int width = slotWidth(client, piece);
             if(SHOW_BACKGROUND.value()) {
-                RenderUtil.drawPanel(g, slotX, slotY, width, 18, BACKGROUND_COLOR.color());
+                RenderUtil2D.drawPanel(g, slotX, slotY, width, 18, BACKGROUND_COLOR.color());
             }
             g.item(piece, slotX + 1, slotY + 1);
-            RenderUtil.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + armourPercentageCalc(piece) + "%", slotX + 19, slotY + 5, TEXT_COLOR.color());
+            RenderUtil2D.drawText(g, client, piece.getDisplayName().getString().substring(1, piece.getDisplayName().getString().length() - 1) + " " + armourPercentageCalc(piece) + "%", slotX + 19, slotY + 5, TEXT_COLOR.color());
             if (ORIENTATION.value() == Modes.VERTICAL) {
                 offset += 18;
             } else {

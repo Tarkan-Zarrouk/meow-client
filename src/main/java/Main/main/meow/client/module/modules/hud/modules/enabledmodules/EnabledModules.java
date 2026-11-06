@@ -7,7 +7,7 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSett
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -21,9 +21,9 @@ public class EnabledModules extends HudDisplayModule {
     private static final boolean ENABLED = false;
     private static final String DESCRIPTION = "Shows a list of modules currently enabled";
     private static final EnumSetting<Main.main.meow.client.module.modules.hud.modules.enabledmodules.Modes> ORDERING = new EnumSetting<>("Order", "Swap between unordered, ascending, descending order", Modes.UNORDERED);
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil.getGuiTextColor());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil2D.getGuiTextColor());
     private static final BooleanSetting BACKGROUND_PANEL = new BooleanSetting("Show Panel", "Toggle on and off the panel", true);
-    private static final ColorSetting PANEL_COLOR = new ColorSetting("Panel Color", "Background color", RenderUtil.getGuiColorPanel());
+    private static final ColorSetting PANEL_COLOR = new ColorSetting("Panel Color", "Background color", RenderUtil2D.getGuiColorPanel());
     private static final NumberSetting BORDER_RADIUS = new NumberSetting("Panel Radius", "Change the radius of the panel", 4, 1, 4);
     private static final BooleanSetting TOP_LEFT_ROUNDED = new BooleanSetting("Top Left Round", "Top left round", true);
     private static final BooleanSetting TOP_RIGHT_ROUNDED = new BooleanSetting("Top Right Round", "Top right round", true);
@@ -64,10 +64,10 @@ public class EnabledModules extends HudDisplayModule {
     private void drawList(GuiGraphicsExtractor graphics, Minecraft client, List<String> list, int x, int y, int textColor, boolean showBackground, int backgroundColor, boolean dropShadow) {
         int offsetY = 0;
         if (showBackground) {
-            RenderUtil.roundedFill(graphics, x -2, y - 2, panelWidth(client) + 8, panelHeight(client) + 8, backgroundColor, TOP_LEFT_ROUNDED.value(), TOP_RIGHT_ROUNDED.value(), BOTTOM_LEFT_ROUNDED.value(), BOTTOM_RIGHT_ROUNDED.value(), BORDER_RADIUS.value());
+            RenderUtil2D.roundedFill(graphics, x -2, y - 2, panelWidth(client) + 8, panelHeight(client) + 8, backgroundColor, TOP_LEFT_ROUNDED.value(), TOP_RIGHT_ROUNDED.value(), BOTTOM_LEFT_ROUNDED.value(), BOTTOM_RIGHT_ROUNDED.value(), BORDER_RADIUS.value());
         }
         for (String moduleName : list) {
-            RenderUtil.drawText(graphics, client.font, TextUtil.setFont(moduleName), x, y + offsetY, textColor, dropShadow);
+            RenderUtil2D.drawText(graphics, client.font, TextUtil.setFont(moduleName), x, y + offsetY, textColor, dropShadow);
             offsetY += client.font.lineHeight + 1;
         }
     }

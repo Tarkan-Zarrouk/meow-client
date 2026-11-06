@@ -6,7 +6,7 @@ import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.ui.clickgui.view.ClickGuiRenderer;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -44,10 +44,10 @@ public final class HudEditorScreen extends Screen {
             hovered = components.at(mouseX, mouseY);
         }
         if (hovered != null) {
-            RenderUtil.drawPanel(graphics, hovered.x(), hovered.y(), hovered.width(), hovered.height(), HOVER_DARKEN);
+            RenderUtil2D.drawPanel(graphics, hovered.x(), hovered.y(), hovered.width(), hovered.height(), HOVER_DARKEN);
         }
         if(ClickGuiModule.getShowHudInfoText()) {
-            RenderUtil.drawText(graphics, super.font, TextUtil.setFont("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
+            RenderUtil2D.drawText(graphics, super.font, TextUtil.setFont("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
         }
     }
 

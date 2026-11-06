@@ -5,7 +5,9 @@ import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
+import Main.main.meow.client.util.RenderUtil3D;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.gizmos.GizmoStyle;
 import net.minecraft.gizmos.Gizmos;
@@ -18,9 +20,9 @@ public class RayCastEntityHitBoxRenderer extends ClientModule {
     private static final boolean ENABLED = false;
     private static final String DESCRIPTION = "Renders the hitboxes of entities that are being raycasted";
     private static final EnumSetting<Style> STYLE_ENUM_SETTING = new EnumSetting<>("Style", "Outline, outline and fill, outline", Style.OUTLINE);
-    private static final ColorSetting STROKE_COLOR = new ColorSetting("Stroke Color", "Color of the outline", RenderUtil.getVisualDefaultColor());
+    private static final ColorSetting STROKE_COLOR = new ColorSetting("Stroke Color", "Color of the outline", RenderUtil2D.getVisualDefaultColor());
     private static final NumberSetting STROKE_WIDTH = new NumberSetting("Stroke Width", "Width of the outline", 1, 1, 10);
-    private static final ColorSetting FILL_COLOR = new ColorSetting("Fill Color", "Color of the filled box", RenderUtil.getVisualDefaultColor());
+    private static final ColorSetting FILL_COLOR = new ColorSetting("Fill Color", "Color of the filled box", RenderUtil2D.getVisualDefaultColor());
 
     public RayCastEntityHitBoxRenderer() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
@@ -30,11 +32,8 @@ public class RayCastEntityHitBoxRenderer extends ClientModule {
         );
     }
 
-    public void rayCastEntityHitBoxRenderer() throws InterruptedException {
+    public void rayCastEntityHitBoxRenderer() {
         Minecraft client = Minecraft.getInstance();
-        if (!super.getEnabled() || client.player == null) {
-            return;
-        }
         if(client.hitResult instanceof EntityHitResult hitResult) {
             AABB entityBoundingBox = hitResult.getEntity().getBoundingBox();
             switch(STYLE_ENUM_SETTING.value()) {

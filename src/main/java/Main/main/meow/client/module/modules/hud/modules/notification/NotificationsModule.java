@@ -6,13 +6,13 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
-import Main.main.meow.client.util.RenderUtil;
+import Main.main.meow.client.util.RenderUtil2D;
 
 public final class NotificationsModule extends ClientModule {
     private static final EnumSetting<Mode> MODE = new EnumSetting<>("Type", "Switches between pink [MeowMod] chat messages and animated top-right alerts.", Mode.CHAT);
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Background Color", "Change the color of the background", 0xff202632);
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil.getGuiTextColor());
+    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the color of the text", RenderUtil2D.getGuiTextColor());
     private static final ColorSetting TIMER_COLOR = new ColorSetting("Timer Setting", "Change the color of the timer", 0xffc52dbd);
     private static final BooleanSetting SHOW_TIMER = new BooleanSetting("Timer", "Shows or hides the magenta timer bar that drains until the alert is cleared.", true);
     private static final NumberSetting BORDER_RADIUS = new NumberSetting("Border Radius", "Change the roundedness of the notifcation popup", 16, 5, 20);
