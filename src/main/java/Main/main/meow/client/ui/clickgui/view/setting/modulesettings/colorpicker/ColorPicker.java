@@ -145,7 +145,7 @@ public final class ColorPicker implements ColorConsumer {
                 NotificationManager.notify("Invalid color in clipboard. Please copy a valid hex color code.");
             }
         }
-        return true;
+        return false;
     }
 
     public boolean mouseDragged(double mouseX, double mouseY) {
