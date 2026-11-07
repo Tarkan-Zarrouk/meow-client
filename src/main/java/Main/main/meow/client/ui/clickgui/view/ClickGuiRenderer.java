@@ -103,7 +103,7 @@ public final class ClickGuiRenderer extends Screen {
         String tooltipDescription = null;
         for (int column = 0; column < layout.columnCount(); column++) {
             int x = layout.columnX(column);
-            renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset + (int) scrolledAmount, columnWidth, alpha);
+            renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset + (int) scrolledAmount, columnWidth);
 
             List<Module> entries = layout.modulesIn(column);
             for (int row = 0; row < entries.size(); row++) {
@@ -124,7 +124,7 @@ public final class ClickGuiRenderer extends Screen {
             if (drawsFooter(entries)) {
                 int footerHeight = ClickGuiLayout.getFooterHeight();
                 int footerY = layout.columnY(column) + animationOffset + (int) scrolledAmount + layout.columnHeight(column) - footerHeight;
-                RenderUtil2D.roundedFill(graphics, x - 1, footerY, columnWidth + 2, footerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.getColorBottomRoundedRect(), alpha), false, false, true, true, Math.min(ClickGuiModule.getClickGuiBorderRadius(), footerHeight));
+                RenderUtil2D.roundedFill(graphics, x - 1, footerY, columnWidth + 2, footerHeight, ClickGuiModule.getColorBottomRoundedRect(), false, false, true, true, Math.min(ClickGuiModule.getClickGuiBorderRadius(), footerHeight));
             }
         }
         ColorPicker colorPicker = settings.colorPicker();
@@ -143,15 +143,14 @@ public final class ClickGuiRenderer extends Screen {
      * @param x desired x position
      * @param y desired y position
      * @param columnWidth width of category
-     * @param alpha alpha value for transparency
      */
-    private void renderCategories(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth, int alpha) {
-        RenderUtil2D.roundedFill(graphics, x, y, columnWidth, headerHeight, ClickGuiStyler.withAlpha(ClickGuiModule.categoryColor(), alpha), ClickGuiModule.getCategoryTopRightRound(), ClickGuiModule.getCategoryTopLeftRound(), ClickGuiModule.getCategoryBottomLeftRound(), ClickGuiModule.getCategoryBottomRightRound(), ClickGuiModule.getClickGuiHeaderBorderRadius());
+    private void renderCategories(GuiGraphicsExtractor graphics, Category category, int x, int y, int columnWidth) {
+        RenderUtil2D.roundedFill(graphics, x, y, columnWidth, headerHeight, ClickGuiModule.categoryColor(), ClickGuiModule.getCategoryTopRightRound(), ClickGuiModule.getCategoryTopLeftRound(), ClickGuiModule.getCategoryBottomLeftRound(), ClickGuiModule.getCategoryBottomRightRound(), ClickGuiModule.getClickGuiHeaderBorderRadius());
         if(ClickGuiModule.getToggleCategoryLine()) {
-            RenderUtil2D.drawPanel(graphics, x + (columnWidth - ClickGuiModule.getCategoryLineWidth()) / 2, y + headerHeight - 1, ClickGuiModule.getCategoryLineWidth(), 1, ClickGuiStyler.withAlpha(ClickGuiModule.getCategoryLineColor(), alpha));
+            RenderUtil2D.drawPanel(graphics, x + (columnWidth - ClickGuiModule.getCategoryLineWidth()) / 2, y + headerHeight - 1, ClickGuiModule.getCategoryLineWidth(), 1, ClickGuiModule.getCategoryLineColor());
         }
         String label = styler.truncate(category.title(), columnWidth - 10);
-        RenderUtil2D.drawText(graphics, font, Component.literal(label).withStyle(style -> style.withFont(ClickGuiStyler.getFont())), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getCategoryTextColor(), alpha), ClickGuiModule.getShadowBoolean(), styler.textScale());
+        RenderUtil2D.drawText(graphics, font, Component.literal(label).withStyle(style -> style.withFont(ClickGuiStyler.getFont())), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiModule.getCategoryTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
     }
 
     /**
@@ -177,9 +176,9 @@ public final class ClickGuiRenderer extends Screen {
         }
         int pointToStopCurve = y + rowHeight;
         if(ClickGuiModule.getToggleBottomRoundedRect()) {
-            RenderUtil2D.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
+            RenderUtil2D.roundedFill(graphics, x, y, columnWidth, rowHeight,background, false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
         } else {
-            RenderUtil2D.roundedFill(graphics, x, y, columnWidth, rowHeight, ClickGuiStyler.withAlpha(background, alpha), false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
+            RenderUtil2D.roundedFill(graphics, x, y, columnWidth, rowHeight,background, false, false, roundedBottom, roundedBottom, ClickGuiModule.getClickGuiBorderRadius());
             if (roundedBottom) {
                 pointToStopCurve = y + rowHeight - 1 - Math.min(ClickGuiModule.getClickGuiBorderRadius(), rowHeight / 2);
             }
@@ -189,11 +188,11 @@ public final class ClickGuiRenderer extends Screen {
             RenderUtil2D.drawVerticalLine(graphics, x + columnWidth - 1, y - 2, pointToStopCurve, ClickGuiModule.getOutlineColor());
         }
         String label = styler.truncate(module.getName(), columnWidth - 24);
-        RenderUtil2D.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getModuleTextColor(), alpha), ClickGuiModule.getShadowBoolean(), styler.textScale());
+        RenderUtil2D.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
         if(settings.isExpanded(module)) {
-            RenderUtil2D.drawText(graphics, font, styler.styled("..."), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false, styler.textScale());
+            RenderUtil2D.drawText(graphics, font, styler.styled("..."), x + columnWidth - 14, y + 5, ClickGuiStyler.MUTED, false, styler.textScale());
         } else {
-            RenderUtil2D.drawText(graphics, font, styler.styled("⋮"), x + columnWidth - 14, y + 5, ClickGuiStyler.withAlpha(ClickGuiStyler.MUTED, alpha), false, styler.textScale());
+            RenderUtil2D.drawText(graphics, font, styler.styled("\u22EE"), x + columnWidth - 14, y + 5, ClickGuiStyler.MUTED, false, styler.textScale());
         }
     }
 
@@ -225,11 +224,11 @@ public final class ClickGuiRenderer extends Screen {
             }
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
             if(lastSetting && ClickGuiModule.getToggleBottomRoundedRect()) {
-                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
+                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.SETTING_ROW, false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
             } else {
-                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.withAlpha(ClickGuiStyler.SETTING_ROW, alpha), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
+                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.SETTING_ROW, false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
             }
-            RenderUtil2D.drawText(graphics, font, styler.styled(text), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiStyler.withAlpha(ClickGuiModule.getSettingTextColor(), alpha), false, styler.textScale());
+            RenderUtil2D.drawText(graphics, font, styler.styled(styler.truncate(text, columnWidth - 10)), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiModule.getSettingTextColor(), false, styler.textScale());
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)
                 renderSlider(graphics, slider, x, settingY, columnWidth);

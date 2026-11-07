@@ -96,14 +96,10 @@ public final class ClickGuiStyler {
     public int centeredY(int y, int containerHeight) {
         return y + Math.max(0, (containerHeight - textLineHeight()) / 2);
     }
-    // thanks to the internet for this function, i have no idea how it works but it does
     public static float easeIn(float value) {
         return (float) Math.pow(value, 2);
     }
 
-    public static int withAlpha(int color, int alpha) {
-        return (color & 0x00ffffff) | (alpha << 24); // bitwise operations to set the alpha channel of the color while preserving the RGB values (thanks comp 2401)
-    }
 
     public static int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(value, max));
