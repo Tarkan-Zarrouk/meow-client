@@ -1,5 +1,6 @@
 package Main.main.meow.client.ui.clickgui.view;
 
+import Main.main.meow.client.module.modules.client.clickgui.Font;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.module.Module;
@@ -189,11 +190,23 @@ public final class ClickGuiRenderer extends Screen {
         }
         String label = styler.truncate(module.getName(), columnWidth - 24);
         RenderUtil2D.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
-        if(settings.isExpanded(module)) {
-            RenderUtil2D.drawText(graphics, font, styler.styled("..."), x + columnWidth - 14, y + 5, ClickGuiStyler.MUTED, false, styler.textScale());
+        boolean expanded = settings.isExpanded(module);
+        boolean minecraftSpecificFont = ClickGuiModule.font() == Font.MINECRAFT || ClickGuiModule.font() == Font.BACKUP;
+        String toggleGlyph;
+        if(minecraftSpecificFont) {
+            if(expanded) {
+                toggleGlyph = "...";
+            } else {
+                toggleGlyph = "\u22EE";
+            }
         } else {
-            RenderUtil2D.drawText(graphics, font, styler.styled("\u22EE"), x + columnWidth - 14, y + 5, ClickGuiStyler.MUTED, false, styler.textScale());
+            if(expanded) {
+                toggleGlyph = "-";
+            } else {
+                toggleGlyph = "+";
+            }
         }
+        RenderUtil2D.drawText(graphics, font, styler.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiStyler.MUTED, false, styler.textScale());
     }
 
     // the footer shows whenever the toggle is on (even if the last module is expanded), or when a lone module is expanded
