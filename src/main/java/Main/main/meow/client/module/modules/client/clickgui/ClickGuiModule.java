@@ -67,11 +67,14 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting BOTTOM_ROUNDED_RECT_HEIGHT = new NumberSetting("Rounded Bottom Rect Height", "Does this really need an explanation", 25, 1, 50);
     private static final BooleanSetting OUTLINE_TOGGLE = new BooleanSetting("Toggle Outline", "Outline of the modules on the clickgui", true);
     private static final ColorSetting OUTLINE_COLOR = new ColorSetting("Outline Color", "Change the color of the outline", 0xFFFFFFFF);
+    private static final ColorSetting PASTE_BUTTON_BACKGROUND_COLOR = new ColorSetting("Paste Background Color", "Changes the background color of the paste button option in the color picker", RenderUtil2D.getGuiColorPanel());
+    private static final ColorSetting PASTE_BUTTON_TEXT_COLOR = new ColorSetting("Paste Text Color", "Changes the text color of the paste button option in the color picker", RenderUtil2D.getGuiTextColor());
+    private static final BooleanSetting PASTE_BUTTON_DROP_SHADOW = new BooleanSetting("Toggle Text Shadow", "Says what it does.", false);
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR,
-                FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR, PASTE_BUTTON_BACKGROUND_COLOR, PASTE_BUTTON_TEXT_COLOR,
+                FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW, PASTE_BUTTON_DROP_SHADOW,
                 SHOW_OUTLINE, SHOW_TOOL_TIP,
                 TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS,
                 BLUR_BACKGROUND,
@@ -86,6 +89,15 @@ public final class ClickGuiModule extends ClientModule {
                 OUTLINE_TOGGLE
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getPasteButtonBackgroundColor() {
+        return PASTE_BUTTON_BACKGROUND_COLOR.color();
+    }
+    public static int getPasteButtonTextColor() {
+        return PASTE_BUTTON_TEXT_COLOR.color();
+    }
+    public static boolean getPasteButtonDropShadow() {
+        return PASTE_BUTTON_DROP_SHADOW.value();
     }
     public static int getOutlineColor() {
         return OUTLINE_COLOR.color();

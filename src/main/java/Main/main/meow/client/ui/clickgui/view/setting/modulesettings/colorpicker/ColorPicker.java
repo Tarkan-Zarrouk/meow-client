@@ -25,6 +25,12 @@ public final class ColorPicker implements ColorConsumer {
     private boolean draggingSquare;
     private boolean draggingHue;
     private boolean draggingAlpha;
+    private int xCopyButtonPos;
+    private int yCopyButtonPos;
+    private static final String COPY_BUTTON_STRING = "Copy";
+    private int xPasteButtonPos;
+    private int yPasteButtonPos;
+    private static final String PASTE_BUTTON_STRING = "Paste";
 
     public ColorPicker(int width, int height, int initialColor, ColorConsumer consumer) {
         this.width = width;
@@ -62,6 +68,7 @@ public final class ColorPicker implements ColorConsumer {
         drawColorSlider(graphics, hueWidth, hueY);
         drawAlphaSlider(graphics, hueWidth, y + height - 24);
         drawCopyTextButtonHelper(graphics);
+        drawPasteTextButtonHelper(graphics);
         drawColorPreviewHelper(graphics);
     }
     private void drawColorSlider(GuiGraphicsExtractor graphics, int hueWidth, int hueY) {
@@ -86,11 +93,18 @@ public final class ColorPicker implements ColorConsumer {
     }
 
     private void drawCopyTextButtonHelper(GuiGraphicsExtractor graphics) {
-        Component copyText = Component.literal("Copy");
-        int xPos = width / 2 - 5;
-        int yPos = height + 12;
-        RenderUtil2D.drawPanel(graphics, x +xPos, y + yPos, TextUtil.getTextWidth(Minecraft.getInstance(), copyText.getString()) + 5, TextUtil.getTextHeight(Minecraft.getInstance()) + 5, ClickGuiModule.getCopyButtonColorSetting());
-        RenderUtil2D.drawText(graphics, Minecraft.getInstance().font, Component.literal("Copy"), x + xPos + 2, y + yPos + 3, ClickGuiModule.getCopyTextColorSetting(), ClickGuiModule.getCopyButtonDropShadow());
+        xCopyButtonPos = width / 4 - 5;
+        yCopyButtonPos = height + 12;
+        RenderUtil2D.drawPanel(graphics, x +xCopyButtonPos, y + yCopyButtonPos, TextUtil.getTextWidth(Minecraft.getInstance(), COPY_BUTTON_STRING) + 5, TextUtil.getTextHeight(Minecraft.getInstance()) + 5, ClickGuiModule.getCopyButtonColorSetting());
+        RenderUtil2D.drawText(graphics, Minecraft.getInstance().font, Component.literal(COPY_BUTTON_STRING), x + xCopyButtonPos + 2, y + yCopyButtonPos + 3, ClickGuiModule.getCopyTextColorSetting(), ClickGuiModule.getCopyButtonDropShadow());
+    }
+
+    private void drawPasteTextButtonHelper(GuiGraphicsExtractor graphics) {
+        Component pasteText = Component.literal("Paste");
+        xPasteButtonPos = width / 2 + 20;
+        yPasteButtonPos = height + 12;
+        RenderUtil2D.drawPanel(graphics, x + xPasteButtonPos, y + yPasteButtonPos, TextUtil.getTextWidth(Minecraft.getInstance(), pasteText.getString()) + 5, TextUtil.getTextHeight(Minecraft.getInstance()) + 5, ClickGuiModule.getPasteButtonBackgroundColor());
+        RenderUtil2D.drawText(graphics, Minecraft.getInstance().font, Component.literal("Paste"), x + xPasteButtonPos + 2, y + yPasteButtonPos + 3, ClickGuiModule.getPasteButtonTextColor(), ClickGuiModule.getPasteButtonDropShadow());
     }
 
     private void drawColorPreviewHelper(GuiGraphicsExtractor graphics) {
@@ -114,12 +128,24 @@ public final class ColorPicker implements ColorConsumer {
             updateAlpha(mouseX);
             return true;
         }
-        if(inCopy(mouseX, mouseY)) {
+        // copy button
+        if(inButton(mouseX, mouseY, COPY_BUTTON_STRING, xCopyButtonPos, yCopyButtonPos)) {
             Minecraft.getInstance().keyboardHandler.setClipboard(String.format("#%08X", color()));
             NotificationManager.notify("Copied color to clipboard: " + String.format("#%08X", color()));
             return true;
         }
-        return false;
+        // paste button
+        if(inButton(mouseX, mouseY, PASTE_BUTTON_STRING, xPasteButtonPos, yPasteButtonPos)) {
+            int getColorFromClipboard = TextUtil.getColorFromClipboard();
+            if(getColorFromClipboard != -1) {
+                setColor(getColorFromClipboard);
+                consumer.accept(color());
+                NotificationManager.notify("Pasted color from clipboard: " + String.format("#%08X", color()));
+            } else {
+                NotificationManager.notify("Invalid color in clipboard. Please copy a valid hex color code.");
+            }
+        }
+        return true;
     }
 
     public boolean mouseDragged(double mouseX, double mouseY) {
@@ -174,11 +200,8 @@ public final class ColorPicker implements ColorConsumer {
                 && mouseY >= y + height - 40 && mouseY <= y + height - 30;
     }
 
-    private boolean inCopy(double mouseX, double mouseY) {
-        int xPos = width / 2 - 5;
-        int yPos = height + 12;
-        return mouseX >= x + xPos && mouseX <= x + xPos + TextUtil.getTextWidth(Minecraft.getInstance(), "Copy") + 5
-                && mouseY >= y + yPos && mouseY <= y + yPos + TextUtil.getTextHeight(Minecraft.getInstance()) + 5;
+    private boolean inButton(double mouseX, double mouseY, String text, int xPos, int yPos) {
+        return mouseX >= x + xPos && mouseX <= x + xPos + TextUtil.getTextWidth(Minecraft.getInstance(), text) + 5 && mouseY >= y + yPos && mouseY <= y + yPos + TextUtil.getTextWidth(Minecraft.getInstance(), text) + 5;
     }
 
     private static float clamp(float value) {

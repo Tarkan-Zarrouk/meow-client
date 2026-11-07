@@ -20,6 +20,24 @@ public class TextUtil {
         return client.font.width(textString);
     }
 
+    /**
+     * Filters hexadecimal color code into a usable color code
+     * @return color of the form 0xAARRGGBB, or -1 if invalid
+     */
+    public static int getColorFromClipboard() {
+        String clipboard = Minecraft.getInstance().keyboardHandler.getClipboard();
+        String hexString = clipboard.replaceAll("[^a-fA-F0-9]", "");
+
+        if (hexString.length() != 8) {
+            return -1;
+        }
+        try {
+            return Integer.parseUnsignedInt(hexString, 16);
+        } catch (NumberFormatException e) {
+            return e.hashCode();
+        }
+    }
+
 
     /**
      * Height of an unmodified text string
