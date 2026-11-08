@@ -19,6 +19,19 @@ public final class ColorSetting extends Setting<Integer> {
         return value();
     }
 
+    public int getRed() {
+        return (value() >> 16) & 0xFF;
+    }
+    public int getGreen() {
+        return (value() >> 8) & 0xFF;
+    }
+    public int getBlue() {
+        return value() & 0xFF;
+    }
+    public int getAlpha() {
+        return (value() >> 24) & 0xFF;
+    }
+
     // picker that writes every change straight back into this setting, onChange runs after each update
     public ColorPicker createPicker(Runnable onChange) {
         return new ColorPicker(PICKER_WIDTH, PICKER_HEIGHT, color(), color -> {

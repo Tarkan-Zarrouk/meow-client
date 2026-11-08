@@ -32,6 +32,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 public class MeowClient implements ClientModInitializer {
     private static final ModuleManager MODULE_MANAGER = new ModuleManager();
     private static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
+    public static final String MOD_ID = "meow";
 
     public static ModuleManager getModuleManager() {
         return MODULE_MANAGER;

@@ -275,8 +275,6 @@ public final class ClickGuiRenderer extends Screen {
         RenderUtil2D.drawPanel(graphics, sliderX, sliderY, sliderWidth, 2, 0xff555861);
         int knobX = sliderX + Math.round(slider.progress() * sliderWidth);
         RenderUtil2D.roundedFill(graphics, knobX - 2, sliderY - 2, ClickGuiModule.getKnobWidth(), ClickGuiModule.getKnobHeight(), ClickGuiModule.moduleColor(), true, true, true, true, ClickGuiModule.getKnobBorderRadius());
-//        RenderUtil.drawPanel(graphics, knobX - 2, sliderY - 1, 5, 4, ClickGuiModule.moduleColor());
-//        graphics.fill(knobX - 2, sliderY - 2, knobX + 3, sliderY + 4, ClickGuiModule.moduleColor()); // +3 for width of knob
     }
 
     /**

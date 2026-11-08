@@ -3,8 +3,9 @@ package Main.main.meow.client.module.modules.visuals.walkblockhighlighter;
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.model.Category;
-import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
+import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.RenderUtil3D;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
@@ -19,13 +20,16 @@ public class WalkBlockHighlighter extends ClientModule {
     private static final Category CATEGORY = Category.VISUALS;
     private static final boolean ENABLED = false;
     private static final String DESCRIPTION = "Highlights the block you're currently standing on";
-    private static final EnumSetting<BlockHighlightMode> BLOCK_MODE = new EnumSetting<>("Highlight Mode", "Swap between a slab and a filled render", BlockHighlightMode.SLAB);
-    private static final ColorSetting SLAB_COLOR = new ColorSetting("Box Color", "Customize the block color", RenderUtil2D.getVisualDefaultColor());
-    private static final ColorSetting FILLED_COLOR = new ColorSetting("Filled Color", "Customize the filled color", RenderUtil2D.getVisualDefaultColor());
-
+    private static final ColorSetting CUBOID_COLOR = new ColorSetting("Cuboid Color", "Color of cuboid", RenderUtil2D.getVisualDefaultColor());
+    private static final NumberSetting MIN_X_CUBOID_POS = new NumberSetting("Min X Position", "Change the minimum x position", 0, 1, 100);
+    private static final NumberSetting MAX_X_CUBOID_POS = new NumberSetting("Max X Position", "Change the maximum x position", 0, 1, 100);
+    private static final NumberSetting MIN_Y_CUBOID_POS = new NumberSetting("Min Y Position", "Change the Minimum Height", 99, 1, 99);
+    private static final NumberSetting MAX_Y_CUBOID_POS = new NumberSetting("Max Y Position", "Change the maximum height", 99, 1, 99);
+    private static final NumberSetting MIN_Z_CUBOID_POS = new NumberSetting("Min Z Position", "Change the minimum depth", 99,1,99);
+    private static final NumberSetting MAX_Z_CUBOID_POS = new NumberSetting("Max Z Position", "Change the maximum depth", 99, 1, 99);
     public WalkBlockHighlighter() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
-        super.addSetting(BLOCK_MODE, SLAB_COLOR, FILLED_COLOR);
+        super.addSetting( CUBOID_COLOR, MIN_X_CUBOID_POS, MAX_X_CUBOID_POS, MIN_Y_CUBOID_POS, MAX_Y_CUBOID_POS, MIN_Z_CUBOID_POS, MAX_Z_CUBOID_POS);
     }
 
     public static void draw(LevelRenderContext levelRenderContext) {
@@ -40,11 +44,12 @@ public class WalkBlockHighlighter extends ClientModule {
         if (standingOn == null) {
             return;
         }
-        switch(BLOCK_MODE.value()) {
-            case SLAB -> RenderUtil3D.drawSlab(levelRenderContext, standingOn.getX(), standingOn.getY(), standingOn.getZ(), SLAB_COLOR.color());
-            case FILLED -> RenderUtil3D.drawSlab(levelRenderContext, standingOn.getX(), standingOn.getY(), standingOn.getZ(), FILLED_COLOR.color());
-
-        }
+        int filledColor = CUBOID_COLOR.color();
+        float filledColorR = ColorUtil.getRed(filledColor);
+        float filledColorG = ColorUtil.getGreen(filledColor);
+        float filledColorB = ColorUtil.getBlue(filledColor);
+        float filledColorA = ColorUtil.getAlpha(filledColor);
+        RenderUtil3D.drawCuboid(levelRenderContext, standingOn.getX(), standingOn.getY(), standingOn.getZ(), MIN_X_CUBOID_POS.value(), MAX_X_CUBOID_POS.value(), MIN_Y_CUBOID_POS.value(), MAX_Y_CUBOID_POS.value(), MIN_Z_CUBOID_POS.value(), MAX_Z_CUBOID_POS.value(), filledColorR, filledColorG, filledColorB, filledColorA);
     }
 
     private static BlockPos findStandingBlock(Level level, Player player) {
