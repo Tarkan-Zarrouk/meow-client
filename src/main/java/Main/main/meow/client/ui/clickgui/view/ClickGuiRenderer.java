@@ -208,10 +208,10 @@ public final class ClickGuiRenderer extends Screen {
             }
         }
         if(ClickGuiModule.getToggleInteriorRectLeft()) {
-            RenderUtil2D.drawPanel(graphics, x, y - 1, columnWidth / 16, rowHeight + 1, ClickGuiModule.getInteriorRectLeftColor());
+            RenderUtil2D.drawPanel(graphics, x, y - 1, ClickGuiModule.getInteriorRectWidthLeft(), rowHeight + 1, ClickGuiModule.getInteriorRectLeftColor());
         }
         if(ClickGuiModule.getToggleInteriorRectRight()) {
-            RenderUtil2D.drawPanel(graphics, x + columnWidth - columnWidth / 16, y - 1, columnWidth / 16, rowHeight + 1, ClickGuiModule.getInteriorRectRightColor());
+            RenderUtil2D.drawPanel(graphics, x + columnWidth - ClickGuiModule.getInteriorRectWidthRight(), y - 1, ClickGuiModule.getInteriorRectWidthRight(), rowHeight + 1, ClickGuiModule.getInteriorRectRightColor());
         }
         RenderUtil2D.drawText(graphics, font, styler.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiModule.getToggleGlyphColor(), false, styler.textScale());
     }

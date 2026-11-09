@@ -75,6 +75,9 @@ public final class ClickGuiModule extends ClientModule {
     private static final ColorSetting INTERIOR_RECT_LEFT_COLOR = new ColorSetting("Interior Left Color", "Interior Left Rect Color", RenderUtil2D.getVisualDefaultColor());
     private static final ColorSetting INTERIOR_RECT_RIGHT_COLOR = new ColorSetting("Interior Right Color", "Interior Right Rect Color", RenderUtil2D.getVisualDefaultColor());
     private static final ColorSetting MODULE_TOGGLE_GLYPH_COLOR = new ColorSetting("Toggle Gylph color", "Change the color of the toggle glyph", ClickGuiStyler.MUTED);
+    private static final NumberSetting INTERIOR_RECT_LEFT_WIDTH = new NumberSetting("Interior Left Width", "Interior Left Rect Width", 10, 1, 11);
+    private static final NumberSetting INTERIOR_RECT_RIGHT_WIDTH = new NumberSetting("Interior Right Width", "Interior Left right Width", 10, 1, 11);
+
 
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
@@ -88,13 +91,19 @@ public final class ClickGuiModule extends ClientModule {
                 SHOW_HUD_INFO_TEXT,
                 KNOB_WIDTH, KNOB_HEIGHT,
                 SCROLL_SPEED, ANIMATION_SPEED,
-                TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH,
+                TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH, INTERIOR_RECT_LEFT_WIDTH, INTERIOR_RECT_RIGHT_WIDTH,
                 ALPHA_CHANNEL_HEIGHT,
                 TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND, CATEGORY_TOP_LEFT_ROUND, CATEGORY_TOP_RIGHT_ROUND, CATEGORY_BOTTOM_LEFT_ROUND, CATEGORY_BOTTOM_RIGHT_ROUND,
                 TOGGLE_BOTTOM_ROUNDED_RECT, BOTTOM_ROUNDED_RECT_HEIGHT,
                 OUTLINE_TOGGLE, TOGGLE_INTERIOR_RECT_LEFT, TOGGLE_INTERIOR_RECT_RIGHT
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getInteriorRectWidthLeft() {
+        return INTERIOR_RECT_LEFT_WIDTH.value();
+    }
+    public static int getInteriorRectWidthRight() {
+        return INTERIOR_RECT_RIGHT_WIDTH.value();
     }
     public static int getToggleGlyphColor() {
         return MODULE_TOGGLE_GLYPH_COLOR.color();
