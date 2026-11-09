@@ -2,19 +2,23 @@ package Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicke
 
 import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
+import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
 import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 import java.awt.Color;
 
 public final class ColorPicker implements ColorConsumer {
 
     private static final int SQUARE_INSET = 54;
+    private static final int RESET_CLOSE_BUTTON_SIZE = 16;
     private final int width;
     private final int height;
+    private final int defaultColor;
     private final ColorConsumer consumer;
     private int x;
     private int y;
@@ -32,9 +36,10 @@ public final class ColorPicker implements ColorConsumer {
     private int yPasteButtonPos;
     private static final String PASTE_BUTTON_STRING = "Paste";
 
-    public ColorPicker(int width, int height, int initialColor, ColorConsumer consumer) {
+    public ColorPicker(int width, int height, int initialColor, int defaultColor, ColorConsumer consumer) {
         this.width = width;
         this.height = height;
+        this.defaultColor = defaultColor;
         this.consumer = consumer;
         setColor(initialColor);
     }
@@ -70,6 +75,17 @@ public final class ColorPicker implements ColorConsumer {
         drawCopyTextButtonHelper(graphics);
         drawPasteTextButtonHelper(graphics);
         drawColorPreviewHelper(graphics);
+        drawCloseButton(graphics, x + width, y - 17);
+        drawResetButton(graphics, x + width, y);
+    }
+
+    private void drawCloseButton(GuiGraphicsExtractor graphics, int x, int y) {
+        RenderUtil2D.drawSprite(graphics, Identifier.fromNamespaceAndPath("meow", "colorpicker/close"), x, y, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE);
+    }
+
+    private void drawResetButton(GuiGraphicsExtractor graphics, int x, int y) {
+        RenderUtil2D.drawPanel(graphics, x, y, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE, ClickGuiStyler.BORDER);
+        RenderUtil2D.drawSprite(graphics, Identifier.fromNamespaceAndPath("meow", "colorpicker/reset"), x, y, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE);
     }
     private void drawColorSlider(GuiGraphicsExtractor graphics, int hueWidth, int hueY) {
         int hueSegments = 32;
@@ -113,6 +129,17 @@ public final class ColorPicker implements ColorConsumer {
     }
 
     public boolean mouseClicked(double mouseX, double mouseY) {
+        // reset button
+        if (inButton(mouseX, mouseY, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE, width, 0)) {
+            setColor(defaultColor);
+            consumer.accept(defaultColor);
+            NotificationManager.notify("Color has been reset to " + String.format("#%08X", defaultColor));
+            return true;
+        }
+        // close button
+        if(inButton(mouseX, mouseY, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE, width, -17)) {
+            return false;
+        }
         if (inSquare(mouseX, mouseY)) {
             draggingSquare = true;
             updateSquare(mouseX, mouseY);
@@ -145,7 +172,7 @@ public final class ColorPicker implements ColorConsumer {
                 NotificationManager.notify("Invalid color in clipboard. Please copy a valid hex color code.");
             }
         }
-        return false;
+        return true;
     }
 
     public boolean mouseDragged(double mouseX, double mouseY) {
@@ -202,6 +229,9 @@ public final class ColorPicker implements ColorConsumer {
 
     private boolean inButton(double mouseX, double mouseY, String text, int xPos, int yPos) {
         return mouseX >= x + xPos && mouseX <= x + xPos + TextUtil.getTextWidth(Minecraft.getInstance(), text) + 5 && mouseY >= y + yPos && mouseY <= y + yPos + TextUtil.getTextWidth(Minecraft.getInstance(), text) + 5;
+    }
+    private boolean inButton(double mouseX, double mouseY, int width, int height, int xPos, int yPos) {
+        return mouseX >= x + xPos && mouseX < x + xPos + width && mouseY >= y + yPos && mouseY < y + yPos + height;
     }
 
     private static float clamp(float value) {

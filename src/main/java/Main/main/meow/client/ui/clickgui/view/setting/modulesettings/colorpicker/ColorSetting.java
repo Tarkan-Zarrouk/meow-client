@@ -34,7 +34,7 @@ public final class ColorSetting extends Setting<Integer> {
 
     // picker that writes every change straight back into this setting, onChange runs after each update
     public ColorPicker createPicker(Runnable onChange) {
-        return new ColorPicker(PICKER_WIDTH, PICKER_HEIGHT, color(), color -> {
+        return new ColorPicker(PICKER_WIDTH, PICKER_HEIGHT, color(), defaultColor, color -> {
             setValue(color);
             onChange.run();
         });
