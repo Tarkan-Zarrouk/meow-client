@@ -70,10 +70,16 @@ public final class ClickGuiModule extends ClientModule {
     private static final ColorSetting PASTE_BUTTON_BACKGROUND_COLOR = new ColorSetting("Paste Background Color", "Changes the background color of the paste button option in the color picker", RenderUtil2D.getGuiColorPanel());
     private static final ColorSetting PASTE_BUTTON_TEXT_COLOR = new ColorSetting("Paste Text Color", "Changes the text color of the paste button option in the color picker", RenderUtil2D.getGuiTextColor());
     private static final BooleanSetting PASTE_BUTTON_DROP_SHADOW = new BooleanSetting("Toggle Text Shadow", "Says what it does.", false);
+    private static final BooleanSetting TOGGLE_INTERIOR_RECT_LEFT = new BooleanSetting("Toggle Interior Left Rect", "Toggle interior rect width", true);
+    private static final BooleanSetting TOGGLE_INTERIOR_RECT_RIGHT = new BooleanSetting("Toggle Interior Right Rect", "Toggle interior right rect width", true);
+    private static final ColorSetting INTERIOR_RECT_LEFT_COLOR = new ColorSetting("Interior Left Color", "Interior Left Rect Color", RenderUtil2D.getVisualDefaultColor());
+    private static final ColorSetting INTERIOR_RECT_RIGHT_COLOR = new ColorSetting("Interior Right Color", "Interior Right Rect Color", RenderUtil2D.getVisualDefaultColor());
+    private static final ColorSetting MODULE_TOGGLE_GLYPH_COLOR = new ColorSetting("Toggle Gylph color", "Change the color of the toggle glyph", ClickGuiStyler.MUTED);
+
     public ClickGuiModule() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR, PASTE_BUTTON_BACKGROUND_COLOR, PASTE_BUTTON_TEXT_COLOR,
+                CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR, PASTE_BUTTON_BACKGROUND_COLOR, PASTE_BUTTON_TEXT_COLOR, INTERIOR_RECT_LEFT_COLOR, INTERIOR_RECT_RIGHT_COLOR, MODULE_TOGGLE_GLYPH_COLOR,
                 FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW, PASTE_BUTTON_DROP_SHADOW,
                 SHOW_OUTLINE, SHOW_TOOL_TIP,
                 TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS,
@@ -86,9 +92,24 @@ public final class ClickGuiModule extends ClientModule {
                 ALPHA_CHANNEL_HEIGHT,
                 TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND, CATEGORY_TOP_LEFT_ROUND, CATEGORY_TOP_RIGHT_ROUND, CATEGORY_BOTTOM_LEFT_ROUND, CATEGORY_BOTTOM_RIGHT_ROUND,
                 TOGGLE_BOTTOM_ROUNDED_RECT, BOTTOM_ROUNDED_RECT_HEIGHT,
-                OUTLINE_TOGGLE
+                OUTLINE_TOGGLE, TOGGLE_INTERIOR_RECT_LEFT, TOGGLE_INTERIOR_RECT_RIGHT
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getToggleGlyphColor() {
+        return MODULE_TOGGLE_GLYPH_COLOR.color();
+    }
+    public static boolean getToggleInteriorRectLeft() {
+        return TOGGLE_INTERIOR_RECT_LEFT.value();
+    }
+    public static boolean getToggleInteriorRectRight() {
+        return TOGGLE_INTERIOR_RECT_RIGHT.value();
+    }
+    public static int getInteriorRectLeftColor() {
+        return INTERIOR_RECT_LEFT_COLOR.color();
+    }
+    public static int getInteriorRectRightColor() {
+        return INTERIOR_RECT_RIGHT_COLOR.color();
     }
     public static int getPasteButtonBackgroundColor() {
         return PASTE_BUTTON_BACKGROUND_COLOR.color();

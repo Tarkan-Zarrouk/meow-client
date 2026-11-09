@@ -135,6 +135,7 @@ public final class ClickGuiRenderer extends Screen {
         } else if (tooltipDescription != null && !tooltipDescription.isBlank()) {
             renderTooltip(graphics, tooltipDescription, mouseX, mouseY, screenWidth, screenHeight);
         }
+
     }
 
     /**
@@ -206,7 +207,13 @@ public final class ClickGuiRenderer extends Screen {
                 toggleGlyph = "+";
             }
         }
-        RenderUtil2D.drawText(graphics, font, styler.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiStyler.MUTED, false, styler.textScale());
+        if(ClickGuiModule.getToggleInteriorRectLeft()) {
+            RenderUtil2D.drawPanel(graphics, x, y - 1, columnWidth / 16, rowHeight + 1, ClickGuiModule.getInteriorRectLeftColor());
+        }
+        if(ClickGuiModule.getToggleInteriorRectRight()) {
+            RenderUtil2D.drawPanel(graphics, x + columnWidth - columnWidth / 16, y - 1, columnWidth / 16, rowHeight + 1, ClickGuiModule.getInteriorRectRightColor());
+        }
+        RenderUtil2D.drawText(graphics, font, styler.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiModule.getToggleGlyphColor(), false, styler.textScale());
     }
 
     // the footer shows whenever the toggle is on (even if the last module is expanded), or when a lone module is expanded
