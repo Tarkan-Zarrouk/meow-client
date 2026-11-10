@@ -12,7 +12,7 @@ Use the Gradle wrapper with Java 25:
 ```
 
 # (Probably outdated) ClickGUI
-<img src="./assets/Screenshot%202026-10-11%20at%203.15.06%E2%80%AFPM.png">
+<img src="./assets/Screenshot%25202026-10-11%2520at%25203.15.06%25E2%2580%25AFPM.png">
 
 
 
