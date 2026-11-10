@@ -45,10 +45,10 @@ public class WalkBlockHighlighter extends ClientModule {
             return;
         }
         int filledColor = CUBOID_COLOR.color();
-        float filledColorR = ColorUtil.getRed(filledColor);
-        float filledColorG = ColorUtil.getGreen(filledColor);
-        float filledColorB = ColorUtil.getBlue(filledColor);
-        float filledColorA = ColorUtil.getAlpha(filledColor);
+        float filledColorR = ColorUtil.getRed(filledColor) / 255.0f;
+        float filledColorG = ColorUtil.getGreen(filledColor) / 255.0f;
+        float filledColorB = ColorUtil.getBlue(filledColor) / 255.0f;
+        float filledColorA = ColorUtil.getAlpha(filledColor) / 255.0f;
         RenderUtil3D.drawCuboid(levelRenderContext, standingOn.getX(), standingOn.getY(), standingOn.getZ(), MIN_X_CUBOID_POS.value(), MAX_X_CUBOID_POS.value(), MIN_Y_CUBOID_POS.value(), MAX_Y_CUBOID_POS.value(), MIN_Z_CUBOID_POS.value(), MAX_Z_CUBOID_POS.value(), filledColorR, filledColorG, filledColorB, filledColorA);
     }
 

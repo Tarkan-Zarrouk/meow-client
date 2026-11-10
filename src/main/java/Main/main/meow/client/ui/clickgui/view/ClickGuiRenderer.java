@@ -11,6 +11,7 @@ import Main.main.meow.client.ui.clickgui.controller.ClickGuiInputHandler;
 import Main.main.meow.client.ui.clickgui.controller.ClickGuiSettingsHandler;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
+import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -18,6 +19,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
+import java.awt.*;
 import java.util.List;
 
 
@@ -101,9 +103,21 @@ public final class ClickGuiRenderer extends Screen {
         int animationOffset = (int) ((1f - ClickGuiStyler.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
         int columnWidth = layout.columnWidth();
         int rowHeight = ClickGuiModule.getModuleHeight();
+
+
         String tooltipDescription = null;
         for (int column = 0; column < layout.columnCount(); column++) {
             int x = layout.columnX(column);
+            int baseColor = ClickGuiModule.moduleColor();
+            if(ClickGuiModule.getToggleGlow()) {
+                int a = Integer.parseInt(String.format("%x", ClickGuiModule.getGlowOpacity()), 16); // first convert to "0x<...>" then because java allows 0x<...> as int because it's a number (no shit), parse in base 16.
+                int r = ColorUtil.getRed(baseColor);
+                int g = ColorUtil.getGreen(baseColor);
+                int b = ColorUtil.getBlue(baseColor);
+                int argbInt = ColorUtil.toARGB(r,g,b,a);
+                RenderUtil2D.roundedFill(graphics, x - ClickGuiModule.getGlowWidth(), layout.columnY(column) - 3 + (int) scrolledAmount, columnWidth + (2 * ClickGuiModule.getGlowWidth()), (layout.columnY(column) + animationOffset + layout.columnHeight(column) - ClickGuiLayout.getFooterHeight()) + 10, argbInt, true, true, true, true, ClickGuiModule.getClickGuiBorderRadius());
+            }
+
             renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset + (int) scrolledAmount, columnWidth);
 
             List<Module> entries = layout.modulesIn(column);
@@ -135,7 +149,6 @@ public final class ClickGuiRenderer extends Screen {
         } else if (tooltipDescription != null && !tooltipDescription.isBlank()) {
             renderTooltip(graphics, tooltipDescription, mouseX, mouseY, screenWidth, screenHeight);
         }
-
     }
 
     /**
