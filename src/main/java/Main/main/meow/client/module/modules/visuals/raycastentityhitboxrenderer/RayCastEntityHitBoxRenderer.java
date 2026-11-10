@@ -34,6 +34,9 @@ public class RayCastEntityHitBoxRenderer extends ClientModule {
 
     public void rayCastEntityHitBoxRenderer() {
         Minecraft client = Minecraft.getInstance();
+        if (!super.getEnabled() || client.player == null) {
+            return;
+        }
         if(client.hitResult instanceof EntityHitResult hitResult) {
             AABB entityBoundingBox = hitResult.getEntity().getBoundingBox();
             switch(STYLE_ENUM_SETTING.value()) {
