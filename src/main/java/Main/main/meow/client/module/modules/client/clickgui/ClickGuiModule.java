@@ -80,10 +80,12 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting TOGGLE_GLOW = new BooleanSetting("Toggle Glow", "Glow effect on modules", true);
     private static final NumberSetting GLOW_OPACITY = new NumberSetting("Glow Opacity", "Opacity of the glow", 128, 0, 255);
     private static final NumberSetting GLOW_WIDTH = new NumberSetting("Glow Width", "Change the width of the glow", 5, 1,5);
-    public ClickGuiModule() {
+    private static final ColorSetting ROW_HOVER_COLOR = new ColorSetting("Row Hover Color Setting", "Change the color of the currently hovered module", ColorUtil.getRowHoverColor());
+    private static final ColorSetting ROW_COLOR = new ColorSetting("Row Color Setting", "Change the color of the module rows", ColorUtil.getRowColor());
+    public ClickGuiModule(){
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-            CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR, PASTE_BUTTON_BACKGROUND_COLOR, PASTE_BUTTON_TEXT_COLOR, INTERIOR_RECT_LEFT_COLOR, INTERIOR_RECT_RIGHT_COLOR, MODULE_TOGGLE_GLYPH_COLOR,
+            CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR, PASTE_BUTTON_BACKGROUND_COLOR, PASTE_BUTTON_TEXT_COLOR, INTERIOR_RECT_LEFT_COLOR, INTERIOR_RECT_RIGHT_COLOR, MODULE_TOGGLE_GLYPH_COLOR, ROW_HOVER_COLOR, ROW_COLOR,
             FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW, PASTE_BUTTON_DROP_SHADOW,
             SHOW_OUTLINE, SHOW_TOOL_TIP,
             TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS,
@@ -100,6 +102,13 @@ public final class ClickGuiModule extends ClientModule {
             TOGGLE_GLOW, GLOW_OPACITY, GLOW_WIDTH
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getRowColor() {
+        return ROW_COLOR.color();
+    }
+
+    public static int getRowHoverColor() {
+        return ROW_HOVER_COLOR.color();
     }
     public static int getGlowWidth() {
         return GLOW_WIDTH.value();

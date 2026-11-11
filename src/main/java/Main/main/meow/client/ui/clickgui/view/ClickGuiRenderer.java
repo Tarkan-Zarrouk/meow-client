@@ -185,9 +185,9 @@ public final class ClickGuiRenderer extends Screen {
         if(module.getEnabled()) {
             background = ClickGuiModule.moduleColor();
         } else if(hovered) {
-            background = ColorUtil.getRowHoverColor();
+            background = ClickGuiModule.getRowHoverColor();
         } else {
-            background = ColorUtil.getRowColor();
+            background = ClickGuiModule.getRowColor();
         }
         int pointToStopCurve = y + rowHeight;
         if(ClickGuiModule.getToggleBottomRoundedRect()) {
