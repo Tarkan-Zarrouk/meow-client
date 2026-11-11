@@ -19,7 +19,6 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
-import java.awt.*;
 import java.util.List;
 
 
@@ -204,6 +203,17 @@ public final class ClickGuiRenderer extends Screen {
         }
         String label = styler.truncate(module.getName(), columnWidth - 24);
         RenderUtil2D.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
+        String toggleGlyph = getToggleGlyph(module);
+        if(ClickGuiModule.getToggleInteriorRectLeft()) {
+            RenderUtil2D.drawPanel(graphics, x, y - 1, ClickGuiModule.getInteriorRectWidthLeft(), rowHeight + 1, ClickGuiModule.getInteriorRectLeftColor());
+        }
+        if(ClickGuiModule.getToggleInteriorRectRight()) {
+            RenderUtil2D.drawPanel(graphics, x + columnWidth - ClickGuiModule.getInteriorRectWidthRight(), y - 1, ClickGuiModule.getInteriorRectWidthRight(), rowHeight + 1, ClickGuiModule.getInteriorRectRightColor());
+        }
+        RenderUtil2D.drawText(graphics, font, styler.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiModule.getToggleGlyphColor(), false, styler.textScale());
+    }
+
+    private String getToggleGlyph(Module module) {
         boolean expanded = settings.isExpanded(module);
         boolean minecraftSpecificFont = ClickGuiModule.font() == Font.MINECRAFT || ClickGuiModule.font() == Font.BACKUP;
         String toggleGlyph;
@@ -220,13 +230,7 @@ public final class ClickGuiRenderer extends Screen {
                 toggleGlyph = "+";
             }
         }
-        if(ClickGuiModule.getToggleInteriorRectLeft()) {
-            RenderUtil2D.drawPanel(graphics, x, y - 1, ClickGuiModule.getInteriorRectWidthLeft(), rowHeight + 1, ClickGuiModule.getInteriorRectLeftColor());
-        }
-        if(ClickGuiModule.getToggleInteriorRectRight()) {
-            RenderUtil2D.drawPanel(graphics, x + columnWidth - ClickGuiModule.getInteriorRectWidthRight(), y - 1, ClickGuiModule.getInteriorRectWidthRight(), rowHeight + 1, ClickGuiModule.getInteriorRectRightColor());
-        }
-        RenderUtil2D.drawText(graphics, font, styler.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiModule.getToggleGlyphColor(), false, styler.textScale());
+        return toggleGlyph;
     }
 
     // the footer shows whenever the toggle is on (even if the last module is expanded), or when a lone module is expanded

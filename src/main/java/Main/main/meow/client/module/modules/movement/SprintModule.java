@@ -4,10 +4,7 @@ import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import net.minecraft.client.Minecraft;
 
-/**
- * Automatically holds vanilla forward sprinting while the player moves forward.
- * Strafing alone never activates sprinting, so this is intentionally not omni-sprint.
- */
+
 public final class SprintModule extends ClientModule {
     public SprintModule() {
         super("Sprint", Category.MOVEMENT, false, "Automatically sprints when moving forward without requiring the sprint key.");

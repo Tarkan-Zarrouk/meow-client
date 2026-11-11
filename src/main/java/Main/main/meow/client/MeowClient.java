@@ -9,6 +9,7 @@ import Main.main.meow.client.module.modules.hud.modules.enabledmodules.EnabledMo
 import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
+import Main.main.meow.client.module.modules.movement.autowalkmodule.AutoMoveModule;
 import Main.main.meow.client.module.modules.visuals.walkblockhighlighter.WalkBlockHighlighter;
 import Main.main.meow.client.module.modules.visuals.raycastentityhitboxrenderer.RayCastEntityHitBoxRenderer;
 import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
@@ -25,11 +26,9 @@ import Main.main.meow.client.manager.ConfigManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.resources.Identifier;
 
 public class MeowClient implements ClientModInitializer {
     private static final ModuleManager MODULE_MANAGER = new ModuleManager();
@@ -62,6 +61,9 @@ public class MeowClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (MODULE_MANAGER.byName("Sprint") instanceof SprintModule sprint) {
                 sprint.tick(client);
+            }
+            if (MODULE_MANAGER.byName("AutoWalk") instanceof AutoMoveModule autoMove) {
+                autoMove.tick(client);
             }
         });
         LevelRenderEvents.BEFORE_GIZMOS.register(_ -> {
@@ -142,7 +144,8 @@ public class MeowClient implements ClientModInitializer {
                 new RayCastBlockCustomizer(),
                 new WalkBlockHighlighter(),
                 new EnabledModules(),
-                new RayCastEntityHitBoxRenderer()
+                new RayCastEntityHitBoxRenderer(),
+                new AutoMoveModule()
         );
     }
 }

@@ -11,8 +11,6 @@ import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
 import Main.main.meow.client.util.RenderUtil2D;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
-
 public final class ClickGuiModule extends ClientModule {
     private static final String NAME = "ClickGui";
     private static final Category CATEGORY = Category.CLIENT;
