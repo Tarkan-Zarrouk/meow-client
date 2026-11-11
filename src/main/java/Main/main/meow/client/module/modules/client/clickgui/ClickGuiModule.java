@@ -1,13 +1,13 @@
 package Main.main.meow.client.module.modules.client.clickgui;
 
 import Main.main.meow.client.module.modules.ClientModule;
-import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
+import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import org.lwjgl.glfw.GLFW;
 
@@ -16,7 +16,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final Category CATEGORY = Category.CLIENT;
     private static final boolean ENABLED = true;
     private static final String DESCRIPTION = "Opens this ClickGUI and lets you customize its colors and keybind.";
-    private static final ColorSetting SETTINGS_TEXT_COLOR = new ColorSetting("Setting Color", "Opens a picker that changes the text color", ClickGuiStyler.MUTED);
+    private static final ColorSetting SETTINGS_TEXT_COLOR = new ColorSetting("Setting Color", "Opens a picker that changes the text color", ColorUtil.getMutedColor());
     private static final ColorSetting MODULE_TEXT_COLOR = new ColorSetting("Module text color", "Opens a picker that changes the text color", RenderUtil2D.getGuiTextColor());
     private static final ColorSetting CATEGORY_TEXT_COLOR = new ColorSetting("Category text color", "Opens a picker that changes the text color", RenderUtil2D.getGuiTextColor());
     private static final ColorSetting CATEGORY_COLOR = new ColorSetting("Category colour", "Opens a picker that changes the color of every category header in real time.", 0xffc52dbd);
@@ -74,7 +74,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting TOGGLE_INTERIOR_RECT_RIGHT = new BooleanSetting("Toggle Interior Right Rect", "Toggle interior right rect width", true);
     private static final ColorSetting INTERIOR_RECT_LEFT_COLOR = new ColorSetting("Interior Left Color", "Interior Left Rect Color", RenderUtil2D.getVisualDefaultColor());
     private static final ColorSetting INTERIOR_RECT_RIGHT_COLOR = new ColorSetting("Interior Right Color", "Interior Right Rect Color", RenderUtil2D.getVisualDefaultColor());
-    private static final ColorSetting MODULE_TOGGLE_GLYPH_COLOR = new ColorSetting("Toggle Gylph color", "Change the color of the toggle glyph", ClickGuiStyler.MUTED);
+    private static final ColorSetting MODULE_TOGGLE_GLYPH_COLOR = new ColorSetting("Toggle Gylph color", "Change the color of the toggle glyph", ColorUtil.getMutedColor());
     private static final NumberSetting INTERIOR_RECT_LEFT_WIDTH = new NumberSetting("Interior Left Width", "Interior Left Rect Width", 10, 1, 11);
     private static final NumberSetting INTERIOR_RECT_RIGHT_WIDTH = new NumberSetting("Interior Right Width", "Interior Left right Width", 10, 1, 11);
     private static final BooleanSetting TOGGLE_GLOW = new BooleanSetting("Toggle Glow", "Glow effect on modules", true);

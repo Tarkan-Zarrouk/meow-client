@@ -12,6 +12,7 @@ import Main.main.meow.client.ui.clickgui.controller.ClickGuiSettingsHandler;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
 import Main.main.meow.client.util.ColorUtil;
+import Main.main.meow.client.util.FontUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -28,7 +29,7 @@ public final class ClickGuiRenderer extends Screen {
     private ClickGuiLayout layout;
     private final int headerHeight = ClickGuiLayout.getHeaderHeight();
     private final int subcategoryHeight = ClickGuiLayout.getSubcategoryHeight();
-    private ClickGuiStyler styler;
+    private FontUtil styler;
     private ClickGuiInputHandler input;
     private double scrolledAmount = 0;
 
@@ -40,7 +41,7 @@ public final class ClickGuiRenderer extends Screen {
     @Override
     protected void init() {
         settings = new ClickGuiSettingsHandler(modules);
-        styler = new ClickGuiStyler(font);
+        styler = new FontUtil(font);
         layout = new ClickGuiLayout(modules, settings);
         input = new ClickGuiInputHandler(layout, settings);
         settings.loadExpanded();
@@ -99,7 +100,7 @@ public final class ClickGuiRenderer extends Screen {
         int screenHeight = super.height;
         layout.syncWithSettings(screenWidth, screenHeight);
         int alpha = layout.transitionAlpha();
-        int animationOffset = (int) ((1f - ClickGuiStyler.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
+        int animationOffset = (int) ((1f - FontUtil.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
         int columnWidth = layout.columnWidth();
         int rowHeight = ClickGuiModule.getModuleHeight();
 
@@ -164,7 +165,7 @@ public final class ClickGuiRenderer extends Screen {
             RenderUtil2D.drawPanel(graphics, x + (columnWidth - ClickGuiModule.getCategoryLineWidth()) / 2, y + headerHeight - 1, ClickGuiModule.getCategoryLineWidth(), 1, ClickGuiModule.getCategoryLineColor());
         }
         String label = styler.truncate(category.title(), columnWidth - 10);
-        RenderUtil2D.drawText(graphics, font, Component.literal(label).withStyle(style -> style.withFont(ClickGuiStyler.getFont())), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiModule.getCategoryTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
+        RenderUtil2D.drawText(graphics, font, Component.literal(label).withStyle(style -> style.withFont(FontUtil.getFont())), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiModule.getCategoryTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
     }
 
     /**
@@ -184,9 +185,9 @@ public final class ClickGuiRenderer extends Screen {
         if(module.getEnabled()) {
             background = ClickGuiModule.moduleColor();
         } else if(hovered) {
-            background = ClickGuiStyler.ROW_HOVER;
+            background = ColorUtil.getRowHoverColor();
         } else {
-            background = ClickGuiStyler.ROW;
+            background = ColorUtil.getRowColor();
         }
         int pointToStopCurve = y + rowHeight;
         if(ClickGuiModule.getToggleBottomRoundedRect()) {
@@ -261,9 +262,9 @@ public final class ClickGuiRenderer extends Screen {
             }
             boolean lastSetting = lastModule && setting == entries.size() - 1; // -1 bc index starts at 0
             if(lastSetting && ClickGuiModule.getToggleBottomRoundedRect()) {
-                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.SETTING_ROW, false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
+                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ColorUtil.getSettingRowColor(), false, false, false, false, ClickGuiModule.getClickGuiBorderRadius());
             } else {
-                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ClickGuiStyler.SETTING_ROW, false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
+                RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ColorUtil.getSettingRowColor(), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
             }
             RenderUtil2D.drawText(graphics, font, styler.styled(styler.truncate(text, columnWidth - 10)), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiModule.getSettingTextColor(), false, styler.textScale());
             NumberSetting slider = settings.sliderAt(module, setting);

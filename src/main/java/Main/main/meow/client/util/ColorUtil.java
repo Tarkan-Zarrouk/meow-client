@@ -2,6 +2,23 @@ package Main.main.meow.client.util;
 
 // comp 2401 taught bitwise operations, ty connor hillen <3
 public class ColorUtil {
+    public static final int ROW = 0xe62c313b, ROW_HOVER = 0xf03a404b, SETTING_ROW = 0xff171a22, MUTED = 0xffc9c8cc, BORDER = 0xffffffff;
+
+    public static int getRowColor() {
+        return ROW;
+    }
+    public static int getRowHoverColor() {
+        return ROW_HOVER;
+    }
+    public static int getSettingRowColor() {
+        return SETTING_ROW;
+    }
+    public static int getMutedColor() {
+        return MUTED;
+    }
+    public static int getBorderColor() {
+        return BORDER;
+    }
 
     /**
      * pack into 32bit ARGB integer

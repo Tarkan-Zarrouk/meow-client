@@ -4,7 +4,7 @@ import Main.main.meow.client.module.Module;
 import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.ui.clickgui.controller.ClickGuiSettingsHandler;
-import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
+import Main.main.meow.client.util.FontUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +61,8 @@ public final class ClickGuiLayout {
         for (int column = 0; column < count; column++) {
             Category category = visibleCategories.get(column);
             ClickGuiLayoutSettings.Position position = ClickGuiLayoutSettings.position(category.title(), left + column * (columnWidth + columnGap), top);
-            int clampedX = ClickGuiStyler.clamp(position.x(), 8, Math.max(8, screenWidth - columnWidth - 8));
-            int clampedY = ClickGuiStyler.clamp(position.y(), 8, Math.max(8, screenHeight - columnHeight(column) - 8));
+            int clampedX = FontUtil.clamp(position.x(), 8, Math.max(8, screenWidth - columnWidth - 8));
+            int clampedY = FontUtil.clamp(position.y(), 8, Math.max(8, screenHeight - columnHeight(column) - 8));
             columnX[column] = clampedX;
             columnY[column] = clampedY;
         }
@@ -105,8 +105,8 @@ public final class ClickGuiLayout {
     }
 
     public void moveColumn(int column, int x, int y, int screenWidth, int screenHeight) {
-        columnX[column] = ClickGuiStyler.clamp(x, 8, Math.max(8, screenWidth - columnWidth() - 8));
-        columnY[column] = ClickGuiStyler.clamp(y, 8, Math.max(8, screenHeight - columnHeight(column) - 8));
+        columnX[column] = FontUtil.clamp(x, 8, Math.max(8, screenWidth - columnWidth() - 8));
+        columnY[column] = FontUtil.clamp(y, 8, Math.max(8, screenHeight - columnHeight(column) - 8));
         ClickGuiLayoutSettings.setPosition(visibleCategories.get(column).title(), columnX[column], columnY[column]);
     }
 
@@ -161,6 +161,6 @@ public final class ClickGuiLayout {
     }
 
     public int transitionAlpha() {
-        return Math.round(ClickGuiStyler.easeIn(transitionProgress()) * 255f);
+        return Math.round(FontUtil.easeIn(transitionProgress()) * 255f);
     }
 }

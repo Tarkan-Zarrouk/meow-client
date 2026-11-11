@@ -2,10 +2,10 @@ package Main.main.meow.client.module.modules.hud.modules;
 
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
 import Main.main.meow.client.ui.clickgui.model.Category;
-import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.BooleanSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
+import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -25,7 +25,7 @@ public class WhatAmILookingAt extends HudDisplayModule {
     private static final NumberSetting RADIUS_OF_PANEL = new NumberSetting("Panel Radius", "Change the roundedness of the borders", 0, 0, 4);
     private static final NumberSetting RADIUS_OF_OUTLINE = new NumberSetting("Outline of Block Outline", "Change the Roundedness for block outline", 4, 0, 4);
     private static final ColorSetting COLOR_OF_TEXT_NAME = new ColorSetting("Block Name Color", "Change the color of the block name", RenderUtil2D.getGuiTextColor());
-    private static final ColorSetting COLOR_OF_TEXT_ID = new ColorSetting("Block ID Color", "Change the color of the block id", ClickGuiStyler.MUTED);
+    private static final ColorSetting COLOR_OF_TEXT_ID = new ColorSetting("Block ID Color", "Change the color of the block id", ColorUtil.getMutedColor());
     private static final BooleanSetting SHOW_BLOCK_OUTLINE = new BooleanSetting("Show Block Outline", "Toggle on / off the outline", true);
     private static final ColorSetting COLOR_OF_BLOCK_OUTLINE = new ColorSetting("Color of Block Outline", "Color change of the block outline", RenderUtil2D.getGuiTextColor());
     private static final BooleanSetting SHOW_PANEL_OUTLINE = new BooleanSetting("Show Panel Outline", "Toggle on / off the outline", true);

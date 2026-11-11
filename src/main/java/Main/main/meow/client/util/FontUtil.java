@@ -1,8 +1,7 @@
-package Main.main.meow.client.ui.clickgui.view;
+package Main.main.meow.client.util;
 
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
@@ -11,15 +10,13 @@ import net.minecraft.resources.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ClickGuiStyler {
-    // this is pretty to look at, ai generated again but im not an artist so i cant do better
-    public static final int ROW = 0xe62c313b, ROW_HOVER = 0xf03a404b, SETTING_ROW = 0xff171a22, TEXT = 0xfff7f4f7, CATEGORY_TEXT = 0xff000000, MUTED = 0xffc9c8cc, BORDER = 0xffffffff, CORNER_RADIUS = 16;
+public final class FontUtil {
     private static final FontDescription INTER_FONT = new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "inter/inter"));
     private static final FontDescription BACKUP_FONT = new FontDescription.Resource(Identifier.withDefaultNamespace("uniform"));
     private static final FontDescription MONO_FONT = new FontDescription.Resource(Identifier.fromNamespaceAndPath("meow", "mono/mono"));
     private final Font font;
 
-    public ClickGuiStyler(Font font) {
+    public FontUtil(Font font) {
         this.font = font;
     }
 
@@ -103,9 +100,5 @@ public final class ClickGuiStyler {
 
     public static int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(value, max));
-    }
-
-    public static String hex(int color) {
-        return String.format("#%06X", color & 0xffffff); // bitwise operation to get the RGB values of the color while ignoring the alpha channel (thanks comp 2401)
     }
 }

@@ -2,7 +2,7 @@ package Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicke
 
 import Main.main.meow.client.manager.NotificationManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
-import Main.main.meow.client.ui.clickgui.view.ClickGuiStyler;
+import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.Minecraft;
@@ -84,7 +84,7 @@ public final class ColorPicker implements ColorConsumer {
     }
 
     private void drawResetButton(GuiGraphicsExtractor graphics, int x, int y) {
-        RenderUtil2D.drawPanel(graphics, x, y, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE, ClickGuiStyler.BORDER);
+        RenderUtil2D.drawPanel(graphics, x, y, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE, ColorUtil.getBorderColor());
         RenderUtil2D.drawSprite(graphics, Identifier.fromNamespaceAndPath("meow", "colorpicker/reset"), x, y, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE);
     }
     private void drawColorSlider(GuiGraphicsExtractor graphics, int hueWidth, int hueY) {
