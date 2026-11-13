@@ -115,7 +115,7 @@ public final class ClickGuiRenderer extends Screen {
                 int g = ColorUtil.getGreen(baseColor);
                 int b = ColorUtil.getBlue(baseColor);
                 int argbInt = ColorUtil.toARGB(r,g,b,a);
-                RenderUtil2D.roundedFill(graphics, x - ClickGuiModule.getGlowWidth(), layout.columnY(column) - 3 + (int) scrolledAmount, columnWidth + (2 * ClickGuiModule.getGlowWidth()), (layout.columnY(column) + animationOffset + layout.columnHeight(column) - ClickGuiLayout.getFooterHeight()) + 10, argbInt, true, true, true, true, ClickGuiModule.getClickGuiBorderRadius());
+                RenderUtil2D.roundedFill(graphics, x - ClickGuiModule.getGlowWidth(), layout.columnY(column) - 3 + (int) scrolledAmount, columnWidth + (2 * ClickGuiModule.getGlowWidth()), (animationOffset + layout.columnHeight(column)) + 5  , argbInt, true, true, true, true, ClickGuiModule.getClickGuiBorderRadius());
             }
 
             renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset + (int) scrolledAmount, columnWidth);

@@ -33,7 +33,11 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 public class MeowClient implements ClientModInitializer {
     private static final ModuleManager MODULE_MANAGER = new ModuleManager();
     private static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
-    public static final String MOD_ID = "meow";
+    private static final String MOD_ID = "meow";
+
+    public static String getModId() {
+        return MOD_ID;
+    }
 
     public static ModuleManager getModuleManager() {
         return MODULE_MANAGER;
@@ -51,28 +55,24 @@ public class MeowClient implements ClientModInitializer {
         ConfigManager.load(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS);
         MODULE_MANAGER.setChangeListener(() -> ConfigManager.save(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS));
         MODULE_MANAGER.setEnabledChangeListener(NotificationManager::moduleChanged);
-        ClientTickEvents.END_CLIENT_TICK.register(HudEditorScreen::handleHudEditorKey);
-        ClientTickEvents.END_CLIENT_TICK.register(BpsModule::getBps);
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.screen == null) {
+        ClientTickEvents.END_CLIENT_TICK.register(client ->{
+            HudEditorScreen.handleHudEditorKey(client);
+            BpsModule.getBps(client);
+            if(client.screen == null) {
                 MODULE_MANAGER.handleKeybinds(client.getWindow().handle());
             }
-        });
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (MODULE_MANAGER.byName("Sprint") instanceof SprintModule sprint) {
+            if(MODULE_MANAGER.byName("Sprint") instanceof SprintModule sprint) {
                 sprint.tick(client);
             }
             if (MODULE_MANAGER.byName("AutoWalk") instanceof AutoMoveModule autoMove) {
                 autoMove.tick(client);
             }
-        });
-        LevelRenderEvents.BEFORE_GIZMOS.register(_ -> {
             if (MODULE_MANAGER.byName("RaycastBlockCustomizer") instanceof RayCastBlockCustomizer rayCastBlockCustomizer) {
                 rayCastBlockCustomizer.rayCastBlockRenderer();
 
             }
             if (MODULE_MANAGER.byName("RayCastEntityHitBoxRenderer") instanceof RayCastEntityHitBoxRenderer rayCastEntityHitboxRenderer) {
-                    rayCastEntityHitboxRenderer.rayCastEntityHitBoxRenderer();
+                rayCastEntityHitboxRenderer.rayCastEntityHitBoxRenderer();
             }
         });
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));

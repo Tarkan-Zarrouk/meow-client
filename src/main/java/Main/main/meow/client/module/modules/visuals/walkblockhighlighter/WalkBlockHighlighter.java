@@ -21,12 +21,12 @@ public class WalkBlockHighlighter extends ClientModule {
     private static final boolean ENABLED = false;
     private static final String DESCRIPTION = "Highlights the block you're currently standing on";
     private static final ColorSetting CUBOID_COLOR = new ColorSetting("Cuboid Color", "Color of cuboid", RenderUtil2D.getVisualDefaultColor());
-    private static final NumberSetting MIN_X_CUBOID_POS = new NumberSetting("Min X Position", "Change the minimum x position", 0, 1, 100);
-    private static final NumberSetting MAX_X_CUBOID_POS = new NumberSetting("Max X Position", "Change the maximum x position", 0, 1, 100);
-    private static final NumberSetting MIN_Y_CUBOID_POS = new NumberSetting("Min Y Position", "Change the Minimum Height", 99, 1, 99);
-    private static final NumberSetting MAX_Y_CUBOID_POS = new NumberSetting("Max Y Position", "Change the maximum height", 99, 1, 99);
-    private static final NumberSetting MIN_Z_CUBOID_POS = new NumberSetting("Min Z Position", "Change the minimum depth", 99,1,99);
-    private static final NumberSetting MAX_Z_CUBOID_POS = new NumberSetting("Max Z Position", "Change the maximum depth", 99, 1, 99);
+    private static final NumberSetting MIN_X_CUBOID_POS = new NumberSetting("Min X Position", "Change the minimum x position", 0, 0, 100);
+    private static final NumberSetting MAX_X_CUBOID_POS = new NumberSetting("Max X Position", "Change the maximum x position", 0, 0, 100);
+    private static final NumberSetting MIN_Y_CUBOID_POS = new NumberSetting("Min Y Position", "Change the Minimum Height", 99, 0, 99);
+    private static final NumberSetting MAX_Y_CUBOID_POS = new NumberSetting("Max Y Position", "Change the maximum height", 99, 0, 99);
+    private static final NumberSetting MIN_Z_CUBOID_POS = new NumberSetting("Min Z Position", "Change the minimum depth", 99,0,99);
+    private static final NumberSetting MAX_Z_CUBOID_POS = new NumberSetting("Max Z Position", "Change the maximum depth", 99, 0, 99);
     public WalkBlockHighlighter() {
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting( CUBOID_COLOR, MIN_X_CUBOID_POS, MAX_X_CUBOID_POS, MIN_Y_CUBOID_POS, MAX_Y_CUBOID_POS, MIN_Z_CUBOID_POS, MAX_Z_CUBOID_POS);
@@ -45,10 +45,10 @@ public class WalkBlockHighlighter extends ClientModule {
             return;
         }
         int filledColor = CUBOID_COLOR.color();
-        float filledColorR = ColorUtil.getRed(filledColor) / 255.0f;
-        float filledColorG = ColorUtil.getGreen(filledColor) / 255.0f;
-        float filledColorB = ColorUtil.getBlue(filledColor) / 255.0f;
-        float filledColorA = ColorUtil.getAlpha(filledColor) / 255.0f;
+        float filledColorR = ColorUtil.getRed(filledColor);
+        float filledColorG = ColorUtil.getGreen(filledColor);
+        float filledColorB = ColorUtil.getBlue(filledColor);
+        float filledColorA = ColorUtil.getAlpha(filledColor);
         RenderUtil3D.drawCuboid(levelRenderContext, standingOn.getX(), standingOn.getY(), standingOn.getZ(), MIN_X_CUBOID_POS.value(), MAX_X_CUBOID_POS.value(), MIN_Y_CUBOID_POS.value(), MAX_Y_CUBOID_POS.value(), MIN_Z_CUBOID_POS.value(), MAX_Z_CUBOID_POS.value(), filledColorR, filledColorG, filledColorB, filledColorA);
     }
 

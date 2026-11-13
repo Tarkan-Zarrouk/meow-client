@@ -14,7 +14,6 @@ import net.minecraft.client.player.LocalPlayer;
 public final class KeystrokesModule extends HudDisplayModule {
     private static long lastKeyTime = System.nanoTime();
     private static final ColorSetting COLOR_OF_KEYS = new ColorSetting("Color of Background", "The background of the each key", RenderUtil2D.getGuiColorPanel());
-    private static final ColorSetting TEXT_COLOR = new ColorSetting("Text Color", "Change the text color", RenderUtil2D.getGuiTextColor());
     private static final BooleanSetting SHOW_BACKGROUND = new BooleanSetting("Show Background", "Toggle the background of your panel", true);
     private static final ColorSetting BACKGROUND_COLOR = new ColorSetting("Color of Background", "The background of the keystrokes background", RenderUtil2D.getGuiColorPanel());
     private static final ColorSetting COLOR_OF_KEY_ONE = new ColorSetting("Key 1 Color", "Background color of Key 1", RenderUtil2D.getGuiColorPanel());

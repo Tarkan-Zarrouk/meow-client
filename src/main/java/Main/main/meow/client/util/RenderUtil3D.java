@@ -49,7 +49,7 @@ public class RenderUtil3D {
             poseStack.translate(xPos - camera.x, yPos - camera.y, zPos - camera.z);
             // what we're drawing and how to draw it
             BufferBuilder bufferBuilder = Tesselator.getInstance().begin(FILLED_BOX_THROUGH_WALLS.getVertexFormatMode(), FILLED_BOX_THROUGH_WALLS.getVertexFormat());
-            renderFilledBox(poseStack.last().pose(), bufferBuilder, minXFloat, minYFloat, minZFloat, maxXFloat, maxYFloat, maxZFloat, r, g, b, a);
+            renderFilledBox(poseStack.last().pose(), bufferBuilder, minXFloat, minYFloat, minZFloat, maxXFloat, maxYFloat, maxZFloat, r / 255f, g / 255f, b / 255f, a / 255f);
             try (MeshData builtBufferData = bufferBuilder.buildOrThrow()) {
                 MeshData.DrawState drawState = builtBufferData.drawState();
                 VertexFormat format = drawState.format();
@@ -70,7 +70,7 @@ public class RenderUtil3D {
             if(vertexBuffer != null) {
                 vertexBuffer.close();
             }
-            String gpuResourceDebugger = MeowClient.MOD_ID + " Vertex Buffer";
+            String gpuResourceDebugger = MeowClient.getModId() + " Vertex Buffer";
             vertexBuffer = new MappableRingBuffer(() -> gpuResourceDebugger,GpuBuffer.USAGE_VERTEX | GpuBuffer.USAGE_MAP_WRITE, vertexBufferSize);
         }
         CommandEncoder gpuCommunicator = RenderSystem.getDevice().createCommandEncoder();
@@ -100,7 +100,7 @@ public class RenderUtil3D {
         }
 
         GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), COLOR_MODULATOR, MODEL_OFFSET, TEXTURE_MATRIX);
-        try (RenderPass renderPass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> MeowClient.MOD_ID + " example render pipeline", client.getMainRenderTarget().getColorTextureView(), OptionalInt.empty(), client.getMainRenderTarget().getDepthTextureView(), OptionalDouble.empty())) {
+        try (RenderPass renderPass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> MeowClient.getModId() + " example render pipeline", client.getMainRenderTarget().getColorTextureView(), OptionalInt.empty(), client.getMainRenderTarget().getDepthTextureView(), OptionalDouble.empty())) {
             renderPass.setPipeline(pipeline);
             RenderSystem.bindDefaultUniforms(renderPass);
             renderPass.setUniform("DynamicTransforms", dynamicTransforms);

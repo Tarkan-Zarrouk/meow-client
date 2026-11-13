@@ -164,15 +164,14 @@ public class AutoMoveModule extends ClientModule {
                 client.options.keyJump.setDown(true);
             }
             case CUSTOM -> {
-                float pitchBounds = Mth.clamp(CUSTOM_PITCH.value(), -90.0f, 90.0f);
-
+                float pitchBound = 90.0f;
+                float pitchBounds = Mth.clamp(CUSTOM_PITCH.value(), (-1 * pitchBound), pitchBound);
                 client.player.setYRot(CUSTOM_YAW.value());
                 client.player.setXRot(pitchBounds);
-
-                // Sync head and previous tick rotations to prevent visual jitter
                 client.player.yRotO = CUSTOM_YAW.value();
                 client.player.xRotO = pitchBounds;
                 client.player.setYHeadRot(CUSTOM_YAW.value());
+                client.options.keyUp.setDown(true);
             }
         }
     }
