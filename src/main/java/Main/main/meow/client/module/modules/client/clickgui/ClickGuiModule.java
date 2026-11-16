@@ -81,13 +81,19 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting GLOW_WIDTH = new NumberSetting("Glow Width", "Change the width of the glow", 3, 1,5);
     private static final ColorSetting ROW_HOVER_COLOR = new ColorSetting("Row Hover Color Setting", "Change the color of the currently hovered module", ColorUtil.getRowHoverColor());
     private static final ColorSetting ROW_COLOR = new ColorSetting("Row Color Setting", "Change the color of the module rows", ColorUtil.getRowColor());
+    private static final BooleanSetting TOGGLE_SEARCH_OUTLINE = new BooleanSetting("Toggle Search Outline", "Toggle Search Outline", true);
+    private static final ColorSetting SEARCH_TEXT_COLOR = new ColorSetting("Search Text Color", "Search result text Color", 0xffffffff);
+    private static final ColorSetting SEARCH_BACKGROUND_RESULT_COLOR = new ColorSetting("Search Background Color", "Search Result background color", 0xffc52dbd);
+    private static final NumberSetting SEARCH_PANEL_BORDER_RADIUS = new NumberSetting("Search Panel Border Radius", "Search result border radius", 1, 0,13);
+    private static final BooleanSetting SEARCH_TOP_RIGHT_TOGGLE_RADIUS = new BooleanSetting("Search Top Right Toggle Radius", "Search result top right corner toggle", true);
+    private static final BooleanSetting SEARCH_TOP_LEFT_TOGGLE_RADIUS = new BooleanSetting("Search Top Left Toggle Radius", "Search result top left corner toggle", true);
     public ClickGuiModule(){
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
-            CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR, PASTE_BUTTON_BACKGROUND_COLOR, PASTE_BUTTON_TEXT_COLOR, INTERIOR_RECT_LEFT_COLOR, INTERIOR_RECT_RIGHT_COLOR, MODULE_TOGGLE_GLYPH_COLOR, ROW_HOVER_COLOR, ROW_COLOR,
+            CATEGORY_COLOR, MODULE_COLOR, TOOL_TIP_BACKGROUND_COLOR, TOOL_TIP_TEXT_BACKGROUND_COLOR, TOOLTIP_BORDER_COLOR, CATEGORY_TEXT_COLOR, MODULE_TEXT_COLOR, SETTINGS_TEXT_COLOR, CATEGORY_LINE_COLOR, COLOR_SETTING_BUTTON_COLOR, COLOR_SETTING_TEXT_COLOR, ALPHA_CHANNEL_BACKGROUND_COLOR, ALPHA_CHANNEL_SLIDER_BUTTON_COLOR, COLOR_BOTTOM_ROUNDED_RECT, OUTLINE_COLOR, PASTE_BUTTON_BACKGROUND_COLOR, PASTE_BUTTON_TEXT_COLOR, INTERIOR_RECT_LEFT_COLOR, INTERIOR_RECT_RIGHT_COLOR, MODULE_TOGGLE_GLYPH_COLOR, ROW_HOVER_COLOR, ROW_COLOR, SEARCH_TEXT_COLOR, SEARCH_BACKGROUND_RESULT_COLOR,
             FONT, SHOW_SHADOW, FONT_SIZE, COLOR_SETTING_TEXT_DROP_SHADOW, PASTE_BUTTON_DROP_SHADOW,
             SHOW_OUTLINE, SHOW_TOOL_TIP,
-            TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS,
+            TOOLTIP_BORDER_RADIUS, CLICK_GUI_BORDER_RADIUS, CLICK_GUI_HEADER_RADIUS, KNOB_BORDER_RADIUS, ALPHA_CHANNEL_BORDER_RADIUS, ALPHA_CHANNEL_SLIDER_BUTTON_BORDER_RADIUS, SEARCH_PANEL_BORDER_RADIUS,
             BLUR_BACKGROUND,
             MODULE_WIDTH, MODULE_HEIGHT, COLUMN_GAP, MODULE_GAP_HEIGHT,
             SHOW_HUD_INFO_TEXT,
@@ -95,13 +101,34 @@ public final class ClickGuiModule extends ClientModule {
             SCROLL_SPEED, ANIMATION_SPEED,
             TOGGLE_CATEGORY_LINE, CATEGORY_LINE_WIDTH, INTERIOR_RECT_LEFT_WIDTH, INTERIOR_RECT_RIGHT_WIDTH,
             ALPHA_CHANNEL_HEIGHT,
-            TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND, CATEGORY_TOP_LEFT_ROUND, CATEGORY_TOP_RIGHT_ROUND, CATEGORY_BOTTOM_LEFT_ROUND, CATEGORY_BOTTOM_RIGHT_ROUND,
+            TOP_LEFT_ALPHA_CHANNEL_ROUND, TOP_RIGHT_ALPHA_CHANNEL_ROUND, BOTTOM_LEFT_ALPHA_CHANNEL_ROUND, BOTTOM_RIGHT_ALPHA_CHANNEL_ROUND, CATEGORY_TOP_LEFT_ROUND, CATEGORY_TOP_RIGHT_ROUND, CATEGORY_BOTTOM_LEFT_ROUND, CATEGORY_BOTTOM_RIGHT_ROUND, SEARCH_TOP_LEFT_TOGGLE_RADIUS, SEARCH_TOP_RIGHT_TOGGLE_RADIUS,
             TOGGLE_BOTTOM_ROUNDED_RECT, BOTTOM_ROUNDED_RECT_HEIGHT,
             OUTLINE_TOGGLE, TOGGLE_INTERIOR_RECT_LEFT, TOGGLE_INTERIOR_RECT_RIGHT,
-            TOGGLE_GLOW, GLOW_OPACITY, GLOW_WIDTH
+            TOGGLE_GLOW, GLOW_OPACITY, GLOW_WIDTH,
+            TOGGLE_SEARCH_OUTLINE
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    public static boolean getSearchTopLeftToggleRadius() {
+        return SEARCH_TOP_LEFT_TOGGLE_RADIUS.value();
+    }
+    public static boolean getSearchTopRightToggleRadius() {
+        return SEARCH_TOP_RIGHT_TOGGLE_RADIUS.value();
+    }
+
+    public static int getSearchBackgroundResultBorderRadius() {
+        return SEARCH_PANEL_BORDER_RADIUS.value();
+    }
+    public static int getSearchBackgroundResultColor() {
+        return SEARCH_BACKGROUND_RESULT_COLOR.color();
+    }
+    public static int getSearchResultTextColor() {
+        return SEARCH_TEXT_COLOR.color();
+    }
+    public static boolean getToggleSearchOutline() {
+        return TOGGLE_SEARCH_OUTLINE.value();
+    }
+
     public static int getRowColor() {
         return ROW_COLOR.color();
     }

@@ -29,6 +29,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
 
 public class MeowClient implements ClientModInitializer {
     private static final ModuleManager MODULE_MANAGER = new ModuleManager();
@@ -46,7 +48,6 @@ public class MeowClient implements ClientModInitializer {
     public static HudComponentManager getHudComponentManager() {
         return HUD_COMPONENTS;
     }
-
 
     @Override
     public void onInitializeClient() {

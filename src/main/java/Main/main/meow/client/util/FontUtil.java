@@ -1,7 +1,10 @@
 package Main.main.meow.client.util;
 
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
+import Main.main.meow.mixin.FontAccessor;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GlyphSource;
+import net.minecraft.client.gui.font.glyphs.EffectGlyph;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
@@ -32,6 +35,21 @@ public final class FontUtil {
             return MONO_FONT;
         }
         return Style.EMPTY.getFont();
+    }
+
+    public static Font createClickGuiFont(Font baseFont) {
+        Font.Provider provider = ((FontAccessor) baseFont).meow$getProvider();
+        return new Font(new Font.Provider() {
+            @Override
+            public GlyphSource glyphs(FontDescription description) {
+                return provider.glyphs(getFont());
+            }
+
+            @Override
+            public EffectGlyph effect() {
+                return provider.effect();
+            }
+        });
     }
 
     public Component styled(String value) {

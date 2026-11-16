@@ -1,5 +1,6 @@
 package Main.main.meow.client.ui.clickgui.view;
 
+import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.modules.client.clickgui.Font;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
@@ -15,12 +16,16 @@ import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.FontUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public final class ClickGuiRenderer extends Screen {
@@ -31,7 +36,9 @@ public final class ClickGuiRenderer extends Screen {
     private final int subcategoryHeight = ClickGuiLayout.getSubcategoryHeight();
     private FontUtil styler;
     private ClickGuiInputHandler input;
+    private EditBox searchBox;
     private double scrolledAmount = 0;
+    private String searchText = "";
 
     public ClickGuiRenderer(ModuleManager modules) {
         super(Component.literal("HUD Modules")); // screen reader purpose
@@ -46,6 +53,17 @@ public final class ClickGuiRenderer extends Screen {
         input = new ClickGuiInputHandler(layout, settings);
         settings.loadExpanded();
         layout.init(width, height);
+        drawSearch();
+    }
+    private void drawSearch() {
+        searchBox = new EditBox(FontUtil.createClickGuiFont(font), (width - 200) / 2, height - 30 , 200, 20, Component.literal("Search"));
+        searchBox.setBordered(ClickGuiModule.getToggleSearchOutline());
+        searchBox.setHint(Component.literal("Search Module").withStyle(style -> style.withFont(FontUtil.getFont())));
+        searchBox.setMaxLength(500);
+        searchText = searchBox.getValue();
+        searchBox.setResponder(value -> searchText = value);
+        searchBox.setTooltip(Tooltip.create(Component.literal("Search for a module by name").withStyle(style -> style.withFont(FontUtil.getFont()))));
+        this.addRenderableWidget(searchBox);
     }
 
     @Override
@@ -66,6 +84,9 @@ public final class ClickGuiRenderer extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (settings.colorPicker() == null && layout.transitionProgress() >= 1f && searchBox.isMouseOver(event.x(), event.y()) && super.mouseClicked(event, doubleClick)) {
+            return true;
+        }
         return input.mouseClicked(event) || super.mouseClicked(event, doubleClick);
     }
     @Override
@@ -104,7 +125,6 @@ public final class ClickGuiRenderer extends Screen {
         int columnWidth = layout.columnWidth();
         int rowHeight = ClickGuiModule.getModuleHeight();
 
-
         String tooltipDescription = null;
         for (int column = 0; column < layout.columnCount(); column++) {
             int x = layout.columnX(column);
@@ -142,6 +162,32 @@ public final class ClickGuiRenderer extends Screen {
                 RenderUtil2D.roundedFill(graphics, x - 1, footerY, columnWidth + 2, footerHeight, ClickGuiModule.getColorBottomRoundedRect(), false, false, true, true, Math.min(ClickGuiModule.getClickGuiBorderRadius(), footerHeight));
             }
         }
+        if (!searchText.isEmpty()) {
+            List<Module> moduleList = MeowClient.getModuleManager().all();
+            List<String> contains = new ArrayList<>();
+            for(int i = 0; i < moduleList.toArray().length; i++) {
+                if(moduleList.get(i).getName().toLowerCase(Locale.ROOT).contains(searchText)) {
+                    contains.add(moduleList.get(i).getCategory().title() + " -> " + moduleList.get(i).getName() + " -> Enabled: " + moduleList.get(i).getEnabled());
+                }
+            }
+            if (!contains.isEmpty()) {
+                int largestSize = 0;
+                for (String name : contains) {
+                    largestSize = Math.max(largestSize, (int) Math.ceil(font.width(Component.literal(name)) * styler.textScale()));
+                }
+                int padding = 5;
+                int lineHeight = (int) (9 * styler.textScale());
+                int x = searchBox.getX();
+                int panelHeight = contains.size() * lineHeight + padding * 2;
+                int panelY = searchBox.getY() - panelHeight;
+                RenderUtil2D.roundedFill(graphics, x, panelY, largestSize + padding * 2, panelHeight, ClickGuiModule.getSearchBackgroundResultColor(), ClickGuiModule.getSearchTopLeftToggleRadius(),  ClickGuiModule.getSearchTopRightToggleRadius(), false, false, ClickGuiModule.getSearchBackgroundResultBorderRadius());
+                int y = panelY + padding;
+                for (String name : contains) {
+                    RenderUtil2D.drawText(graphics, font, Component.literal(name).withStyle(style -> style.withColor(ClickGuiModule.getSearchResultTextColor())), x + padding, y, ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
+                    y += lineHeight;
+                }
+            }
+        }
         ColorPicker colorPicker = settings.colorPicker();
         if (colorPicker != null) {
             colorPicker.setPosition(Math.max(8, (screenWidth - colorPicker.width()) / 2), Math.max(8, (screenHeight - colorPicker.height()) / 2));
@@ -149,6 +195,7 @@ public final class ClickGuiRenderer extends Screen {
         } else if (tooltipDescription != null && !tooltipDescription.isBlank()) {
             renderTooltip(graphics, tooltipDescription, mouseX, mouseY, screenWidth, screenHeight);
         }
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
     }
 
     /**
