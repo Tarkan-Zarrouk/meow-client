@@ -4,18 +4,42 @@ package Main.main.meow.client.util;
 public class ColorUtil {
     public static final int ROW = 0xe62c313b, ROW_HOVER = 0xf03a404b, SETTING_ROW = 0xff171a22, MUTED = 0xffc9c8cc, BORDER = 0xffffffff;
 
+    /**
+     * Default row color value
+     * @return Hexadecimal value pertaining to the defaulted color
+     */
     public static int getRowColor() {
         return ROW;
     }
+
+    /**
+     * Default row hover value
+     * @return Hexadecimal value pertaining to the defaulted hover color value (this is based on the getRowColor hexadecimal value at a lighter opacity)
+     */
     public static int getRowHoverColor() {
         return ROW_HOVER;
     }
+
+    /**
+     * Default setting row background color
+     * @return Hexadecimal value pertaining to the defaulted setting row color
+     */
     public static int getSettingRowColor() {
         return SETTING_ROW;
     }
+
+    /**
+     * A 'muted' look
+     * @return Low saturation color that gives a 'muted' look
+     */
     public static int getMutedColor() {
         return MUTED;
     }
+
+    /**
+     * White.
+     * @return Hexadecimal equivalent to opaque white.
+     */
     public static int getBorderColor() {
         return BORDER;
     }

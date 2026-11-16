@@ -67,7 +67,7 @@ public class RenderUtil2D {
      * @param color Text color
      */
     public static void drawText(GuiGraphicsExtractor graphics, Minecraft client, String value, int x, int y, int color) {
-        graphics.text(client.font, TextUtil.setFont(value), x, y, color);
+        graphics.text(client.font, TextUtil.setComponentFont(value), x, y, color);
     }
     public static void drawText(GuiGraphicsExtractor graphics, Minecraft client, MutableComponent value, int x, int y, int color) {
         graphics.text(client.font, value, x, y, color);
@@ -82,7 +82,7 @@ public class RenderUtil2D {
      * @param y The y position
      */
     public static void drawText(GuiGraphicsExtractor graphics, Minecraft client, String value, int x, int y) {
-        graphics.text(client.font, TextUtil.setFont(value), x, y, getGuiTextColor());
+        graphics.text(client.font, TextUtil.setComponentFont(value), x, y, getGuiTextColor());
     }
 
     public static void drawVerticalLine(GuiGraphicsExtractor graphics, int x, int y, int height, int color) {
@@ -155,6 +155,21 @@ public class RenderUtil2D {
             }
         }
     }
+
+    /**
+     * Draws a rounded outline to the screen
+     * @param graphics graphics library
+     * @param x x position
+     * @param y y position
+     * @param width width
+     * @param height height
+     * @param color color
+     * @param topLeft toggle rounded top left
+     * @param topRight toggle rounded top right
+     * @param bottomLeft toggle rounded bottom left
+     * @param bottomRight toggle rounded bottom right
+     * @param radius the radius of the rounded corners
+     */
     public static void drawRoundedOutline(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color, boolean topLeft, boolean topRight, boolean bottomLeft, boolean bottomRight, int radius) {
         int outerRadius = Math.min(radius, Math.min(width, height) / 2);
         int innerRadius = Math.max(0, outerRadius - 1);
@@ -249,6 +264,10 @@ public class RenderUtil2D {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x, y, width, height);
     }
 
+    /**
+     * Magenta color visual default
+     * @return magenta color
+     */
     public static int getVisualDefaultColor() {
         return 0xFF00FFFF;
     }

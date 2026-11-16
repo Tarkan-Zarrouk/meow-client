@@ -67,7 +67,7 @@ public class EnabledModules extends HudDisplayModule {
             RenderUtil2D.roundedFill(graphics, x -2, y - 2, panelWidth(client) + 8, panelHeight(client) + 8, backgroundColor, TOP_LEFT_ROUNDED.value(), TOP_RIGHT_ROUNDED.value(), BOTTOM_LEFT_ROUNDED.value(), BOTTOM_RIGHT_ROUNDED.value(), BORDER_RADIUS.value());
         }
         for (String moduleName : list) {
-            RenderUtil2D.drawText(graphics, client.font, TextUtil.setFont(moduleName), x, y + offsetY, textColor, dropShadow);
+            RenderUtil2D.drawText(graphics, client.font, TextUtil.setComponentFont(moduleName), x, y + offsetY, textColor, dropShadow);
             offsetY += client.font.lineHeight + 1;
         }
     }

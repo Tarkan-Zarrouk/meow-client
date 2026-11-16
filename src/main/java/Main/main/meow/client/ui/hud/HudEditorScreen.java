@@ -47,7 +47,7 @@ public final class HudEditorScreen extends Screen {
             RenderUtil2D.drawPanel(graphics, hovered.x(), hovered.y(), hovered.width(), hovered.height(), HOVER_DARKEN);
         }
         if(ClickGuiModule.getShowHudInfoText()) {
-            RenderUtil2D.drawText(graphics, super.font, TextUtil.setFont("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
+            RenderUtil2D.drawText(graphics, super.font, TextUtil.setComponentFont("HUD EDITOR  •  Drag components  •  ESC to close"), 10, height - 18, 0xffffffff, true);
         }
     }
 

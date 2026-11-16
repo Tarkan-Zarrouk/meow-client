@@ -16,6 +16,7 @@ import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
 import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.FontUtil;
 import Main.main.meow.client.util.RenderUtil2D;
+import Main.main.meow.client.util.TextUtil;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -33,7 +34,7 @@ public final class ClickGuiRenderer extends Screen {
     private ClickGuiLayout layout;
     private final int headerHeight = ClickGuiLayout.getHeaderHeight();
     private final int subcategoryHeight = ClickGuiLayout.getSubcategoryHeight();
-    private FontUtil styler;
+    private TextUtil textUtil = new TextUtil();
     private ClickGuiInputHandler input;
     private EditBox searchBox;
     private double scrolledAmount = 0;
@@ -47,7 +48,7 @@ public final class ClickGuiRenderer extends Screen {
     @Override
     protected void init() {
         settings = new ClickGuiSettingsHandler(modules);
-        styler = new FontUtil(font);
+//        styler = new FontUtil(font);
         layout = new ClickGuiLayout(modules, settings);
         input = new ClickGuiInputHandler(layout, settings);
         settings.loadExpanded();
@@ -55,13 +56,13 @@ public final class ClickGuiRenderer extends Screen {
         drawSearch();
     }
     private void drawSearch() {
-        searchBox = new EditBox(FontUtil.createClickGuiFont(font), (width - 200) / 2, height - 30 , 200, 20, Component.literal("Search"));
+        searchBox = new EditBox(FontUtil.getFont(), (width - 200) / 2, height - 30 , 200, 20, Component.literal("Search"));
         searchBox.setBordered(ClickGuiModule.getToggleSearchOutline());
-        searchBox.setHint(Component.literal("Search Module").withStyle(style -> style.withFont(FontUtil.getFont())));
+        searchBox.setHint(Component.literal("Search Module").withStyle(style -> style.withFont(FontUtil.getFontDescription())));
         searchBox.setMaxLength(500);
         searchText = searchBox.getValue();
         searchBox.setResponder(value -> searchText = value);
-        searchBox.setTooltip(Tooltip.create(Component.literal("Search for a module by name").withStyle(style -> style.withFont(FontUtil.getFont()))));
+        searchBox.setTooltip(Tooltip.create(Component.literal("Search for a module by name").withStyle(style -> style.withFont(FontUtil.getFontDescription()))));
         this.addRenderableWidget(searchBox);
     }
 
@@ -120,7 +121,7 @@ public final class ClickGuiRenderer extends Screen {
         int screenHeight = super.height;
         layout.syncWithSettings(screenWidth, screenHeight);
         int alpha = layout.transitionAlpha();
-        int animationOffset = (int) ((1f - FontUtil.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
+        int animationOffset = (int) ((1f - TextUtil.easeIn(layout.transitionProgress())) * -18f); // arbitrary values, like 5 minutes of rerunning to see what's nice
         int columnWidth = layout.columnWidth();
         int rowHeight = ClickGuiModule.getModuleHeight();
 
@@ -185,17 +186,17 @@ public final class ClickGuiRenderer extends Screen {
             if (!contains.isEmpty()) {
                 int largestSize = 0;
                 for (String name : contains) {
-                    largestSize = Math.max(largestSize, (int) Math.ceil(font.width(Component.literal(name)) * styler.textScale()));
+                    largestSize = Math.max(largestSize, (int) Math.ceil(font.width(Component.literal(name)) * textUtil.textScale()));
                 }
                 int padding = 5;
-                int lineHeight = (int) (9 * styler.textScale());
+                int lineHeight = (int) (9 * textUtil.textScale());
                 int x = searchBox.getX();
                 int panelHeight = contains.size() * lineHeight + padding * 2;
                 int panelY = searchBox.getY() - panelHeight;
                 RenderUtil2D.roundedFill(graphics, x, panelY, largestSize + padding * 2, panelHeight, ClickGuiModule.getSearchBackgroundResultColor(), ClickGuiModule.getSearchTopLeftToggleRadius(),  ClickGuiModule.getSearchTopRightToggleRadius(), false, false, ClickGuiModule.getSearchBackgroundResultBorderRadius());
                 int y = panelY + padding;
                 for (String name : contains) {
-                    RenderUtil2D.drawText(graphics, font, Component.literal(name).withStyle(style -> style.withColor(ClickGuiModule.getSearchResultTextColor())), x + padding, y, ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
+                    RenderUtil2D.drawText(graphics, font, Component.literal(name).withStyle(style -> style.withColor(ClickGuiModule.getSearchResultTextColor())), x + padding, y, ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), textUtil.textScale());
                     y += lineHeight;
                 }
             }
@@ -223,8 +224,8 @@ public final class ClickGuiRenderer extends Screen {
         if(ClickGuiModule.getToggleCategoryLine()) {
             RenderUtil2D.drawPanel(graphics, x + (columnWidth - ClickGuiModule.getCategoryLineWidth()) / 2, y + headerHeight - 1, ClickGuiModule.getCategoryLineWidth(), 1, ClickGuiModule.getCategoryLineColor());
         }
-        String label = styler.truncate(category.title(), columnWidth - 10);
-        RenderUtil2D.drawText(graphics, font, Component.literal(label).withStyle(style -> style.withFont(FontUtil.getFont())), styler.centeredX(x, columnWidth, label), styler.centeredY(y, headerHeight), ClickGuiModule.getCategoryTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
+        String label = textUtil.truncate(category.title(), columnWidth - 10);
+        RenderUtil2D.drawText(graphics, font, Component.literal(label).withStyle(style -> style.withFont(FontUtil.getFontDescription())), textUtil.centeredX(x, columnWidth, label), textUtil.centeredY(y, headerHeight), ClickGuiModule.getCategoryTextColor(), ClickGuiModule.getShadowBoolean(), textUtil.textScale());
     }
 
     /**
@@ -261,8 +262,8 @@ public final class ClickGuiRenderer extends Screen {
             RenderUtil2D.drawVerticalLine(graphics, x, y - 2, pointToStopCurve, ClickGuiModule.getOutlineColor());
             RenderUtil2D.drawVerticalLine(graphics, x + columnWidth - 1, y - 2, pointToStopCurve, ClickGuiModule.getOutlineColor());
         }
-        String label = styler.truncate(module.getName(), columnWidth - 24);
-        RenderUtil2D.drawText(graphics, font, styler.styled(label), styler.centeredX(x, columnWidth,label), styler.centeredY(y, rowHeight), ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
+        String label = textUtil.truncate(module.getName(), columnWidth - 24);
+        RenderUtil2D.drawText(graphics, font, textUtil.styled(label), textUtil.centeredX(x, columnWidth,label), textUtil.centeredY(y, rowHeight), ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), textUtil.textScale());
         String toggleGlyph = getToggleGlyph(module);
         if(ClickGuiModule.getToggleInteriorRectLeft()) {
             RenderUtil2D.drawPanel(graphics, x, y - 1, ClickGuiModule.getInteriorRectWidthLeft(), rowHeight + 1, ClickGuiModule.getInteriorRectLeftColor());
@@ -270,7 +271,7 @@ public final class ClickGuiRenderer extends Screen {
         if(ClickGuiModule.getToggleInteriorRectRight()) {
             RenderUtil2D.drawPanel(graphics, x + columnWidth - ClickGuiModule.getInteriorRectWidthRight(), y - 1, ClickGuiModule.getInteriorRectWidthRight(), rowHeight + 1, ClickGuiModule.getInteriorRectRightColor());
         }
-        RenderUtil2D.drawText(graphics, font, styler.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiModule.getToggleGlyphColor(), false, styler.textScale());
+        RenderUtil2D.drawText(graphics, font, textUtil.styled(toggleGlyph), x + columnWidth - 14, y + 7, ClickGuiModule.getToggleGlyphColor(), false, textUtil.textScale());
     }
 
     private String getToggleGlyph(Module module) {
@@ -325,7 +326,7 @@ public final class ClickGuiRenderer extends Screen {
             } else {
                 RenderUtil2D.roundedFill(graphics, x, settingY, columnWidth, subcategoryHeight, ColorUtil.getSettingRowColor(), false, false, lastSetting, lastSetting, ClickGuiModule.getClickGuiBorderRadius());
             }
-            RenderUtil2D.drawText(graphics, font, styler.styled(styler.truncate(text, columnWidth - 10)), styler.centeredX(x, columnWidth, text), styler.centeredY(settingY, subcategoryHeight), ClickGuiModule.getSettingTextColor(), false, styler.textScale());
+            RenderUtil2D.drawText(graphics, font, textUtil.styled(textUtil.truncate(text, columnWidth - 10)), textUtil.centeredX(x, columnWidth, text), textUtil.centeredY(settingY, subcategoryHeight), ClickGuiModule.getSettingTextColor(), false, textUtil.textScale());
             NumberSetting slider = settings.sliderAt(module, setting);
             if (slider != null)
                 renderSlider(graphics, slider, x, settingY, columnWidth);
@@ -340,7 +341,7 @@ public final class ClickGuiRenderer extends Screen {
         int size = subcategoryHeight - 8;
         int colorXPos = x + columnWidth - size - 6;
         int colorYPos = settingY + (subcategoryHeight - size) / 2;
-        RenderUtil2D.drawText(graphics, font, Component.literal("T"), colorXPos + size / 2 - 3, colorYPos + size / 2 - 4, 0xffffffff, false, styler.textScale());
+        RenderUtil2D.drawText(graphics, font, Component.literal("T"), colorXPos + size / 2 - 3, colorYPos + size / 2 - 4, 0xffffffff, false, textUtil.textScale());
         graphics.fill(colorXPos, colorYPos, colorXPos + size, colorYPos + size, color);
     }
 
@@ -371,13 +372,13 @@ public final class ClickGuiRenderer extends Screen {
      * @param screenHeight user screeninstance height
      */
     private void renderTooltip(GuiGraphicsExtractor graphics, String description, int mouseX, int mouseY, int screenWidth, int screenHeight) {
-        List<String> lines = styler.wrapTooltip(description, 220);
+        List<String> lines = textUtil.wrapTooltip(description, 220);
         int tooltipWidth = 0;
         for (String line : lines)
-            tooltipWidth = Math.max(tooltipWidth, styler.textWidth(styler.styled(line)));
+            tooltipWidth = Math.max(tooltipWidth, textUtil.textWidth(textUtil.styled(line)));
 
         tooltipWidth += 12; // +12 for padding
-        int tooltipHeight = lines.size() * styler.textLineHeight() + 8; // math: size of tooltip = number of lines * line height + padding weird issues thanks ai
+        int tooltipHeight = lines.size() * textUtil.textLineHeight() + 8; // math: size of tooltip = number of lines * line height + padding weird issues thanks ai
         int tooltipX = mouseX + 12;
         int tooltipY = mouseY + 12;
         if (tooltipX + tooltipWidth > screenWidth - 4)
@@ -391,10 +392,10 @@ public final class ClickGuiRenderer extends Screen {
         }
         RenderUtil2D.roundedFill(graphics, tooltipX, tooltipY, tooltipWidth, tooltipHeight, ClickGuiModule.getToolTipBackgroundColor(), true, true, true, true, ClickGuiModule.getToolTipBorderRadius());
         for (int line = 0; line < lines.size(); line++) {
-            Component text = styler.styled(lines.get(line));
+            Component text = textUtil.styled(lines.get(line));
             int x = tooltipX + 6;
-            int y = tooltipY + 4 + line * styler.textLineHeight();
-            RenderUtil2D.drawText(graphics, font, text, x, y, ClickGuiModule.getToolTipTextColor(), ClickGuiModule.getShadowBoolean(), styler.textScale());
+            int y = tooltipY + 4 + line * textUtil.textLineHeight();
+            RenderUtil2D.drawText(graphics, font, text, x, y, ClickGuiModule.getToolTipTextColor(), ClickGuiModule.getShadowBoolean(), textUtil.textScale());
         }
     }
 

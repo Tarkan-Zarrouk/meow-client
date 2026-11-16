@@ -33,6 +33,23 @@ public class RenderUtil3D {
     private static final Matrix4f TEXTURE_MATRIX = new Matrix4f();
     private static final RenderPipeline FILLED_BOX_THROUGH_WALLS = RenderPipelines.register(RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET).withLocation(Identifier.fromNamespaceAndPath("meow", "pipeline/filled_box_depth_aware")).withDepthStencilState(Optional.empty()).build());
 
+    /**
+     * Draws a cuboid at the given position with the given dimensions and color.
+     * @param context graphics library
+     * @param xPos x-position of the cuboid
+     * @param yPos y-position of the cuboid
+     * @param zPos z-position of the cuboid
+     * @param minX lowest x position of the cuboid
+     * @param maxX highest x position of the cuboid
+     * @param minY lowest y position of the cuboid
+     * @param maxY highest y position of the cuboid
+     * @param minZ lowest z position of the cuboid
+     * @param maxZ highest z position of the cuboid
+     * @param r red color
+     * @param g green color
+     * @param b blue color
+     * @param a opacity
+     */
     public static void drawCuboid(LevelRenderContext context, int xPos, int yPos, int zPos, int minX, int maxX ,int minY, int maxY, int minZ, int maxZ, float r, float g, float b, float a) {
         // convert to 0.01 --> 1
         float minYFloat = minY / 100f;
