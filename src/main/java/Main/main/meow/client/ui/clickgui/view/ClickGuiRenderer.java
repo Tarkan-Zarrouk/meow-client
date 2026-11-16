@@ -2,6 +2,7 @@ package Main.main.meow.client.ui.clickgui.view;
 
 import Main.main.meow.client.MeowClient;
 import Main.main.meow.client.module.modules.client.clickgui.Font;
+import Main.main.meow.client.ui.clickgui.view.setting.Setting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorPicker;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.module.Module;
@@ -23,9 +24,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 public final class ClickGuiRenderer extends Screen {
@@ -165,9 +164,22 @@ public final class ClickGuiRenderer extends Screen {
         if (!searchText.isEmpty()) {
             List<Module> moduleList = MeowClient.getModuleManager().all();
             List<String> contains = new ArrayList<>();
-            for(int i = 0; i < moduleList.toArray().length; i++) {
-                if(moduleList.get(i).getName().toLowerCase(Locale.ROOT).contains(searchText)) {
-                    contains.add(moduleList.get(i).getCategory().title() + " -> " + moduleList.get(i).getName() + " -> Enabled: " + moduleList.get(i).getEnabled());
+            Map<Module, List<Setting<?>>> moduleMap = new HashMap<>();
+            for(Module module : moduleList) {
+                moduleMap.put(module, module.getSettings());
+            }
+            for(Module module : moduleMap.keySet()) {
+                if(module.getName().toLowerCase(Locale.ROOT).contains(searchText)) {
+                    contains.add(module.getCategory().title() + " -> " + module.getName() + " -> Enabled: " + module.getEnabled());
+                }
+            }
+            for(Module module : moduleMap.keySet()) {
+                List<Setting<?>> settingsList = moduleMap.get(module);
+                for(Setting<?> setting : settingsList) {
+                    String settingName = setting.name();
+                    if(settingName.toLowerCase(Locale.ROOT).contains(searchText)) {
+                        contains.add(module.getCategory().title() + " -> " + module.getName() + " -> " + settingName);
+                    }
                 }
             }
             if (!contains.isEmpty()) {

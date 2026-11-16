@@ -3,7 +3,6 @@ package Main.main.meow.client.ui.clickgui.model;
 public enum Category {
     VISUALS("Visuals"),
     MISC("Misc"),
-    PLAYER("Player"),
     CLIENT("Client"),
     MOVEMENT("Movement"),
     CONFIGS("Configs"),

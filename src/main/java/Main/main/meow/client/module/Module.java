@@ -19,7 +19,7 @@ public abstract class Module {
     private Category category;
     private boolean enabled;
     private int keybind = GLFW_KEY_UNKNOWN;
-    private final List<Setting<?>> settings = new ArrayList<>();
+    private final List<Setting<?>> settings;
     private Runnable changeListener = () -> {};
     private Consumer<Module> enabledChangeListener = module -> {};
 
@@ -28,6 +28,7 @@ public abstract class Module {
         this.category = category;
         this.enabled = enabled;
         this.description = description;
+         settings = new ArrayList<>();
     }
 
     public String getName() {
@@ -81,6 +82,10 @@ public abstract class Module {
     public final void setKeybind(int keybind) {
         this.keybind = keybind;
         changeListener.run();
+    }
+
+    public final List<Setting<?>> getSettings() {
+        return settings;
     }
 
     public final void toggle() {
