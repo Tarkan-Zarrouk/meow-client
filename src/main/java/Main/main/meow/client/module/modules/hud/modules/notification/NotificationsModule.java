@@ -31,12 +31,23 @@ public final class NotificationsModule extends ClientModule {
     private static final NumberSetting SLIDE_TIME_VAL = new NumberSetting("Slide In / Out Time", "Modify the speed at which enters and exits", 18, 10, 100);
     private static final NumberSetting NOTIFICATION_HEIGHT = new NumberSetting("Height of Notification", "Does this really need an explanation?", 32, 20, 50);
     private static final NumberSetting NOTIFICATION_WIDTH = new NumberSetting("Width of Notification", "See tooltip above", 28, 10, 50);
+    private static final BooleanSetting SHOW_STATUS_BAR = new BooleanSetting("Show Status Bar", "Show the status bar on the left side of alerts.", true);
+    private static final ColorSetting STATUS_NORMAL_COLOR = new ColorSetting("Normal Status Color", "Color of the status bar for non-emergency alerts.", 0xff00ff00);
+    private static final ColorSetting STATUS_EMERGENCY_COLOR = new ColorSetting("Emergency Status Color", "Color of the status bar for emergency alerts.", 0xffff0000);
+    private static final NumberSetting STATUS_BAR_WIDTH = new NumberSetting("Status Bar Width", "Width of the full-height status bar.", 3, 1, 16);
+    private static final NumberSetting STATUS_BAR_RADIUS = new NumberSetting("Status Bar Radius", "Corner radius of the status bar, limited by its width.", 0, 0, 8);
+    private static final BooleanSetting STATUS_TOP_LEFT_ROUND = new BooleanSetting("Status Top Left Rounded", "Round the top left corner of the status bar.", true);
+    private static final BooleanSetting STATUS_TOP_RIGHT_ROUND = new BooleanSetting("Status Top Right Rounded", "Round the top right corner of the status bar.", true);
+    private static final BooleanSetting STATUS_BOTTOM_LEFT_ROUND = new BooleanSetting("Status Bottom Left Rounded", "Round the bottom left corner of the status bar.", true);
+    private static final BooleanSetting STATUS_BOTTOM_RIGHT_ROUND = new BooleanSetting("Status Bottom Right Rounded", "Round the bottom right corner of the status bar.", true);
     public NotificationsModule() {
         super("Notifications", Category.HUD, false, "Shows module toggle notifications in chat or as animated top-right alerts.");
         super.addSetting(
                 MODE,
                 SHOW_TIMER,
                 BACKGROUND_COLOR, TEXT_COLOR, TIMER_COLOR,
+                SHOW_STATUS_BAR, STATUS_NORMAL_COLOR, STATUS_EMERGENCY_COLOR, STATUS_BAR_WIDTH, STATUS_BAR_RADIUS,
+                STATUS_TOP_LEFT_ROUND, STATUS_TOP_RIGHT_ROUND, STATUS_BOTTOM_LEFT_ROUND, STATUS_BOTTOM_RIGHT_ROUND,
                 BORDER_RADIUS,
                 ENTER_TIME, DISPLAY_TIME, EXIT_TIME,
                 POSITION_NOTIFICATION,
@@ -49,6 +60,30 @@ public final class NotificationsModule extends ClientModule {
     }
     public static int getNotificationHeight() {
         return NOTIFICATION_HEIGHT.value();
+    }
+    public static boolean getShowStatusBar() {
+        return SHOW_STATUS_BAR.enabled();
+    }
+    public static int getStatusBarColor(boolean emergency) {
+        return emergency ? STATUS_EMERGENCY_COLOR.color() : STATUS_NORMAL_COLOR.color();
+    }
+    public static int getStatusBarWidth() {
+        return STATUS_BAR_WIDTH.value();
+    }
+    public static int getStatusBarRadius() {
+        return STATUS_BAR_RADIUS.value();
+    }
+    public static boolean getStatusTopLeftRound() {
+        return STATUS_TOP_LEFT_ROUND.enabled();
+    }
+    public static boolean getStatusTopRightRound() {
+        return STATUS_TOP_RIGHT_ROUND.enabled();
+    }
+    public static boolean getStatusBottomLeftRound() {
+        return STATUS_BOTTOM_LEFT_ROUND.enabled();
+    }
+    public static boolean getStatusBottomRightRound() {
+        return STATUS_BOTTOM_RIGHT_ROUND.enabled();
     }
     public static int getNotificationWidth() {
         return NOTIFICATION_WIDTH.value();

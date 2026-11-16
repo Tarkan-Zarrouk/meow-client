@@ -15,6 +15,7 @@ import net.minecraft.ChatFormatting;
 
 public final class NotificationManager {
     private static String message;
+    private static boolean emergency;
     private static long shownAt;
     private static long enterMs() { return NotificationsModule.getEnterTime(); }
     private static long displayMs() { return NotificationsModule.getDisplayTime(); }
@@ -34,27 +35,19 @@ public final class NotificationManager {
             sendChatMessage(module.getName() + " " + status);
             return;
         }
-        long now = System.currentTimeMillis();
-        // keep the slide continuous when a toast is replaced while it is still on screen
-        long elapsed = now - shownAt;
-        float visible = 0f;
-        if (message != null) {
-            visible = visibility(elapsed);
-        }
-        message = module.getName() + " " + status;
-        if (visible >= 1f) {
-            shownAt = now - enterMs();
-        } else {
-            shownAt = now - (int) (visible * enterMs());
-        }
+        showAlert(module.getName() + " " + status, false);
     }
     // non-module specific notifier
-    public static void notify(String msg) {
+    public static void notify(String msg, boolean emergency) {
         NotificationsModule notifications = (NotificationsModule) MeowClient.getModuleManager().byName("Notifications");
         if (notifications.mode() == Mode.CHAT) {
             NotificationManager.sendChatMessage(msg);
             return;
         }
+        showAlert(msg, emergency);
+    }
+
+    private static void showAlert(String msg, boolean isEmergency) {
         long now = System.currentTimeMillis();
         // keep the slide continuous when a toast is replaced while it is still on screen
         long elapsed = now - shownAt;
@@ -63,6 +56,7 @@ public final class NotificationManager {
             visible = visibility(elapsed);
         }
         message = msg;
+        emergency = isEmergency;
         if (visible >= 1f) {
             shownAt = now - enterMs();
         } else {
@@ -101,7 +95,11 @@ public final class NotificationManager {
             return;
         }
         float eased = (float) Math.pow(progress, 2) * (3f - (2f * progress));
-        int width = TextUtil.getTextWidth(client, msg) + NotificationsModule.getNotificationWidth();
+        int contentWidth = TextUtil.getTextWidth(client, msg) + NotificationsModule.getNotificationWidth();
+        int statusWidth;
+        if (NotificationsModule.getShowStatusBar()) statusWidth = NotificationsModule.getStatusBarWidth();
+        else statusWidth = 0;
+        int width = contentWidth + statusWidth;
         int height = NotificationsModule.getNotificationHeight();
         int margin = 12;
         NotificationPosition position = NotificationsModule.getNotificationPosition();
@@ -127,6 +125,9 @@ public final class NotificationManager {
             int background = NotificationsModule.getBackgroundColor();
             RenderUtil2D.roundedFill(graphics, xPos, yPos, width, height, background, NotificationsModule.getTopLeftRound(), NotificationsModule.getTopRightRound(), NotificationsModule.getBottomLeftRound(), NotificationsModule.getBottomRightRound(), NotificationsModule.getBorderRadiusValue());
         }
+        if (statusWidth > 0) {
+            RenderUtil2D.roundedFill(graphics, xPos, yPos, statusWidth, height, NotificationsModule.getStatusBarColor(emergency), NotificationsModule.getStatusTopLeftRound(), NotificationsModule.getStatusTopRightRound(), NotificationsModule.getStatusBottomLeftRound(), NotificationsModule.getStatusBottomRightRound(), NotificationsModule.getStatusBarRadius());
+        }
         // the timer drains from full to empty while the toast is held, so it is already gone when the toast slides away
         float remaining = 1f;
         if (notifications.showTimer()) {
@@ -138,12 +139,12 @@ public final class NotificationManager {
                 remaining = 1f - (elapsed - enterMs()) / (float) (displayMs() - enterMs());
             }
         }
-        int timerEnclosure = Math.clamp(width / 4, 0, NotificationsModule.getBorderRadiusValue() / 2 + 2);
-        int timerMaxWidth = width - timerEnclosure * 2;
+        int timerEnclosure = Math.clamp(contentWidth / 4, 0, NotificationsModule.getBorderRadiusValue() / 2 + 2);
+        int timerMaxWidth = contentWidth - timerEnclosure * 2;
         int timerWidth = (int) (timerMaxWidth * remaining);
         if (notifications.showTimer() && timerWidth > 0) {
-            RenderUtil2D.roundedFill(graphics, xPos + timerEnclosure, yPos + height - 2, timerWidth, 2, NotificationsModule.getTimerColor(), NotificationsModule.getTimerTopLeftRound(), NotificationsModule.getTimerTopRightRound(), NotificationsModule.getTimerBottomLeftRound(), NotificationsModule.getTimerBottomRightRound(), 1);
+            RenderUtil2D.roundedFill(graphics, xPos + statusWidth + timerEnclosure, yPos + height - 2, timerWidth, 2, NotificationsModule.getTimerColor(), NotificationsModule.getTimerTopLeftRound(), NotificationsModule.getTimerTopRightRound(), NotificationsModule.getTimerBottomLeftRound(), NotificationsModule.getTimerBottomRightRound(), 1);
         }
-        RenderUtil2D.drawText(graphics, client, msg, xPos + (NotificationsModule.getNotificationWidth() / 2), yPos + (NotificationsModule.getNotificationHeight() / 2) - 4, NotificationsModule.getTextColor());
+        RenderUtil2D.drawText(graphics, client, msg, xPos + statusWidth + (NotificationsModule.getNotificationWidth() / 2), yPos + (NotificationsModule.getNotificationHeight() / 2) - 4, NotificationsModule.getTextColor());
     }
 }

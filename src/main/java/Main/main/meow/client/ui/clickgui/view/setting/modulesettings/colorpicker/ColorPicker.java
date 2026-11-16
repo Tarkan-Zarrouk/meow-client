@@ -133,7 +133,7 @@ public final class ColorPicker implements ColorConsumer {
         if (inButton(mouseX, mouseY, RESET_CLOSE_BUTTON_SIZE, RESET_CLOSE_BUTTON_SIZE, width, 0)) {
             setColor(defaultColor);
             consumer.accept(defaultColor);
-            NotificationManager.notify("Color has been reset to " + String.format("#%08X", defaultColor));
+            NotificationManager.notify("Color has been reset to " + String.format("#%08X", defaultColor), false);
             return true;
         }
         // close button
@@ -158,7 +158,7 @@ public final class ColorPicker implements ColorConsumer {
         // copy button
         if(inButton(mouseX, mouseY, COPY_BUTTON_STRING, xCopyButtonPos, yCopyButtonPos)) {
             Minecraft.getInstance().keyboardHandler.setClipboard(String.format("#%08X", color()));
-            NotificationManager.notify("Copied color to clipboard: " + String.format("#%08X", color()));
+            NotificationManager.notify("Copied color to clipboard: " + String.format("#%08X", color()), false);
             return true;
         }
         // paste button
@@ -167,9 +167,9 @@ public final class ColorPicker implements ColorConsumer {
             if(getColorFromClipboard != -1) {
                 setColor(getColorFromClipboard);
                 consumer.accept(color());
-                NotificationManager.notify("Pasted color from clipboard: " + String.format("#%08X", color()));
+                NotificationManager.notify("Pasted color from clipboard: " + String.format("#%08X", color()), false);
             } else {
-                NotificationManager.notify("Invalid color in clipboard. Please copy a valid hex color code.");
+                NotificationManager.notify("Invalid color in clipboard. Please copy a valid hex color code.", true);
             }
         }
         return true;
