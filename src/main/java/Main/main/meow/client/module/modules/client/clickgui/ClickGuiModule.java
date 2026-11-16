@@ -87,6 +87,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final NumberSetting SEARCH_PANEL_BORDER_RADIUS = new NumberSetting("Search Panel Border Radius", "Search result border radius", 1, 0,13);
     private static final BooleanSetting SEARCH_TOP_RIGHT_TOGGLE_RADIUS = new BooleanSetting("Search Top Right Toggle Radius", "Search result top right corner toggle", true);
     private static final BooleanSetting SEARCH_TOP_LEFT_TOGGLE_RADIUS = new BooleanSetting("Search Top Left Toggle Radius", "Search result top left corner toggle", true);
+    private static final NumberSetting BACKGROUND_BLUR_INTENSITY = new NumberSetting("Background Blur Intensity", "Intensity of blur",5 , 0, 10);
     public ClickGuiModule(){
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
@@ -105,9 +106,13 @@ public final class ClickGuiModule extends ClientModule {
             TOGGLE_BOTTOM_ROUNDED_RECT, BOTTOM_ROUNDED_RECT_HEIGHT,
             OUTLINE_TOGGLE, TOGGLE_INTERIOR_RECT_LEFT, TOGGLE_INTERIOR_RECT_RIGHT,
             TOGGLE_GLOW, GLOW_OPACITY, GLOW_WIDTH,
-            TOGGLE_SEARCH_OUTLINE
+            TOGGLE_SEARCH_OUTLINE,
+            BACKGROUND_BLUR_INTENSITY
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+    public static int getBackgroundBlurIntensity() {
+        return BACKGROUND_BLUR_INTENSITY.value();
     }
     public static boolean getSearchTopLeftToggleRadius() {
         return SEARCH_TOP_LEFT_TOGGLE_RADIUS.value();
