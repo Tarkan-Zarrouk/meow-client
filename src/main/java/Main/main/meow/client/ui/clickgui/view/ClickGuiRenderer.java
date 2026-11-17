@@ -17,6 +17,7 @@ import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.FontUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -48,7 +49,6 @@ public final class ClickGuiRenderer extends Screen {
     @Override
     protected void init() {
         settings = new ClickGuiSettingsHandler(modules);
-//        styler = new FontUtil(font);
         layout = new ClickGuiLayout(modules, settings);
         input = new ClickGuiInputHandler(layout, settings);
         settings.loadExpanded();
@@ -137,9 +137,7 @@ public final class ClickGuiRenderer extends Screen {
                 int argbInt = ColorUtil.toARGB(r,g,b,a);
                 RenderUtil2D.roundedFill(graphics, x - ClickGuiModule.getGlowWidth(), layout.columnY(column) - 3 + (int) scrolledAmount, columnWidth + (2 * ClickGuiModule.getGlowWidth()), (animationOffset + layout.columnHeight(column)) + 5  , argbInt, true, true, true, true, ClickGuiModule.getClickGuiBorderRadius());
             }
-
             renderCategories(graphics, layout.category(column), x, layout.columnY(column) + animationOffset + (int) scrolledAmount, columnWidth);
-
             List<Module> entries = layout.modulesIn(column);
             for (int row = 0; row < entries.size(); row++) {
                 Module module = entries.get(row);
@@ -151,6 +149,11 @@ public final class ClickGuiRenderer extends Screen {
                 boolean lastModule = row == entries.size() - 1;
                 boolean footerDrawn = drawsFooter(entries); // the footer takes over the bottom rounding
                 renderModuleRow(graphics, module, x, y + animationOffset + (int) scrolledAmount, columnWidth, rowHeight, hovered, lastModule, alpha);
+                if(ClickGuiModule.getToggleKeybinds()) {
+                    String keybind = module.getKeybind();
+                    String moduleKeybind = (keybind == null || keybind.isBlank()) ? "" : "[" + keybind.toUpperCase(Locale.ROOT) + "]";
+                    RenderUtil2D.drawText(graphics, font, textUtil.styled(moduleKeybind), x + ClickGuiModule.getInteriorRectWidthLeft() + 2, textUtil.centeredY(y, rowHeight) + (int) scrolledAmount + animationOffset, ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), textUtil.textScale());
+                }
                 if (settings.isExpanded(module)) {
                     String settingTooltip = renderSettings(graphics, module, x, y + animationOffset + rowHeight, columnWidth, mouseX, mouseY, lastModule && !footerDrawn, alpha, scrolledAmount);
                     if (settingTooltip != null && ClickGuiModule.getToolTipShowVal()) tooltipDescription = settingTooltip;

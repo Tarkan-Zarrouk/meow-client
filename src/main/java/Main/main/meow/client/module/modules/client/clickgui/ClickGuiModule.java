@@ -88,6 +88,7 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting SEARCH_TOP_RIGHT_TOGGLE_RADIUS = new BooleanSetting("Search Top Right Toggle Radius", "Search result top right corner toggle", true);
     private static final BooleanSetting SEARCH_TOP_LEFT_TOGGLE_RADIUS = new BooleanSetting("Search Top Left Toggle Radius", "Search result top left corner toggle", true);
     private static final NumberSetting BACKGROUND_BLUR_INTENSITY = new NumberSetting("Background Blur Intensity", "Intensity of blur",5 , 0, 10);
+    private static final BooleanSetting SHOW_KEYBINDS = new BooleanSetting("Show Keybinds", "Draw keybinds on each module", true);
     public ClickGuiModule(){
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
@@ -107,10 +108,15 @@ public final class ClickGuiModule extends ClientModule {
             OUTLINE_TOGGLE, TOGGLE_INTERIOR_RECT_LEFT, TOGGLE_INTERIOR_RECT_RIGHT,
             TOGGLE_GLOW, GLOW_OPACITY, GLOW_WIDTH,
             TOGGLE_SEARCH_OUTLINE,
-            BACKGROUND_BLUR_INTENSITY
+            BACKGROUND_BLUR_INTENSITY,
+            SHOW_KEYBINDS
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    public static boolean getToggleKeybinds() {
+        return SHOW_KEYBINDS.value();
+    }
+
     public static int getBackgroundBlurIntensity() {
         return BACKGROUND_BLUR_INTENSITY.value();
     }

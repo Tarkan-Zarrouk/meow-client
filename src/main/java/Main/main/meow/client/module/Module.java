@@ -2,10 +2,9 @@ package Main.main.meow.client.module;
 
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.Setting;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.*;
 import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
@@ -82,6 +81,16 @@ public abstract class Module {
     public final void setKeybind(int keybind) {
         this.keybind = keybind;
         changeListener.run();
+    }
+
+    public final String getKeybind() {
+        String key;
+        if(this.keybind == GLFW_KEY_UNKNOWN) {
+            key = "";
+        } else {
+            key = GLFW.glfwGetKeyName(this.keybind, 0);
+        }
+        return key;
     }
 
     public final List<Setting<?>> getSettings() {
