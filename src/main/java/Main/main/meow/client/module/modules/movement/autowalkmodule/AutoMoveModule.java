@@ -20,18 +20,22 @@ public class AutoMoveModule extends ClientModule {
         super(NAME,CATEGORY, ENABLED, DESCRIPTION);
         this.addSetting(MOVEMENT_CHOICES_ENUM_SETTING, CUSTOM_YAW, CUSTOM_PITCH);
     }
-
-    public void tick(Minecraft client) {
-        if (!super.getEnabled() || client.player == null || client.screen != null) {
+    @Override
+    public void onDisable() {
+        Minecraft client = Minecraft.getInstance();
+        if (client.player != null) {
             client.options.keyUp.setDown(false);
             client.options.keyDown.setDown(false);
             client.options.keyLeft.setDown(false);
             client.options.keyRight.setDown(false);
             client.options.keyJump.setDown(false);
             client.options.keyShift.setDown(false);
-            if (client.player != null) {
-                client.player.setSprinting(false);
-            }
+            client.player.setSprinting(false);
+        }
+    }
+
+    public void tick(Minecraft client) {
+        if (!super.getEnabled() || client.player == null || client.screen != null) {
             return;
         }
         switch(MOVEMENT_CHOICES_ENUM_SETTING.value()) {
