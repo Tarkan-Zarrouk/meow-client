@@ -17,7 +17,6 @@ import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.FontUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
@@ -35,7 +34,7 @@ public final class ClickGuiRenderer extends Screen {
     private ClickGuiLayout layout;
     private final int headerHeight = ClickGuiLayout.getHeaderHeight();
     private final int subcategoryHeight = ClickGuiLayout.getSubcategoryHeight();
-    private TextUtil textUtil = new TextUtil();
+    private final TextUtil textUtil = new TextUtil();
     private ClickGuiInputHandler input;
     private EditBox searchBox;
     private double scrolledAmount = 0;
@@ -196,7 +195,7 @@ public final class ClickGuiRenderer extends Screen {
                 int x = searchBox.getX();
                 int panelHeight = contains.size() * lineHeight + padding * 2;
                 int panelY = searchBox.getY() - panelHeight;
-                RenderUtil2D.roundedFill(graphics, x, panelY, largestSize + padding * 2, panelHeight, ClickGuiModule.getSearchBackgroundResultColor(), ClickGuiModule.getSearchTopLeftToggleRadius(),  ClickGuiModule.getSearchTopRightToggleRadius(), false, false, ClickGuiModule.getSearchBackgroundResultBorderRadius());
+                RenderUtil2D.roundedFill(graphics, x, panelY, Math.max(largestSize + padding * 2, searchBox.getWidth()), panelHeight, ClickGuiModule.getSearchBackgroundResultColor(), ClickGuiModule.getSearchTopLeftToggleRadius(),  ClickGuiModule.getSearchTopRightToggleRadius(), false, false, ClickGuiModule.getSearchBackgroundResultBorderRadius());
                 int y = panelY + padding;
                 for (String name : contains) {
                     RenderUtil2D.drawText(graphics, font, Component.literal(name).withStyle(style -> style.withColor(ClickGuiModule.getSearchResultTextColor())), x + padding, y, ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), textUtil.textScale());
