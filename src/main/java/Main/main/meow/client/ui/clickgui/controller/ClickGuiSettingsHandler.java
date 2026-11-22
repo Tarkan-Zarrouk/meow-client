@@ -116,9 +116,10 @@ public final class ClickGuiSettingsHandler {
         }
     }
 
-    // returns true when a pending keybind assignment consumed the key
     public boolean captureKey(int key) {
-        int bound = key == GLFW.GLFW_KEY_DELETE ? GLFW.GLFW_KEY_UNKNOWN : key;
+        int bound;
+        if (key == GLFW.GLFW_KEY_DELETE) bound = GLFW.GLFW_KEY_UNKNOWN;
+        else bound = key;
         boolean cancelled = key == GLFW.GLFW_KEY_ESCAPE;
         if (awaitingSetting != null) {
             if (!cancelled)

@@ -2,7 +2,7 @@ package Main.main.meow.client.manager;
 
 import Main.main.meow.client.module.Module;
 import Main.main.meow.client.ui.clickgui.model.Category;
-import org.jspecify.annotations.NonNull;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -60,8 +60,8 @@ public final class ModuleManager {
         for (Module module : modules) {
             if (module.getName().equalsIgnoreCase("ClickGUI")) continue;
             int key = module.keybind();
-            if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN) continue;
-            boolean down = org.lwjgl.glfw.GLFW.glfwGetKey(windowHandle, key) == org.lwjgl.glfw.GLFW.GLFW_PRESS;
+            if (key == GLFW.GLFW_KEY_UNKNOWN) continue;
+            boolean down = GLFW.glfwGetKey(windowHandle, key) == GLFW.GLFW_PRESS;
             if (down && pressedKeybinds.add(key)) module.toggle();
             if (!down) pressedKeybinds.remove(key);
         }

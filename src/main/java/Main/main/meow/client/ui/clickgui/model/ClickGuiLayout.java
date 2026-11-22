@@ -135,7 +135,8 @@ public final class ClickGuiLayout {
         for (Module module : entries) {
             height += rowHeight(module) + ClickGuiModule.getModuleGapHeight();
         }
-        return (entries.isEmpty() ? height : height - ClickGuiModule.getModuleGapHeight()) + ClickGuiModule.getFooterHeight();
+        if (entries.isEmpty()) return height + ClickGuiModule.getFooterHeight();
+        return height - ClickGuiModule.getModuleGapHeight() + ClickGuiModule.getFooterHeight();
     }
 
     public Module moduleAt(int column, double mouseX, double mouseY) {

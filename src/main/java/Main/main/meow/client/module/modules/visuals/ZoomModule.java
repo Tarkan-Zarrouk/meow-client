@@ -5,7 +5,6 @@ import Main.main.meow.client.module.modules.ClientModule;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.KeybindSetting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ChatScreen;
 import org.lwjgl.glfw.GLFW;
 
 

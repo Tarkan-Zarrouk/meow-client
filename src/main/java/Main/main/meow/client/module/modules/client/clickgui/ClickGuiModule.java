@@ -89,6 +89,26 @@ public final class ClickGuiModule extends ClientModule {
     private static final BooleanSetting SEARCH_TOP_LEFT_TOGGLE_RADIUS = new BooleanSetting("Search Top Left Toggle Radius", "Search result top left corner toggle", true);
     private static final NumberSetting BACKGROUND_BLUR_INTENSITY = new NumberSetting("Background Blur Intensity", "Intensity of blur",5 , 0, 10);
     private static final BooleanSetting SHOW_KEYBINDS = new BooleanSetting("Show Keybinds", "Draw keybinds on each module", true);
+    private static final ColorSetting CLICKGUI_BUTTON_BACKGROUND_COLOR = new ColorSetting("ClickGui Background Color", "Change the ClickGui button background color", 0xffffffff);
+    private static final ColorSetting CLICKGUI_BUTTON_HOVER_BACKGROUND_COLOR = new ColorSetting("ClickGui Hover Background Color", "Change the ClickGui button hover background color", 0x8dffffff);
+    private static final ColorSetting CLICKGUI_BUTTON_TEXT_COLOR = new ColorSetting("ClickGui Text Color", "Change the ClickGui button text color", 0xff000000);
+    private static final ColorSetting CLICKGUI_BUTTON_HOVER_TEXT_COLOR = new ColorSetting("ClickGui Hover Text Color", "Change the ClickGui button hover text color", 0xff000000);
+    private static final BooleanSetting CLICKGUI_BUTTON_TEXT_SHADOW = new BooleanSetting("ClickGui Text Shadow", "Toggle the ClickGui button text shadow", false);
+    private static final BooleanSetting CLICKGUI_BUTTON_SHOW_OUTLINE = new BooleanSetting("ClickGui Button Outline", "Toggle the ClickGui button outline", true);
+    private static final ColorSetting CLICKGUI_BUTTON_OUTLINE_COLOR = new ColorSetting("ClickGui Outline Color", "Change the ClickGui button outline color", 0xff000000);
+    private static final NumberSetting CLICKGUI_BUTTON_OUTLINE_THICKNESS = new NumberSetting("ClickGui Outline Thickness", "Change the ClickGui button outline thickness", 1, 1, 3);
+    private static final ColorSetting HUD_BUTTON_BACKGROUND_COLOR = new ColorSetting("HUD Background Color", "Change the HUD button background color", 0xffffffff);
+    private static final ColorSetting HUD_BUTTON_HOVER_BACKGROUND_COLOR = new ColorSetting("HUD Hover Background Color", "Change the HUD button hover background color", 0x8dffffff);
+    private static final ColorSetting HUD_BUTTON_TEXT_COLOR = new ColorSetting("HUD Text Color", "Change the HUD button text color", 0xff000000);
+    private static final ColorSetting HUD_BUTTON_HOVER_TEXT_COLOR = new ColorSetting("HUD Hover Text Color", "Change the HUD button hover text color", 0xff000000);
+    private static final BooleanSetting HUD_BUTTON_TEXT_SHADOW = new BooleanSetting("HUD Text Shadow", "Toggle the HUD button text shadow", false);
+    private static final BooleanSetting HUD_BUTTON_SHOW_OUTLINE = new BooleanSetting("HUD Button Outline", "Toggle the HUD button outline", true);
+    private static final ColorSetting HUD_BUTTON_OUTLINE_COLOR = new ColorSetting("HUD Outline Color", "Change the HUD button outline color", 0xff000000);
+    private static final NumberSetting HUD_BUTTON_OUTLINE_THICKNESS = new NumberSetting("HUD Outline Thickness", "Change the HUD button outline thickness", 1, 1, 3);
+    private static final BooleanSetting SHOW_BUTTON_DIVIDER = new BooleanSetting("Show Button Divider", "Toggle the divider between the ClickGui and HUD buttons", true);
+    private static final ColorSetting BUTTON_DIVIDER_COLOR = new ColorSetting("Button Divider Color", "Change the divider color", 0xff000000);
+    private static final NumberSetting BUTTON_GAP = new NumberSetting("Button Gap", "Change the spacing between the ClickGui and HUD buttons", 0, 0, 15);
+
     public ClickGuiModule(){
         super(NAME, CATEGORY, ENABLED, DESCRIPTION);
         super.addSetting(
@@ -109,10 +129,41 @@ public final class ClickGuiModule extends ClientModule {
             TOGGLE_GLOW, GLOW_OPACITY, GLOW_WIDTH,
             TOGGLE_SEARCH_OUTLINE,
             BACKGROUND_BLUR_INTENSITY,
-            SHOW_KEYBINDS
+            SHOW_KEYBINDS,
+            CLICKGUI_BUTTON_BACKGROUND_COLOR, CLICKGUI_BUTTON_HOVER_BACKGROUND_COLOR,
+            CLICKGUI_BUTTON_TEXT_COLOR, CLICKGUI_BUTTON_HOVER_TEXT_COLOR, CLICKGUI_BUTTON_TEXT_SHADOW,
+            CLICKGUI_BUTTON_SHOW_OUTLINE, CLICKGUI_BUTTON_OUTLINE_COLOR, CLICKGUI_BUTTON_OUTLINE_THICKNESS,
+            HUD_BUTTON_BACKGROUND_COLOR, HUD_BUTTON_HOVER_BACKGROUND_COLOR,
+            HUD_BUTTON_TEXT_COLOR, HUD_BUTTON_HOVER_TEXT_COLOR, HUD_BUTTON_TEXT_SHADOW,
+            HUD_BUTTON_SHOW_OUTLINE, HUD_BUTTON_OUTLINE_COLOR, HUD_BUTTON_OUTLINE_THICKNESS,
+            SHOW_BUTTON_DIVIDER, BUTTON_DIVIDER_COLOR, BUTTON_GAP
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
+    // ClickGui Button
+    public static int getClickGuiButtonBackgroundColor() { return CLICKGUI_BUTTON_BACKGROUND_COLOR.color(); }
+    public static int getClickGuiButtonHoverBackgroundColor() { return CLICKGUI_BUTTON_HOVER_BACKGROUND_COLOR.color(); }
+    public static int getClickGuiButtonTextColor() { return CLICKGUI_BUTTON_TEXT_COLOR.color(); }
+    public static int getClickGuiButtonHoverTextColor() { return CLICKGUI_BUTTON_HOVER_TEXT_COLOR.color(); }
+    public static boolean getClickGuiButtonTextShadow() { return CLICKGUI_BUTTON_TEXT_SHADOW.value(); }
+    public static boolean getClickGuiButtonShowOutline() { return CLICKGUI_BUTTON_SHOW_OUTLINE.value(); }
+    public static int getClickGuiButtonOutlineColor() { return CLICKGUI_BUTTON_OUTLINE_COLOR.color(); }
+    public static double getClickGuiButtonOutlineThickness() { return CLICKGUI_BUTTON_OUTLINE_THICKNESS.value(); }
+
+    // HUD Button
+    public static int getHudButtonBackgroundColor() { return HUD_BUTTON_BACKGROUND_COLOR.color(); }
+    public static int getHudButtonHoverBackgroundColor() { return HUD_BUTTON_HOVER_BACKGROUND_COLOR.color(); }
+    public static int getHudButtonTextColor() { return HUD_BUTTON_TEXT_COLOR.color(); }
+    public static int getHudButtonHoverTextColor() { return HUD_BUTTON_HOVER_TEXT_COLOR.color(); }
+    public static boolean getHudButtonTextShadow() { return HUD_BUTTON_TEXT_SHADOW.value(); }
+    public static boolean getHudButtonShowOutline() { return HUD_BUTTON_SHOW_OUTLINE.value(); }
+    public static int getHudButtonOutlineColor() { return HUD_BUTTON_OUTLINE_COLOR.color(); }
+    public static double getHudButtonOutlineThickness() { return HUD_BUTTON_OUTLINE_THICKNESS.value(); }
+
+    // Shared Button Settings
+    public static boolean getShowButtonDivider() { return SHOW_BUTTON_DIVIDER.value(); }
+    public static int getButtonDividerColor() { return BUTTON_DIVIDER_COLOR.color(); }
+    public static double getButtonGap() { return BUTTON_GAP.value(); }
     public static boolean getToggleKeybinds() {
         return SHOW_KEYBINDS.value();
     }

@@ -66,6 +66,10 @@ public abstract class Module {
         return Collections.unmodifiableList(settings);
     }
     public final <S extends Setting<?>> S addSetting(S... setting) {
+        // throws exception if there are 0 settings
+        if (setting.length == 0) {
+            throw new IllegalArgumentException(this.getName() + " must have at least one setting must be provided.");
+        }
         settings.addAll(Arrays.asList(setting));
         return setting[0];
     }

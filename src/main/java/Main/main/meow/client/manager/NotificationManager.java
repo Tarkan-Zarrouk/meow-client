@@ -17,10 +17,26 @@ public final class NotificationManager {
     private static String message;
     private static boolean emergency;
     private static long shownAt;
+
+    /**
+     * @return the time the notification takes to enter
+     */
     private static long enterMs() { return NotificationsModule.getEnterTime(); }
+
+    /**
+     * @return the time the notification stays on screen
+     */
     private static long displayMs() { return NotificationsModule.getDisplayTime(); }
+
+    /**
+     * @return time the notification takes to exit
+     */
     private static long exitMs() { return NotificationsModule.getExitTime(); }
 
+    /**
+     * Announce module modification
+     * @param module the module to keep an eye on for any changes
+     */
     public static void moduleChanged(Module module) {
         NotificationsModule notifications = (NotificationsModule) MeowClient.getModuleManager().byName("Notifications");
         // the module itself can still announce being turned off
@@ -37,7 +53,12 @@ public final class NotificationManager {
         }
         showAlert(module.getName() + " " + status, false);
     }
-    // non-module specific notifier
+
+    /**
+     * String-based Announcer
+     * @param msg the string to announce
+     * @param emergency show red banner signifying emergency
+     */
     public static void notify(String msg, boolean emergency) {
         NotificationsModule notifications = (NotificationsModule) MeowClient.getModuleManager().byName("Notifications");
         if (notifications.mode() == Mode.CHAT) {
@@ -45,6 +66,20 @@ public final class NotificationManager {
             return;
         }
         showAlert(msg, emergency);
+    }
+
+    /**
+     * MutableComponent-based announcer
+     * @param msg the component to announce
+     * @param emergency show red banner signifying emergency
+     */
+    public static void notify(MutableComponent msg, boolean emergency) {
+        NotificationsModule notifications = (NotificationsModule) MeowClient.getModuleManager().byName("Notifications");
+        if (notifications.mode() == Mode.CHAT) {
+            NotificationManager.sendChatMessage(msg.getString());
+            return;
+        }
+        showAlert(msg.getString(), emergency);
     }
 
     private static void showAlert(String msg, boolean isEmergency) {
@@ -75,6 +110,10 @@ public final class NotificationManager {
         return 1f;
     }
 
+    /**
+     * Alert via chat
+     * @param msg the message to send
+     */
     public static void sendChatMessage(String msg) {
         Minecraft client = Minecraft.getInstance();
         if (client.player != null) {
@@ -83,10 +122,22 @@ public final class NotificationManager {
         }
     }
 
+    /**
+     * Renderer
+     * @param graphics Graphics library
+     * @param client Minecraft instance
+     */
     public static void render(GuiGraphicsExtractor graphics, Minecraft client) {
         if (message == null) return;
         drawNotification(graphics, client, message);
     }
+
+    /**
+     * Renderer method to draw the notification on the screen
+     * @param graphics Graphics library
+     * @param client Minecraft instance
+     * @param msg message to render
+     */
     public static void drawNotification(GuiGraphicsExtractor graphics, Minecraft client, String msg) {
         NotificationsModule notifications = (NotificationsModule) MeowClient.getModuleManager().byName("Notifications");
         long elapsed = System.currentTimeMillis() - shownAt;

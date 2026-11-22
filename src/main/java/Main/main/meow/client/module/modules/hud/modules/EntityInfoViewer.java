@@ -41,7 +41,9 @@ public final class EntityInfoViewer extends HudDisplayModule {
 
     @Override
     public void drawInfo(GuiGraphicsExtractor graphics, Minecraft client, LocalPlayer player, int x, int y) {
-        Entity entity = client.hitResult instanceof EntityHitResult hit ? hit.getEntity() : null;
+        Entity entity;
+        if (client.hitResult instanceof EntityHitResult hit) entity = hit.getEntity();
+        else entity = null;
         if (entity == null) {
             trackedId = -1;
             // preview your own player so the component can still be positioned in the HUD editor

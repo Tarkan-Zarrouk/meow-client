@@ -13,17 +13,21 @@ import Main.main.meow.client.ui.clickgui.controller.ClickGuiInputHandler;
 import Main.main.meow.client.ui.clickgui.controller.ClickGuiSettingsHandler;
 import Main.main.meow.client.ui.clickgui.model.Category;
 import Main.main.meow.client.ui.clickgui.model.ClickGuiLayout;
+import Main.main.meow.client.ui.hud.HudEditorScreen;
 import Main.main.meow.client.util.ColorUtil;
 import Main.main.meow.client.util.FontUtil;
 import Main.main.meow.client.util.RenderUtil2D;
 import Main.main.meow.client.util.TextUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 import java.util.*;
 
@@ -39,6 +43,8 @@ public final class ClickGuiRenderer extends Screen {
     private EditBox searchBox;
     private double scrolledAmount = 0;
     private String searchText = "";
+    private static final Identifier CLICKGUI_TEXTURE = Identifier.fromNamespaceAndPath("meow", "button/clickgui");
+    private static final Identifier HUD_TEXTURE = Identifier.fromNamespaceAndPath("meow", "button/hud");
 
     public ClickGuiRenderer(ModuleManager modules) {
         super(Component.literal("HUD Modules")); // screen reader purpose
@@ -83,6 +89,14 @@ public final class ClickGuiRenderer extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if(isHovered((int) event.x(), (int) event.y(), 0, (this.height / 2) - 50, 50, 50)) {
+            Minecraft.getInstance().setScreen(new ClickGuiRenderer(MeowClient.getModuleManager()));
+            return true;
+        } else if(isHovered((int) event.x(), (int) event.y(), 0, (this.height / 2), 50, 50)) {
+            Minecraft.getInstance().setScreen(new HudEditorScreen(MeowClient.getHudComponentManager()));
+            return true;
+        }
+
         if (settings.colorPicker() == null && layout.transitionProgress() >= 1f && searchBox.isMouseOver(event.x(), event.y()) && super.mouseClicked(event, doubleClick)) {
             return true;
         }
@@ -150,7 +164,9 @@ public final class ClickGuiRenderer extends Screen {
                 renderModuleRow(graphics, module, x, y + animationOffset + (int) scrolledAmount, columnWidth, rowHeight, hovered, lastModule, alpha);
                 if(ClickGuiModule.getToggleKeybinds()) {
                     String keybind = module.getKeybind();
-                    String moduleKeybind = (keybind == null || keybind.isBlank()) ? "" : "[" + keybind.toUpperCase(Locale.ROOT) + "]";
+                    String moduleKeybind;
+                    if (keybind == null || keybind.isBlank()) moduleKeybind = "";
+                    else moduleKeybind = "[" + keybind.toUpperCase(Locale.ROOT) + "]";
                     RenderUtil2D.drawText(graphics, font, textUtil.styled(moduleKeybind), x + ClickGuiModule.getInteriorRectWidthLeft() + 2, textUtil.centeredY(y, rowHeight) + (int) scrolledAmount + animationOffset, ClickGuiModule.getModuleTextColor(), ClickGuiModule.getShadowBoolean(), textUtil.textScale());
                 }
                 if (settings.isExpanded(module)) {
@@ -210,8 +226,81 @@ public final class ClickGuiRenderer extends Screen {
         } else if (tooltipDescription != null && !tooltipDescription.isBlank()) {
             renderTooltip(graphics, tooltipDescription, mouseX, mouseY, screenWidth, screenHeight);
         }
+        renderSideScreenButtons(graphics, mouseX, mouseY);
+
         super.extractRenderState(graphics, mouseX, mouseY, delta);
     }
+
+    private void renderSideScreenButtons(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        int width = 50;
+        int height = 50;
+        int yPos = (graphics.guiHeight() / 2) - height;
+
+        boolean clickGuiHovered = isHovered(mouseX, mouseY, 0, yPos, width, height);
+        boolean hudHovered = isHovered(mouseX, mouseY, 0, yPos + height + (int) ClickGuiModule.getButtonGap(), width, height);
+
+        if (clickGuiHovered) RenderUtil2D.drawPanel(graphics, 0, yPos, width, height,
+            ClickGuiModule.getClickGuiButtonHoverBackgroundColor());
+        else RenderUtil2D.drawPanel(graphics, 0, yPos, width, height,
+            ClickGuiModule.getClickGuiButtonBackgroundColor());
+
+        if (hudHovered)
+            RenderUtil2D.drawPanel(graphics, 0, yPos + height + (int) ClickGuiModule.getButtonGap(), width, height,
+                ClickGuiModule.getHudButtonHoverBackgroundColor());
+        else RenderUtil2D.drawPanel(graphics, 0, yPos + height + (int) ClickGuiModule.getButtonGap(), width, height,
+            ClickGuiModule.getHudButtonBackgroundColor());
+
+        RenderUtil2D.drawSprite(graphics, CLICKGUI_TEXTURE, 0, yPos, width, height);
+        Component clickTextComponent = Component.literal("ClickGui");
+        int getTextCenteredX = textUtil.centeredX(0, width, clickTextComponent.getString());
+        int getTextCenteredY = yPos + height - 10;
+
+        if (clickGuiHovered)
+            RenderUtil2D.drawText(graphics, font, clickTextComponent, getTextCenteredX, getTextCenteredY, ClickGuiModule.getClickGuiButtonHoverTextColor(), ClickGuiModule.getClickGuiButtonTextShadow(), textUtil.textScale());
+        else RenderUtil2D.drawText(graphics, font, clickTextComponent, getTextCenteredX, getTextCenteredY,
+            ClickGuiModule.getClickGuiButtonTextColor(),
+            ClickGuiModule.getClickGuiButtonTextShadow(), textUtil.textScale());
+
+        RenderUtil2D.drawSprite(graphics, HUD_TEXTURE, 0, yPos + height + (int) ClickGuiModule.getButtonGap(), width, height);
+        Component hudTextComponent = Component.literal("HUD");
+        int getHudTextCenteredX = textUtil.centeredX(0, width, hudTextComponent.getString());
+        int getHudTextCenteredY = yPos + (2 * height) + (int) ClickGuiModule.getButtonGap() - 10;
+
+        if (hudHovered)
+            RenderUtil2D.drawText(graphics, font, hudTextComponent, getHudTextCenteredX, getHudTextCenteredY, ClickGuiModule.getHudButtonHoverTextColor(), ClickGuiModule.getHudButtonTextShadow(), textUtil.textScale());
+        else RenderUtil2D.drawText(graphics, font, hudTextComponent, getHudTextCenteredX, getHudTextCenteredY,
+            ClickGuiModule.getHudButtonTextColor(),
+            ClickGuiModule.getHudButtonTextShadow(), textUtil.textScale());
+
+        if (ClickGuiModule.getClickGuiButtonShowOutline()) {
+            int outlineColor = ClickGuiModule.getClickGuiButtonOutlineColor();
+            int outlineThickness = (int) ClickGuiModule.getClickGuiButtonOutlineThickness();
+
+            for (int i = 0; i < outlineThickness; i++) {
+                RenderUtil2D.drawHorizontalLine(graphics, i, width - i, yPos + i, outlineColor);
+                RenderUtil2D.drawHorizontalLine(graphics, i, width - i, yPos + height - i, outlineColor);
+                RenderUtil2D.drawVerticalLine(graphics, i, yPos + i, yPos + height - i, outlineColor);
+                RenderUtil2D.drawVerticalLine(graphics, width - i, yPos + i, yPos + height - i, outlineColor);
+            }
+        }
+
+        if (ClickGuiModule.getHudButtonShowOutline()) {
+            int outlineColor = ClickGuiModule.getHudButtonOutlineColor();
+            int outlineThickness = (int) ClickGuiModule.getHudButtonOutlineThickness();
+            int hudYPos = yPos + height + (int) ClickGuiModule.getButtonGap();
+
+            for (int i = 0; i < outlineThickness; i++) {
+                RenderUtil2D.drawHorizontalLine(graphics, i, width - i, hudYPos + i, outlineColor);
+                RenderUtil2D.drawHorizontalLine(graphics, i, width - i, hudYPos + height - i, outlineColor);
+                RenderUtil2D.drawVerticalLine(graphics, i, hudYPos + i, hudYPos + height - i, outlineColor);
+                RenderUtil2D.drawVerticalLine(graphics, width - i, hudYPos + i, hudYPos + height - i, outlineColor);
+            }
+        }
+        if (ClickGuiModule.getShowButtonDivider()) {
+            RenderUtil2D.drawHorizontalLine(graphics, 0, width, yPos + height + (int) (ClickGuiModule.getButtonGap() / 2), ClickGuiModule.getButtonDividerColor());
+        }
+    }
+
 
     /**
      * assist extractRenderState method by drawing the categories

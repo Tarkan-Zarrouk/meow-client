@@ -85,6 +85,14 @@ public class RenderUtil2D {
         graphics.text(client.font, TextUtil.setComponentFont(value), x, y, getGuiTextColor());
     }
 
+    /**
+     * Draws a vertical line on the screen
+     * @param graphics Graphics library
+     * @param x x-position
+     * @param y y-position
+     * @param height height of the line
+     * @param color color of the vertical line
+     */
     public static void drawVerticalLine(GuiGraphicsExtractor graphics, int x, int y, int height, int color) {
         graphics.verticalLine(x, y, height, color);
     }
@@ -263,6 +271,19 @@ public class RenderUtil2D {
     public static void drawSprite(GuiGraphicsExtractor graphics, Identifier texture, int x, int y, int width, int height) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, texture, x, y, width, height);
     }
+
+    /**
+     * Draws a horizontal line on the screen
+     * @param graphics Graphcis library
+     * @param x x-position
+     * @param width width of the line
+     * @param y y-position
+     * @param color color of the line
+     */
+    public static void drawHorizontalLine(GuiGraphicsExtractor graphics, int x, int width, int y, int color) {
+        graphics.horizontalLine(x, width,y, color);
+    }
+
 
     /**
      * Magenta color visual default

@@ -46,7 +46,9 @@ public class WhatAmILookingAt extends HudDisplayModule {
     @Override
     public void drawInfo(GuiGraphicsExtractor graphics, Minecraft client, LocalPlayer player, int x, int y) {
         Block block;
-        BlockHitResult blockHitResult = client.hitResult instanceof BlockHitResult hit ? hit : null;
+        BlockHitResult blockHitResult;
+        if (client.hitResult instanceof BlockHitResult hit) blockHitResult = hit;
+        else blockHitResult = null;
         if (blockHitResult != null && client.level != null) {
             block = client.level.getBlockState(blockHitResult.getBlockPos()).getBlock();
             if(!block.getName().getString().equals("Air")) {

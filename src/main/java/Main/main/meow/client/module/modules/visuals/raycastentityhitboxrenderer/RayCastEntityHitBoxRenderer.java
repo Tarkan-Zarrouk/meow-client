@@ -6,8 +6,6 @@ import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.EnumSetting
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.NumberSetting;
 import Main.main.meow.client.ui.clickgui.view.setting.modulesettings.colorpicker.ColorSetting;
 import Main.main.meow.client.util.RenderUtil2D;
-import Main.main.meow.client.util.RenderUtil3D;
-import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.gizmos.GizmoStyle;
 import net.minecraft.gizmos.Gizmos;

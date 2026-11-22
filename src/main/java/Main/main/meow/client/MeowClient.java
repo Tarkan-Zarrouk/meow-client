@@ -1,5 +1,7 @@
 package Main.main.meow.client;
 
+import Main.main.meow.client.manager.*;
+import Main.main.meow.client.module.modules.client.commandmodule.CommandModule;
 import Main.main.meow.client.module.modules.hud.HudDisplayModule;
 import Main.main.meow.client.module.modules.hud.modules.*;
 import Main.main.meow.client.module.modules.hud.modules.armorstatus.ArmorStatusModule;
@@ -14,18 +16,15 @@ import Main.main.meow.client.module.modules.visuals.walkblockhighlighter.WalkBlo
 import Main.main.meow.client.module.modules.visuals.raycastentityhitboxrenderer.RayCastEntityHitBoxRenderer;
 import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
 import Main.main.meow.client.ui.hud.HudComponent;
-import Main.main.meow.client.manager.HudComponentManager;
 import Main.main.meow.client.ui.hud.HudEditorScreen;
-import Main.main.meow.client.manager.NotificationManager;
-import Main.main.meow.client.manager.ModuleManager;
 import Main.main.meow.client.module.modules.client.clickgui.ClickGuiModule;
 import Main.main.meow.client.module.modules.visuals.ZoomModule;
 import Main.main.meow.client.module.modules.misc.WaypointsModule;
 import Main.main.meow.client.module.modules.movement.SprintModule;
-import Main.main.meow.client.manager.ConfigManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -34,6 +33,7 @@ public class MeowClient implements ClientModInitializer {
     private static final ModuleManager MODULE_MANAGER = new ModuleManager();
     private static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
     private static final String MOD_ID = "meow";
+    public static CommandManager COMMAND_MANAGER;
 
     public static String getModId() {
         return MOD_ID;
@@ -51,48 +51,81 @@ public class MeowClient implements ClientModInitializer {
     public void onInitializeClient() {
         registerModules();
         registerHudComponents();
+        COMMAND_MANAGER = new CommandManager("*");
         ConfigManager.load(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS);
         MODULE_MANAGER.setChangeListener(() -> ConfigManager.save(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS));
         MODULE_MANAGER.setEnabledChangeListener(NotificationManager::moduleChanged);
-        ClientTickEvents.END_CLIENT_TICK.register(client ->{
-            HudEditorScreen.handleHudEditorKey(client);
-            BpsModule.getBps(client);
-            if(client.screen == null) {
-                MODULE_MANAGER.handleKeybinds(client.getWindow().handle());
-            }
-            if(MODULE_MANAGER.byName("Sprint") instanceof SprintModule sprint) {
-                sprint.tick(client);
-            }
-            if (MODULE_MANAGER.byName("AutoWalk") instanceof AutoMoveModule autoMove) {
-                autoMove.tick(client);
-            }
-            if (MODULE_MANAGER.byName("RaycastBlockCustomizer") instanceof RayCastBlockCustomizer rayCastBlockCustomizer) {
-                rayCastBlockCustomizer.rayCastBlockRenderer();
+        ClientTickEvents.END_CLIENT_TICK.register(MeowClient::clientModuleRegistration);
+            ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
+                if(message.startsWith(COMMAND_MANAGER.getPrefix()) && !message.equals(COMMAND_MANAGER.getPrefix()) && MODULE_MANAGER.byName("CommandSetting").getEnabled()) {
+                    COMMAND_MANAGER.executeCommand(message);
+                    return false;
+                }
+                return true;
+            });
+            ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
+            LevelRenderEvents.AFTER_TRANSLUCENT_FEATURES.register(WalkBlockHighlighter::draw);
+//        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.parse("thingie"), this::renderAnimation);
+        }
 
-            }
-            if (MODULE_MANAGER.byName("RayCastEntityHitBoxRenderer") instanceof RayCastEntityHitBoxRenderer rayCastEntityHitboxRenderer) {
-                rayCastEntityHitboxRenderer.rayCastEntityHitBoxRenderer();
-            }
-        });
-        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
-        LevelRenderEvents.AFTER_TRANSLUCENT_FEATURES.register(WalkBlockHighlighter::draw);
+        private static void clientModuleRegistration(Minecraft client) {
+        HudEditorScreen.handleHudEditorKey(client);
+        BpsModule.getBps(client);
+        if(client.screen == null) {
+            MODULE_MANAGER.handleKeybinds(client.getWindow().handle());
+        }
+        if(MODULE_MANAGER.byName("Sprint") instanceof SprintModule sprint) {
+            sprint.tick(client);
+        }
+        if (MODULE_MANAGER.byName("AutoWalk") instanceof AutoMoveModule autoMove) {
+            autoMove.tick(client);
+        }
+        if (MODULE_MANAGER.byName("RaycastBlockCustomizer") instanceof RayCastBlockCustomizer rayCastBlockCustomizer) {
+            rayCastBlockCustomizer.rayCastBlockRenderer();
+
+        }
+        if (MODULE_MANAGER.byName("RayCastEntityHitBoxRenderer") instanceof RayCastEntityHitBoxRenderer rayCastEntityHitboxRenderer) {
+            rayCastEntityHitboxRenderer.rayCastEntityHitBoxRenderer();
+        }
     }
 
+
+//    private float previousX = 10f;
+//    private float currentX = 10f;
+//    private float speedPerTick = 2.5f;
+//
+//    private void renderAnimation(GuiGraphicsExtractor guiGraphicsExtractor, DeltaTracker deltaTracker) {
+////        float changeInTickRate = deltaTracker.getGameTimeDeltaPartialTick(true);
+//        float frameChange = deltaTracker.getRealtimeDeltaTicks();
+//        currentX += speedPerTick * frameChange;
+//
+//        int screenWidth = guiGraphicsExtractor.guiWidth();
+//        if(currentX > screenWidth) {
+//            currentX = -20f;
+//        }
+//        guiGraphicsExtractor.pose().pushMatrix();
+//        guiGraphicsExtractor.pose().translate(currentX, 50.0f);
+//
+//        guiGraphicsExtractor.fill(0,0,20,20,0xffffffff);
+//        guiGraphicsExtractor.pose().popMatrix();
+//    }
+
+
     private static void registerHudComponents() {
-        PositionModule positionModule = (PositionModule) MODULE_MANAGER.byName(new PositionModule().getName());
-        ArmorStatusModule armor = (ArmorStatusModule) MODULE_MANAGER.byName(new ArmorStatusModule().getName());
-        PotionEffectsModule effects = (PotionEffectsModule) MODULE_MANAGER.byName(new PotionEffectsModule().getName());
-        KeystrokesModule keystrokes = (KeystrokesModule) MODULE_MANAGER.byName(new KeystrokesModule().getName());
-        InventoryViewer inventory = (InventoryViewer) MODULE_MANAGER.byName(new InventoryViewer().getName());
-        BiomeModule biome = (BiomeModule) MODULE_MANAGER.byName(new BiomeModule().getName());
-        InfoModule info = (InfoModule) MODULE_MANAGER.byName(new InfoModule().getName());
-        ClockModule clock = (ClockModule) MODULE_MANAGER.byName(new ClockModule().getName());
-        TotemCounterModule totem = (TotemCounterModule) MODULE_MANAGER.byName(new TotemCounterModule().getName());
-        ArrowCounterModule arrow = (ArrowCounterModule) MODULE_MANAGER.byName(new ArrowCounterModule().getName());
-        BpsModule bps = (BpsModule) MODULE_MANAGER.byName(new BpsModule().getName());
-        EntityInfoViewer entityInfoViewer = (EntityInfoViewer) MODULE_MANAGER.byName(new EntityInfoViewer().getName());
-        WhatAmILookingAt whatAmILookingAt = (WhatAmILookingAt) MODULE_MANAGER.byName(new WhatAmILookingAt().getName());
-        EnabledModules enabledModules = (EnabledModules) MODULE_MANAGER.byName(new EnabledModules().getName());
+        HudDisplayModule positionModule = (PositionModule) MODULE_MANAGER.byName(new PositionModule().getName());
+        HudDisplayModule armor = (ArmorStatusModule) MODULE_MANAGER.byName(new ArmorStatusModule().getName());
+        HudDisplayModule effects = (PotionEffectsModule) MODULE_MANAGER.byName(new PotionEffectsModule().getName());
+        HudDisplayModule keystrokes = (KeystrokesModule) MODULE_MANAGER.byName(new KeystrokesModule().getName());
+        HudDisplayModule inventory = (InventoryViewer) MODULE_MANAGER.byName(new InventoryViewer().getName());
+        HudDisplayModule biome = (BiomeModule) MODULE_MANAGER.byName(new BiomeModule().getName());
+        HudDisplayModule info = (InfoModule) MODULE_MANAGER.byName(new InfoModule().getName());
+        HudDisplayModule clock = (ClockModule) MODULE_MANAGER.byName(new ClockModule().getName());
+        HudDisplayModule totem = (TotemCounterModule) MODULE_MANAGER.byName(new TotemCounterModule().getName());
+        HudDisplayModule arrow = (ArrowCounterModule) MODULE_MANAGER.byName(new ArrowCounterModule().getName());
+        HudDisplayModule bps = (BpsModule) MODULE_MANAGER.byName(new BpsModule().getName());
+        HudDisplayModule entityInfoViewer = (EntityInfoViewer) MODULE_MANAGER.byName(new EntityInfoViewer().getName());
+        HudDisplayModule whatAmILookingAt = (WhatAmILookingAt) MODULE_MANAGER.byName(new WhatAmILookingAt().getName());
+        HudDisplayModule enabledModules = (EnabledModules) MODULE_MANAGER.byName(new EnabledModules().getName());
         int initialXPos = 8; // not doing allat to just have the user move it lol
         registerHudComponent(bps.getName(), initialXPos, 8, bps);
         registerHudComponent(positionModule.getName(), initialXPos, 24, positionModule);
@@ -144,7 +177,8 @@ public class MeowClient implements ClientModInitializer {
                 new WalkBlockHighlighter(),
                 new EnabledModules(),
                 new RayCastEntityHitBoxRenderer(),
-                new AutoMoveModule()
+                new AutoMoveModule(),
+                new CommandModule()
         );
     }
 }

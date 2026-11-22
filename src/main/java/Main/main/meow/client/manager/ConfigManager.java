@@ -44,24 +44,19 @@ public final class ConfigManager {
                 if (!entry.getValue().isJsonObject()) continue;
                 JsonObject position = entry.getValue().getAsJsonObject();
                 if (position.has("x") && position.has("y")) {
-                    ClickGuiLayoutSettings.setPosition(entry.getKey(),
-                            position.get("x").getAsInt(), position.get("y").getAsInt());
+                    ClickGuiLayoutSettings.setPosition(entry.getKey(), position.get("x").getAsInt(), position.get("y").getAsInt());
                 }
             }
             Set<String> expandedModules = new HashSet<>();
             for (Map.Entry<String, JsonElement> expandedEntry : guiExpanded.entrySet()) {
-                if (expandedEntry.getValue().isJsonPrimitive()
-                        && expandedEntry.getValue().getAsJsonPrimitive().isBoolean()
-                        && expandedEntry.getValue().getAsBoolean()) {
+                if (expandedEntry.getValue().isJsonPrimitive() && expandedEntry.getValue().getAsJsonPrimitive().isBoolean() && expandedEntry.getValue().getAsBoolean()) {
                     expandedModules.add(expandedEntry.getKey());
                 }
             }
             ClickGuiLayoutSettings.setExpandedModules(expandedModules);
             for (Main.main.meow.client.module.Module module : modules.all()) {
                 JsonElement value = enabled.get(module.getName());
-                if (!module.getName().equalsIgnoreCase("ClickGUI")
-                        && value != null && value.isJsonPrimitive()
-                        && value.getAsJsonPrimitive().isBoolean()) {
+                if (!module.getName().equalsIgnoreCase("ClickGUI") && value != null && value.isJsonPrimitive() && value.getAsJsonPrimitive().isBoolean()) {
                     module.setEnabled(value.getAsBoolean());
                 }
                 JsonElement keybind = keybinds.get(module.getName());
@@ -91,12 +86,12 @@ public final class ConfigManager {
         Path path = path(client);
         JsonObject root = new JsonObject();
         JsonObject enabled = new JsonObject();
-        for (Main.main.meow.client.module.Module module : modules.all()) {
+        for (Module module : modules.all()) {
             enabled.addProperty(module.getName(), module.getEnabled());
         }
         root.add("enabledModules", enabled);
         JsonObject keybinds = new JsonObject();
-        for (Main.main.meow.client.module.Module module : modules.all()) {
+        for (Module module : modules.all()) {
             keybinds.addProperty(module.getName(), module.keybind());
         }
         root.add("keybinds", keybinds);
@@ -111,8 +106,7 @@ public final class ConfigManager {
         }
         root.add("moduleSettings", moduleSettings);
         JsonObject guiPositions = new JsonObject();
-        for (Map.Entry<String, ClickGuiLayoutSettings.Position> entry
-                : ClickGuiLayoutSettings.allPositions().entrySet()) {
+        for (Map.Entry<String, ClickGuiLayoutSettings.Position> entry : ClickGuiLayoutSettings.allPositions().entrySet()) {
             JsonObject position = new JsonObject();
             position.addProperty("x", entry.getValue().x());
             position.addProperty("y", entry.getValue().y());
@@ -133,7 +127,6 @@ public final class ConfigManager {
             positions.add(component.id(), position);
         }
         root.add("hudPositions", positions);
-
         try {
             Files.createDirectories(path.getParent());
             Files.writeString(path, GSON.toJson(root), StandardCharsets.UTF_8);
@@ -144,7 +137,8 @@ public final class ConfigManager {
 
     private static JsonObject object(JsonObject parent, String key) {
         JsonElement value = parent.get(key);
-        return value != null && value.isJsonObject() ? value.getAsJsonObject() : new JsonObject();
+        if (value != null && value.isJsonObject()) return value.getAsJsonObject();
+        return new JsonObject();
     }
 
     private static Path path(Minecraft client) {

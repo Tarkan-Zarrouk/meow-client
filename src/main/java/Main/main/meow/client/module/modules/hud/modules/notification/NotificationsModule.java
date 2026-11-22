@@ -65,7 +65,8 @@ public final class NotificationsModule extends ClientModule {
         return SHOW_STATUS_BAR.enabled();
     }
     public static int getStatusBarColor(boolean emergency) {
-        return emergency ? STATUS_EMERGENCY_COLOR.color() : STATUS_NORMAL_COLOR.color();
+        if (emergency) return STATUS_EMERGENCY_COLOR.color();
+        return STATUS_NORMAL_COLOR.color();
     }
     public static int getStatusBarWidth() {
         return STATUS_BAR_WIDTH.value();
