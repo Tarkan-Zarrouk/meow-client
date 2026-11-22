@@ -16,6 +16,7 @@ public class HelpCommand extends Command {
         this.commandManager = commandManager;
     }
 
+
     @Override
     public void execute() {
         Minecraft client = Minecraft.getInstance();
