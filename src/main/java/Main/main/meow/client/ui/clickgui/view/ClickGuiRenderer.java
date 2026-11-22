@@ -28,6 +28,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
@@ -89,12 +90,17 @@ public final class ClickGuiRenderer extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if(isHovered((int) event.x(), (int) event.y(), 0, (this.height / 2) - 50, 50, 50)) {
-            Minecraft.getInstance().setScreen(new ClickGuiRenderer(MeowClient.getModuleManager()));
-            return true;
-        } else if(isHovered((int) event.x(), (int) event.y(), 0, (this.height / 2), 50, 50)) {
-            Minecraft.getInstance().setScreen(new HudEditorScreen(MeowClient.getHudComponentManager()));
-            return true;
+        if (settings.colorPicker() == null && event.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+            double x = event.x();
+            double y = event.y();
+            if (x >= 0 && x < 50 && y >= height / 2 - 50 && y < height / 2) {
+                return true;
+            }
+            int hudY = height / 2 + (int) ClickGuiModule.getButtonGap();
+            if (x >= 0 && x < 50 && y >= hudY && y < hudY + 50) {
+                Minecraft.getInstance().setScreen(new HudEditorScreen(MeowClient.getHudComponentManager()));
+                return true;
+            }
         }
 
         if (settings.colorPicker() == null && layout.transitionProgress() >= 1f && searchBox.isMouseOver(event.x(), event.y()) && super.mouseClicked(event, doubleClick)) {
@@ -300,7 +306,6 @@ public final class ClickGuiRenderer extends Screen {
             RenderUtil2D.drawHorizontalLine(graphics, 0, width, yPos + height + (int) (ClickGuiModule.getButtonGap() / 2), ClickGuiModule.getButtonDividerColor());
         }
     }
-
 
     /**
      * assist extractRenderState method by drawing the categories
