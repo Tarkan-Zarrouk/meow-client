@@ -12,7 +12,7 @@ import java.util.Map;
 public class HelpCommand extends Command {
     private final CommandManager commandManager;
     public HelpCommand(CommandManager commandManager) {
-        super("help", "Displays available commands", Map.of("help", List.of(), "help <command>", List.of()));
+        super("help", "Displays available commands", Map.of("help", List.of()));
         this.commandManager = commandManager;
     }
 

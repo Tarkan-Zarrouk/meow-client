@@ -56,15 +56,15 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.setChangeListener(() -> ConfigManager.save(Minecraft.getInstance(), MODULE_MANAGER, HUD_COMPONENTS));
         MODULE_MANAGER.setEnabledChangeListener(NotificationManager::moduleChanged);
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::clientModuleRegistration);
-            ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
-                if(message.startsWith(COMMAND_MANAGER.getPrefix()) && !message.equals(COMMAND_MANAGER.getPrefix()) && MODULE_MANAGER.byName("CommandSetting").getEnabled()) {
-                    COMMAND_MANAGER.executeCommand(message);
-                    return false;
-                }
-                return true;
-            });
-            ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
-            LevelRenderEvents.AFTER_TRANSLUCENT_FEATURES.register(WalkBlockHighlighter::draw);
+        ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
+            if(message.startsWith(COMMAND_MANAGER.getPrefix()) && !message.equals(COMMAND_MANAGER.getPrefix()) && MODULE_MANAGER.byName("CommandSetting").getEnabled()) {
+                COMMAND_MANAGER.executeCommand(message);
+                return false;
+            }
+            return true;
+        });
+        ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
+        LevelRenderEvents.AFTER_TRANSLUCENT_FEATURES.register(WalkBlockHighlighter::draw);
 //        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.parse("thingie"), this::renderAnimation);
         }
 

@@ -2,6 +2,7 @@
 package Main.main.meow.client.manager;
 
 import Main.main.meow.client.command.Command;
+import Main.main.meow.client.command.commands.ClearChatCommand;
 import Main.main.meow.client.command.commands.HelpCommand;
 import Main.main.meow.client.module.modules.client.commandmodule.CommandModule;
 import Main.main.meow.client.module.modules.client.commandmodule.modes.NotifyModes;
@@ -54,12 +55,11 @@ public class CommandManager {
         if (input == null || !input.startsWith(prefix)) {
             return;
         }
-        String commandInput = input.substring(prefix.length()).trim();
+        String commandInput = input.substring(prefix.length());
         if (commandInput.isEmpty()) {
             return;
         }
-        String[] inputArgs = commandInput.split("\\s+");
-        String commandName = inputArgs[0];
+        String commandName = commandInput.split("\\s+", 2)[0];
         Command command = getCommand(commandName);
         if (command == null && Minecraft.getInstance().player != null) {
             if (CommandModule.getNotificationMode().equals(NotifyModes.NOTIFICATION)) {
@@ -69,26 +69,17 @@ public class CommandManager {
             }
             return;
         }
-        String arguments = commandInput.substring(commandName.length()).trim();
         if (command != null) {
-            if (arguments.isEmpty()) {
-                if (!command.isValid(commandName + "")) {
-                    command.sendUsage();
-                    return;
-                }
-            } else {
-                if (!command.isValid(commandName + " " + arguments)) {
-                    command.sendUsage();
-                    return;
-                }
+            if (!commandInput.equals(commandName) || !command.isValid(command.getName())) {
+                command.sendUsage();
+                return;
             }
-        }
-        if (command != null) {
             command.execute();
         }
     }
 
     private void initializeCommands() {
         registerCommand(new HelpCommand(this));
+        registerCommand(new ClearChatCommand());
     }
 }
