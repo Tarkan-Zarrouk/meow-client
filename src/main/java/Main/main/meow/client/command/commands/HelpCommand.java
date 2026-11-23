@@ -6,13 +6,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-import java.util.List;
-import java.util.Map;
-
-public class HelpCommand extends Command {
+public final class HelpCommand extends Command {
     private final CommandManager commandManager;
+    private static final String NAME = "help";
+    private static final String DESCRIPTION = "Displays available commands";
     public HelpCommand(CommandManager commandManager) {
-        super("help", "Displays available commands", Map.of("help", List.of()));
+        super(NAME, DESCRIPTION);
         this.commandManager = commandManager;
     }
 

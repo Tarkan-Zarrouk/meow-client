@@ -3,6 +3,7 @@ package Main.main.meow.client.manager;
 
 import Main.main.meow.client.command.Command;
 import Main.main.meow.client.command.commands.ClearChatCommand;
+import Main.main.meow.client.command.commands.DisconnectCommand;
 import Main.main.meow.client.command.commands.HelpCommand;
 import Main.main.meow.client.module.modules.client.commandmodule.CommandModule;
 import Main.main.meow.client.module.modules.client.commandmodule.modes.NotifyModes;
@@ -59,8 +60,7 @@ public class CommandManager {
         if (commandInput.isEmpty()) {
             return;
         }
-        String commandName = commandInput.split("\\s+", 2)[0];
-        Command command = getCommand(commandName);
+        Command command = getCommand(commandInput);
         if (command == null && Minecraft.getInstance().player != null) {
             if (CommandModule.getNotificationMode().equals(NotifyModes.NOTIFICATION)) {
                 NotificationManager.notify(Component.literal("[MeowClient] Invalid Command, please use *help for a list of commands!"), true);
@@ -70,10 +70,6 @@ public class CommandManager {
             return;
         }
         if (command != null) {
-            if (!commandInput.equals(commandName) || !command.isValid(command.getName())) {
-                command.sendUsage();
-                return;
-            }
             command.execute();
         }
     }
@@ -81,5 +77,6 @@ public class CommandManager {
     private void initializeCommands() {
         registerCommand(new HelpCommand(this));
         registerCommand(new ClearChatCommand());
+        registerCommand(new DisconnectCommand());
     }
 }

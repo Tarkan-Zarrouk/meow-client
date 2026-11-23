@@ -4,12 +4,11 @@ import Main.main.meow.client.command.Command;
 import Main.main.meow.client.manager.NotificationManager;
 import net.minecraft.client.Minecraft;
 
-import java.util.List;
-import java.util.Map;
-
-public class ClearChatCommand extends Command {
+public final class ClearChatCommand extends Command {
+    private static final String NAME = "clearchat";
+    private static final String DESCRIPTION = "Clears your minecraft chat";
     public ClearChatCommand() {
-        super("clearchat", "Clears your minecraft chat", Map.of("clearchat", List.of()));
+        super(NAME, DESCRIPTION);
     }
 
     @Override
