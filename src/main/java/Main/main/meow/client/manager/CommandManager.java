@@ -3,6 +3,7 @@ package Main.main.meow.client.manager;
 
 import Main.main.meow.client.command.Command;
 import Main.main.meow.client.command.commands.ClearChatCommand;
+import Main.main.meow.client.command.commands.CopyCoordinatesCommand;
 import Main.main.meow.client.command.commands.DisconnectCommand;
 import Main.main.meow.client.command.commands.HelpCommand;
 import Main.main.meow.client.module.modules.client.commandmodule.CommandModule;
@@ -75,8 +76,9 @@ public class CommandManager {
     }
 
     private void initializeCommands() {
-        registerCommand(new HelpCommand(this));
-        registerCommand(new ClearChatCommand());
-        registerCommand(new DisconnectCommand());
+        this.registerCommand(new HelpCommand(this));
+        this.registerCommand(new ClearChatCommand());
+        this.registerCommand(new DisconnectCommand());
+        this.registerCommand(new CopyCoordinatesCommand());
     }
 }
