@@ -2,10 +2,7 @@
 package Main.main.meow.client.manager;
 
 import Main.main.meow.client.command.Command;
-import Main.main.meow.client.command.commands.ClearChatCommand;
-import Main.main.meow.client.command.commands.CopyCoordinatesCommand;
-import Main.main.meow.client.command.commands.DisconnectCommand;
-import Main.main.meow.client.command.commands.HelpCommand;
+import Main.main.meow.client.command.commands.*;
 import Main.main.meow.client.module.modules.client.commandmodule.CommandModule;
 import Main.main.meow.client.module.modules.client.commandmodule.modes.NotifyModes;
 import net.minecraft.client.Minecraft;
@@ -80,5 +77,6 @@ public class CommandManager {
         this.registerCommand(new ClearChatCommand());
         this.registerCommand(new DisconnectCommand());
         this.registerCommand(new CopyCoordinatesCommand());
+        this.registerCommand(new CopyServerIpCommand());
     }
 }
