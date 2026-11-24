@@ -7,6 +7,7 @@ import Main.main.meow.client.module.modules.client.commandmodule.CommandModule;
 import Main.main.meow.client.module.modules.client.commandmodule.modes.NotifyModes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.commands.ReloadCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,5 +79,6 @@ public class CommandManager {
         this.registerCommand(new DisconnectCommand());
         this.registerCommand(new CopyCoordinatesCommand());
         this.registerCommand(new CopyServerIpCommand());
+        this.registerCommand(new ReloadResourcesCommand());
     }
 }
