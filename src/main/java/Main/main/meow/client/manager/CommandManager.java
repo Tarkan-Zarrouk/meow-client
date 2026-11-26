@@ -87,5 +87,7 @@ public class CommandManager {
         this.registerCommand(new CopyServerIpCommand());
         this.registerCommand(new ReloadResourcesCommand());
         this.registerCommand(new NameMCCommand());
+        this.registerCommand(new QuitCommand());
+        this.registerCommand(new ToggleCommand());
     }
 }
