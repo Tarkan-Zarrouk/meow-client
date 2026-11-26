@@ -15,11 +15,7 @@ public abstract class Command {
         this.description = description;
     }
 
-    public abstract void execute();
-
-    public static void setPrefix(String newPrefix) {
-        prefix = newPrefix;
-    }
+    public abstract void execute(String... args);
 
     public static MutableComponent getErrorPrefixChat() {
         ChatFormatting prefixColor = CommandModule.getPrefixColor().getFormatting();

@@ -4,7 +4,7 @@ import Main.main.meow.client.command.Command;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-public class DisconnectCommand extends Command {
+public final class DisconnectCommand extends Command {
     private static final String NAME = "disconnect";
     private static final String DESCRIPTION = "disconnects from your current server";
     public DisconnectCommand() {
@@ -12,7 +12,7 @@ public class DisconnectCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute(String... args) {
         if(Minecraft.getInstance().level == null) return;
         Minecraft.getInstance().level.disconnect(Component.literal("Disconnected via command!"));
     }

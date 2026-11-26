@@ -17,7 +17,7 @@ public final class HelpCommand extends Command {
 
 
     @Override
-    public void execute() {
+    public void execute(String... args) {
         Minecraft client = Minecraft.getInstance();
         if(client.player == null) {
             return;

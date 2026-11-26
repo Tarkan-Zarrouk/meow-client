@@ -34,15 +34,12 @@ public class MeowClient implements ClientModInitializer {
     private static final HudComponentManager HUD_COMPONENTS = new HudComponentManager();
     private static final String MOD_ID = "meow";
     public static CommandManager COMMAND_MANAGER;
-
     public static String getModId() {
         return MOD_ID;
     }
-
     public static ModuleManager getModuleManager() {
         return MODULE_MANAGER;
     }
-
     public static HudComponentManager getHudComponentManager() {
         return HUD_COMPONENTS;
     }
@@ -57,18 +54,15 @@ public class MeowClient implements ClientModInitializer {
         MODULE_MANAGER.setEnabledChangeListener(NotificationManager::moduleChanged);
         ClientTickEvents.END_CLIENT_TICK.register(MeowClient::clientModuleRegistration);
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
-            if(message.startsWith(COMMAND_MANAGER.getPrefix()) && !message.equals(COMMAND_MANAGER.getPrefix()) && MODULE_MANAGER.byName("CommandSetting").getEnabled()) {
-                COMMAND_MANAGER.executeCommand(message);
-                return false;
-            }
-            return true;
+            if (!message.startsWith(COMMAND_MANAGER.getPrefix())) return true;
+            COMMAND_MANAGER.executeCommand(message);
+            return false;
         });
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ConfigManager.save(client, MODULE_MANAGER, HUD_COMPONENTS));
         LevelRenderEvents.AFTER_TRANSLUCENT_FEATURES.register(WalkBlockHighlighter::draw);
 //        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.parse("thingie"), this::renderAnimation);
-        }
-
-        private static void clientModuleRegistration(Minecraft client) {
+    }
+    private static void clientModuleRegistration(Minecraft client) {
         HudEditorScreen.handleHudEditorKey(client);
         BpsModule.getBps(client);
         if(client.screen == null) {

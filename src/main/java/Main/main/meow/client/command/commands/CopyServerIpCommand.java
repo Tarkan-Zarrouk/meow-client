@@ -4,7 +4,7 @@ import Main.main.meow.client.command.Command;
 import Main.main.meow.client.manager.NotificationManager;
 import net.minecraft.client.Minecraft;
 
-public class CopyServerIpCommand extends Command {
+public final class CopyServerIpCommand extends Command {
     private static final String NAME = "copyip";
     private static final String DESCRIPTION = "Copies the server ip you're currently in!";
     public CopyServerIpCommand() {
@@ -12,7 +12,7 @@ public class CopyServerIpCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute(String... args) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
         if (mc.hasSingleplayerServer()) {NotificationManager.notify("You're in single player right now.", true); return;}

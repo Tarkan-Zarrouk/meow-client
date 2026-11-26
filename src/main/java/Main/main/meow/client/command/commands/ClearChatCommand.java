@@ -12,7 +12,7 @@ public final class ClearChatCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute(String... args) {
         if(Minecraft.getInstance().level == null) return;
         Minecraft.getInstance().gui.getChat().clearMessages(true);
         NotificationManager.notify("Chat Cleared!", false);
