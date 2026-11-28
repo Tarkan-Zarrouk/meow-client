@@ -12,6 +12,7 @@ import Main.main.meow.client.module.modules.hud.modules.info.InfoModule;
 import Main.main.meow.client.module.modules.hud.modules.notification.NotificationsModule;
 import Main.main.meow.client.module.modules.hud.modules.position.PositionModule;
 import Main.main.meow.client.module.modules.movement.autowalkmodule.AutoMoveModule;
+import Main.main.meow.client.module.modules.visuals.CameraTools;
 import Main.main.meow.client.module.modules.visuals.walkblockhighlighter.WalkBlockHighlighter;
 import Main.main.meow.client.module.modules.visuals.raycastentityhitboxrenderer.RayCastEntityHitBoxRenderer;
 import Main.main.meow.client.module.modules.visuals.raycastblockcustomizer.RayCastBlockCustomizer;
@@ -172,7 +173,8 @@ public class MeowClient implements ClientModInitializer {
                 new EnabledModules(),
                 new RayCastEntityHitBoxRenderer(),
                 new AutoMoveModule(),
-                new CommandModule()
+                new CommandModule(),
+                new CameraTools()
         );
     }
 }

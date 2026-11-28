@@ -140,30 +140,63 @@ public final class ClickGuiModule extends ClientModule {
         );
         super.setKeybind(GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
-    // ClickGui Button
-    public static int getClickGuiButtonBackgroundColor() { return CLICKGUI_BUTTON_BACKGROUND_COLOR.color(); }
-    public static int getClickGuiButtonHoverBackgroundColor() { return CLICKGUI_BUTTON_HOVER_BACKGROUND_COLOR.color(); }
-    public static int getClickGuiButtonTextColor() { return CLICKGUI_BUTTON_TEXT_COLOR.color(); }
-    public static int getClickGuiButtonHoverTextColor() { return CLICKGUI_BUTTON_HOVER_TEXT_COLOR.color(); }
-    public static boolean getClickGuiButtonTextShadow() { return CLICKGUI_BUTTON_TEXT_SHADOW.value(); }
-    public static boolean getClickGuiButtonShowOutline() { return CLICKGUI_BUTTON_SHOW_OUTLINE.value(); }
-    public static int getClickGuiButtonOutlineColor() { return CLICKGUI_BUTTON_OUTLINE_COLOR.color(); }
-    public static double getClickGuiButtonOutlineThickness() { return CLICKGUI_BUTTON_OUTLINE_THICKNESS.value(); }
+    public static int getClickGuiButtonBackgroundColor() {
+        return CLICKGUI_BUTTON_BACKGROUND_COLOR.color();
+    }
+    public static int getClickGuiButtonHoverBackgroundColor() {
+        return CLICKGUI_BUTTON_HOVER_BACKGROUND_COLOR.color();
+    }
+    public static int getClickGuiButtonTextColor() {
+        return CLICKGUI_BUTTON_TEXT_COLOR.color();
+    }
+    public static int getClickGuiButtonHoverTextColor() {
+        return CLICKGUI_BUTTON_HOVER_TEXT_COLOR.color();
+    }
+    public static boolean getClickGuiButtonTextShadow() {
+        return CLICKGUI_BUTTON_TEXT_SHADOW.value(); }
+    public static boolean getClickGuiButtonShowOutline() {
+        return CLICKGUI_BUTTON_SHOW_OUTLINE.value();
+    }
+    public static int getClickGuiButtonOutlineColor() {
+        return CLICKGUI_BUTTON_OUTLINE_COLOR.color();
+    }
+    public static double getClickGuiButtonOutlineThickness() {
+        return CLICKGUI_BUTTON_OUTLINE_THICKNESS.value();
+    }
+    public static int getHudButtonBackgroundColor() {
+        return HUD_BUTTON_BACKGROUND_COLOR.color();
+    }
+    public static int getHudButtonHoverBackgroundColor() {
+        return HUD_BUTTON_HOVER_BACKGROUND_COLOR.color();
+    }
+    public static int getHudButtonTextColor() {
+        return HUD_BUTTON_TEXT_COLOR.color();
+    }
+    public static int getHudButtonHoverTextColor() {
+        return HUD_BUTTON_HOVER_TEXT_COLOR.color();
+    }
+    public static boolean getHudButtonTextShadow() {
+        return HUD_BUTTON_TEXT_SHADOW.value();
+    }
+    public static boolean getHudButtonShowOutline() {
+        return HUD_BUTTON_SHOW_OUTLINE.value();
+    }
+    public static int getHudButtonOutlineColor() {
+        return HUD_BUTTON_OUTLINE_COLOR.color();
+    }
+    public static double getHudButtonOutlineThickness() {
+        return HUD_BUTTON_OUTLINE_THICKNESS.value();
+    }
 
-    // HUD Button
-    public static int getHudButtonBackgroundColor() { return HUD_BUTTON_BACKGROUND_COLOR.color(); }
-    public static int getHudButtonHoverBackgroundColor() { return HUD_BUTTON_HOVER_BACKGROUND_COLOR.color(); }
-    public static int getHudButtonTextColor() { return HUD_BUTTON_TEXT_COLOR.color(); }
-    public static int getHudButtonHoverTextColor() { return HUD_BUTTON_HOVER_TEXT_COLOR.color(); }
-    public static boolean getHudButtonTextShadow() { return HUD_BUTTON_TEXT_SHADOW.value(); }
-    public static boolean getHudButtonShowOutline() { return HUD_BUTTON_SHOW_OUTLINE.value(); }
-    public static int getHudButtonOutlineColor() { return HUD_BUTTON_OUTLINE_COLOR.color(); }
-    public static double getHudButtonOutlineThickness() { return HUD_BUTTON_OUTLINE_THICKNESS.value(); }
-
-    // Shared Button Settings
-    public static boolean getShowButtonDivider() { return SHOW_BUTTON_DIVIDER.value(); }
-    public static int getButtonDividerColor() { return BUTTON_DIVIDER_COLOR.color(); }
-    public static double getButtonGap() { return BUTTON_GAP.value(); }
+    public static boolean getShowButtonDivider() {
+        return SHOW_BUTTON_DIVIDER.value();
+    }
+    public static int getButtonDividerColor() {
+        return BUTTON_DIVIDER_COLOR.color();
+    }
+    public static double getButtonGap() {
+        return BUTTON_GAP.value();
+    }
     public static boolean getToggleKeybinds() {
         return SHOW_KEYBINDS.value();
     }
